@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/ad-user.css}">
+    <link rel="stylesheet" th:href="@{/css/ad-header.css}">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+<div class="main">
+    <div th:replace="admin/header :: header"></div>
+
+
+    <div th:if="${success}" class="alert alert-success" role="alert" style="margin-left:785px;color:red;margin-top:10px;">
+        <p th:text="${success}"></p>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" role="alert" style="margin-left:785px;color:red;margin-top:10px;">
+        <p th:text="${error}"></p>
+    </div>
+
+    <div class="details">
+        <div class="allRooms" style="min-height: 700px">
+            <div class="cardHeader">
+                <h2>All Users</h2>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Full Name</th>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}">Room Name</td>
+                    <td th:text="${user.fullName}">Price</td>
+                    <td th:text="${user.userName}">Type</td>
+                    <td th:text="${user.email}">Location</td>
+                    <td>
+                        <span th:each="role : ${user.roles}" th:text="${role.name}+' '"></span>
+                    </td>
+                    <td>
+                        <button class="delete-btn">
+                            <a th:href="@{/admin/customer/delete/{id}(id=${user.id})}">Delete</a>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+#confirmationPopup,#confirmationPopup-login {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9; /* Màu nền nhẹ nhàng hơn */
+    border: 2px solid #007bff; /* Đường viền màu xanh */
+    padding: 30px; /* Tăng padding để tạo không gian */
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Đổ bóng mềm mại hơn */
+    width: 400px; /* Kích thước chiều rộng */
+    height: auto; /* Chiều cao tự động */
+    border-radius: 10px; /* Bo góc cho popup */
+    font-size: 18px; /* Kích thước chữ lớn hơn */
+    text-align: center; /* Căn giữa nội dung */
+}

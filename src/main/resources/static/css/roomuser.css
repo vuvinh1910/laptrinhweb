@@ -1,0 +1,84 @@
+.booking-container {
+    padding: 20px;
+    margin-left: 260px;
+    font-size: 1.7rem;
+}
+
+.booking-row {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.booking-row div {
+    flex: 1;
+    text-align: center;
+    padding: 0 10px; /* Thêm padding để cách các cột một chút */
+}
+
+/* Thêm đường thẳng ngăn cách giữa các cột */
+.booking-row div:not(:last-child) {
+    border-right: 1px solid #ddd; /* Thêm đường thẳng phải vào các cột, trừ cột cuối cùng */
+}
+
+/* Kiểu dáng cho nút thanh toán */
+.pay-button, .cancel-button {
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    color: white;
+}
+
+.pay-button {
+    background-color: #1e50aa; /* Màu xanh cho nút thanh toán */
+}
+
+.cancel-button {
+    background-color: #dc3545; /* Màu đỏ cho nút hủy */
+}
+
+.pay-button:hover {
+    background-color: #0b2398;
+}
+
+.cancel-button:hover {
+    background-color: #c82333;
+}
+
+.paid {
+    color: green;
+    font-weight: bold;
+}
+
+.del-button {
+    display: inline-block; /* Hiển thị nút dưới dạng khối inline */
+    width: 20px; /* Chiều rộng của nút */
+    height: 20px; /* Chiều cao của nút */
+    background-color: #ff4d4d; /* Màu nền đỏ */
+    color: white; /* Màu chữ trắng */
+    font-size: 15px; /* Kích thước chữ */
+    font-weight: bold; /* Chữ đậm */
+    text-align: center; /* Căn giữa chữ */
+    line-height: 20px; /* Căn chỉnh chữ "X" ở giữa theo chiều dọc */
+    border: none; /* Bỏ đường viền */
+    cursor: pointer; /* Thay đổi con trỏ thành hình bàn tay khi di chuột qua */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển màu và chuyển động */
+    text-decoration: none;
+}
+
+.del-button:hover {
+    background-color: #ff1a1a; /* Màu nền đỏ đậm khi hover */
+    transform: scale(1.1); /* Phóng to nút khi hover */
+}
+
+.del-button:active {
+    background-color: #e60000; /* Màu nền khi nhấn */
+    transform: scale(0.95); /* Thu nhỏ nút khi nhấn */
+}

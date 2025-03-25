@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add New Room</title>
+    <link rel="stylesheet" th:href="@{/css/add-room-service.css}">
+</head>
+
+<body>
+<h1>Update Room</h1>
+
+<!-- Hiển thị thông báo -->
+<div th:if="${success}" class="alert alert-success" role="alert" style="display: flex; justify-content: center; color: red;">
+    <p th:text="${success}"></p>
+</div>
+
+<div th:if="${error}" class="alert alert-danger" role="alert" style="display: flex; justify-content: center; color: green;">
+    <p th:text="${error}"></p>
+</div>
+
+<!-- Form thêm phòng -->
+<form th:object="${service}" th:action="@{/admin/service/update/{codeName}(codeName=${service.codeName})}" method="post">
+    <!-- Tên service -->
+    <div>
+        <label for="serviceName">Room Name:</label>
+        <input type="text" id="serviceName" name="serviceName" th:value="${service.serviceName}" required>
+    </div>
+
+    <!-- Giá service -->
+    <div>
+        <label for="servicePrice">Room Price:</label>
+        <input type="number" id="servicePrice" name="servicePrice" th:value="${service.servicePrice}" required>
+    </div>
+
+    <!-- Mô tả service -->
+    <div>
+        <label for="serviceDetail">Room Detail:</label>
+        <textarea id="serviceDetail" name="serviceDetail" th:value="${service.serviceDetail}" required></textarea>
+    </div>
+
+    <!-- Nút thêm phòng -->
+    <div class="form-actions">
+        <button type="submit">Update</button>
+        <button type="button" class="back-button" ><a th:href="@{/admin/service}">Back</a></button>
+    </div>
+</form>
+</body>
+
+</html>

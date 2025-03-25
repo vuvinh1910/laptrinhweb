@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add New Room</title>
+    <link rel="stylesheet" th:href="@{/css/add-room-service.css}">
+</head>
+
+<body>
+<h1>Update Room</h1>
+
+
+<!-- Hiển thị thông báo -->
+<div th:if="${success}" class="alert alert-success" role="alert" style="display: flex; justify-content: center; color: green;">
+    <p th:text="${success}"></p>
+</div>
+
+<div th:if="${error}" class="alert alert-danger" role="alert" style="display: flex; justify-content: center; color: red;">
+    <p th:text="${error}"></p>
+</div>
+
+<!-- Form thêm phòng -->
+<form th:object="${room}" th:action="@{/admin/room/update/{id}(id=${room.id})}" method="post">
+    <!-- Tên phòng -->
+    <div>
+        <label for="roomName">Room Name:</label>
+        <input type="text" id="roomName" name="roomName" th:value="${room.roomName}" required>
+    </div>
+
+    <!-- Tên khách sạn -->
+    <div>
+        <label for="hotelName">Hotel Name:</label>
+        <input type="text" id="hotelName" name="hotelName" th:value="${room.hotelName}" required>
+    </div>
+
+    <!-- Giá phòng -->
+    <div>
+        <label for="roomPrice">Room Price:</label>
+        <input type="number" id="roomPrice" name="roomPrice" th:value="${room.roomPrice}" required>
+    </div>
+
+    <!-- Mô tả phòng -->
+    <div>
+        <label for="roomDetail">Room Detail:</label>
+        <textarea id="roomDetail" name="roomDetail" th:value="${room.roomDetail}" required></textarea>
+    </div>
+
+    <!-- Loại phòng -->
+    <div>
+        <label for="roomType">Room Type:</label>
+        <input type="text" id="roomType" name="roomType" th:value="${room.roomType}" required>
+    </div>
+
+    <!-- Vị trí (Location) -->
+    <div>
+        <label for="locationCode">Location:</label>
+        <select id="locationCode" name="locationCode" required>
+            <option value="" disabled selected>Select a location</option>
+            <option th:each="location : ${locations}"
+                    th:value="${location.locationCode}"
+                    th:text="${location.locationName}"></option>
+        </select>
+    </div>
+
+    <!-- Nút thêm phòng -->
+    <div class="form-actions">
+        <button type="submit">Update</button>
+        <button type="button" class="back-button" ><a th:href="@{/admin/room}">Back</a></button>
+    </div>
+</form>
+</body>
+
+</html>

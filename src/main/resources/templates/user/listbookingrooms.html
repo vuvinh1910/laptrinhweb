@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin cá nhân</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/roomuser.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/popup.css}">
+    <link rel="stylesheet" th:href="@{/css/confirm.css}">
+    <script th:src="@{/js/navbar.js}" defer></script>
+    <script th:src="@{/js/popup.js}" defer></script>
+    <script th:src="@{/js/confirm.js}" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+          integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div th:include="sidebar :: sidebar" class="sidebar"></div>
+
+
+<div class="booking-container">
+    <h1>Lịch sử Đặt Phòng</h1>
+    <div class="booking-row header-row">
+        <form>Xóa</form>
+        <div>Tên phòng</div>
+        <div>Trạng thái</div>
+        <div>Ngày nhận phòng</div>
+        <div>Ngày trả phòng</div>
+        <div>Tổng giá tiền</div>
+        <div>Hành động</div> <!-- Nếu bạn có hành động như thanh toán -->
+    </div>
+    <div th:each="booking : ${bookedRooms}">
+        <div class="booking-row">
+            <form th:action="@{/users/myInfo/booking-rooms/{roomId}(roomId=${booking.id})}" method="POST" style="display: inline;">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="del-button">X</button>
+            </form>
+
+            <div>
+                <a th:href="@{/public/room/{roomId}(roomId=${booking.roomId})}" th:text="${booking.roomName}">Tên phòng</a>
+            </div>
+            <div th:text="${booking.status}">Trạng thái</div>
+            <div th:text="${booking.checkIn}">Ngày nhận phòng</div>
+            <div th:text="${booking.checkOut}">Ngày trả phòng</div>
+            <div th:text="${booking.totalPrice}">Tổng giá tiền</div>
+
+            <!-- Kiểm tra trạng thái của booking -->
+            <div th:if="${booking.status.equals(T(com.example.web_nhom_5.enums.BookingStatus).CANCELLED)}">
+                Đã hủy
+            </div>
+
+            <div th:if="${booking.status != T(com.example.web_nhom_5.enums.BookingStatus).CANCELLED}">
+                <div th:if="${!booking.isPaid}" class="action-buttons">
+                    <a th:href="@{/users/booking-rooms/{bookingId}/payment(bookingId=${booking.id})}" class="pay-button">Thanh toán</a>
+                    <a th:href="@{/users/booking-rooms/{bookingId}/cancel(bookingId=${booking.id})}"
+                       class="cancel-button"
+                       onclick="return confirm('Bạn có chắc chắn muốn hủy đặt phòng này?');">Hủy</a>
+                </div>
+                <div th:if="${booking.isPaid}" class="paid">
+                    Đã thanh toán
+                    <a th:href="@{/users/booking-rooms/{bookingId}/cancel(bookingId=${booking.id})}"
+                       class="cancel-button"
+                       onclick="return confirm('Bạn muốn hủy thanh toán?');">Hủy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup Xác Nhận -->
+<div id="confirmationPopup" style="display:none;">
+    <p>Bạn có chắc chắn muốn xóa không? Hành động này không thể hoàn tác.</p>
+    <button id="confirmDelete">Xóa</button>
+    <button id="cancelDelete">Hủy</button>
+</div>
+
+<!--  tra ve thong bao-->
+<div id="myModal" class="modal" th:if="${result}">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p class="result-popup" th:text="${result}">Thông báo</p>
+    </div>
+</div>
+
+</body>
+</html>

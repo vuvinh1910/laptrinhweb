@@ -1,8 +1,8 @@
 package com.example.web_nhom_5.controller.admin;
 
 import com.example.web_nhom_5.dto.api.ApiResponse;
-import com.example.web_nhom_5.dto.request.ServiceCreateRequestDTO;
-import com.example.web_nhom_5.dto.request.ServiceUpdateRequestDTO;
+import com.example.web_nhom_5.dto.request.ServiceCreateRequest;
+import com.example.web_nhom_5.dto.request.ServiceUpdateRequest;
 import com.example.web_nhom_5.dto.response.ServiceResponse;
 import com.example.web_nhom_5.service.ServiceService;
 import jakarta.validation.Valid;
@@ -25,9 +25,9 @@ public class AdminServiceController {
     ServiceService serviceService;
 
     @PostMapping
-    public ApiResponse<ServiceResponse> createService(@Valid @RequestBody ServiceCreateRequestDTO serviceCreateRequestDTO) {
+    public ApiResponse<ServiceResponse> createService(@Valid @RequestBody ServiceCreateRequest serviceCreateRequest) {
         return ApiResponse.<ServiceResponse>builder()
-                .result(serviceService.addService(serviceCreateRequestDTO))
+                .result(serviceService.addService(serviceCreateRequest))
                 .build();
     }
 
@@ -39,9 +39,9 @@ public class AdminServiceController {
     }
 
     @PutMapping(value = "/{serviceId}")
-    public ApiResponse<ServiceResponse> updateService(@RequestBody ServiceUpdateRequestDTO serviceUpdateRequestDTO, @PathVariable("serviceId") String serviceId) {
+    public ApiResponse<ServiceResponse> updateService(@RequestBody ServiceUpdateRequest serviceUpdateRequest, @PathVariable("serviceId") String serviceId) {
         return ApiResponse.<ServiceResponse>builder()
-                .result(serviceService.updateService(serviceUpdateRequestDTO,serviceId))
+                .result(serviceService.updateService(serviceUpdateRequest,serviceId))
                 .build();
     }
 

@@ -2,21 +2,22 @@ package com.example.web_nhom_5.service.implement;
 
 
 import com.example.web_nhom_5.conventer.UserMapper;
-import com.example.web_nhom_5.dto.request.UpdatePasswordRequest;
-import com.example.web_nhom_5.dto.request.UserCreationRequest;
-import com.example.web_nhom_5.dto.request.UserProfileUpdateRequest;
-import com.example.web_nhom_5.dto.request.UserUpdateRequest;
+import com.example.web_nhom_5.dto.request.*;
 import com.example.web_nhom_5.dto.response.UserResponse;
+import com.example.web_nhom_5.entity.ForgotPassword;
 import com.example.web_nhom_5.entity.UserEntity;
 import com.example.web_nhom_5.enums.Role;
 import com.example.web_nhom_5.exception.ErrorCode;
 import com.example.web_nhom_5.exception.WebException;
+import com.example.web_nhom_5.repository.ForgotPasswordRepository;
 import com.example.web_nhom_5.repository.RoleRepository;
 import com.example.web_nhom_5.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,10 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @RequiredArgsConstructor
@@ -40,10 +38,16 @@ public class UserService {
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
     UserMapper userMapper;
+    ForgotPasswordRepository forgotPasswordRepository;
 
     public UserResponse creatUser(UserCreationRequest request) {
-        if(userRepository.existsByUserName(request.getUserName()))
+        if(userRepository.existsByUserName(request.getUserName())) {
             throw new WebException(ErrorCode.USER_EXISTED);
+        }
+
+        if(userRepository.existsByEmail(request.getEmail())) {
+            throw new WebException(ErrorCode.EMAIL_ALREADY_EXISTS);
+        }
 
         UserEntity user = userMapper.toUser(request);
 
@@ -75,8 +79,6 @@ public class UserService {
     }
 
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<UserResponse> getAllUser() {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
@@ -122,6 +124,19 @@ public class UserService {
             }
         }
         return "Wrong old password";
+    }
+
+    public String changePassword(String email, ChangePassword changePassword) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new WebException(ErrorCode.USER_NOT_EXISTED));
+        ForgotPassword fp = forgotPasswordRepository.findByUserEntityAndVerified(userEntity,true)
+                .orElseThrow(() -> new RuntimeException("OTP khong hop le, ban khong co quyen doi mat khau"));
+        if(!Objects.equals(changePassword.getPassword(), changePassword.getRepeatPassword())) {
+            return "Please Enter Password Again";
+        }
+        userEntity.setPassword(passwordEncoder.encode(changePassword.getPassword()));
+        forgotPasswordRepository.delete(fp);
+        userRepository.save(userEntity);
+        return "Password changed successfully";
     }
 
     public void deleteUser(Long userid) {

@@ -1,0 +1,205 @@
+/* Header */
+.header {
+    height: 65px;
+    background-image: linear-gradient(0, hsla(0, 67%, 9%, 0.136), #ef6053);
+    display: flex;
+    align-items: center;
+    padding: 0;
+    transition: top 0.5s ease, opacity 0.5s ease;
+    z-index: 100;
+}
+
+
+/* Navbar */
+.header__navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-right: 20px;
+    max-height: 65px;
+    background-color: #ef6053;
+    z-index: 100;
+}
+
+/* Logo */
+.header__logo {
+    margin-left: 0;
+}
+
+.header__logo img {
+    width: 67px;
+    height: 66.6px;
+}
+
+/* Navbar List */
+.header__navbar-list {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+
+.header__navbar-item,
+.header__navbar-item-link {
+    display: inline-block;
+    font-size: 2rem;
+    color: white;
+    text-decoration: none;
+    font-weight: 400;
+    padding: 5px 5px; /* Tăng khoảng cách bên trong cho dễ nhìn */
+    border-radius: 5px; /* Bo góc */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Hiệu ứng hover mượt */
+}
+
+.header__navbar-item-link:hover {
+    color: #007bff; /* Chữ chuyển thành xanh dương */
+}
+
+
+
+/* Dropdown */
+.hotel-dropdown {
+    position: relative;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Thay đổi màu nút khi hover */
+.hotel-dropdown .dropdown-btn:hover {
+    color: #007bff; /* Màu xanh khi hover */
+    background: linear-gradient(0, #e4c9c7, #ca4f44);
+}
+
+.hotel-dropdown .dropdown-btn {
+    width: 200px;             /* Đặt chiều rộng cố định */
+    overflow-x: hidden;       /* Ẩn phần nội dung thừa theo chiều ngang */
+    text-overflow: ellipsis;  /* Thêm dấu ba chấm '...' nếu nội dung bị ẩn */
+    white-space: nowrap;
+    background-color: transparent;
+    font-size: 2rem;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative;
+}
+
+.hotel-dropdown .dropdown-btn::after {
+    content: " ▼";            /* Chèn dấu mũi tên vào cuối */
+    position: absolute;       /* Đặt vị trí tuyệt đối */
+    right: 10px;              /* Cách phải 10px */
+    top: 50%;                 /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%); /* Căn giữa chính xác theo chiều dọc */
+}
+
+.hotel-dropdown .dropdown-content {
+    display: none; /* Ẩn nội dung dropdown ban đầu */
+    position: absolute;
+    top:100%;
+    background-color: #ef6053;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 180px;
+    border-radius: 5px;
+}
+
+.hotel-dropdown .dropdown-content a {
+    color: white;
+    padding: 12px 5px;
+    text-decoration: none;
+    display: block;
+    font-size: 1.8rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+.hotel-dropdown .dropdown-content a:hover {
+    background-color: #ab3030;
+}
+
+.hotel-dropdown:hover .dropdown-content {
+    display: block; /* Hiển thị dropdown khi hover */
+}
+
+
+input::placeholder {
+    font-size: 1.25rem; /* Điều chỉnh kích thước chữ của placeholder */
+}
+
+/* Dành cho form */
+.d-flex.align-items-center {
+    display: flex; /* Sắp xếp theo hàng ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+    font-size: 1.6rem; /* Kích cỡ chữ */
+    color: #fff; /* Màu chữ mặc định */
+    background-color: #e3665b; /* Màu nền */
+    padding: 10px 20px; /* Thêm khoảng cách bên trong */
+    border-radius: 5px; /* Bo góc */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    text-decoration: none; /* Xóa gạch chân nếu có */
+    font-family: 'Roboto', sans-serif; /* Phông chữ */
+    margin-right: 80px;
+}
+
+
+/* Các input trong form */
+form.d-flex.align-items-center input,
+form.d-flex.align-items-center button {
+    height: 45px; /* Chiều cao đồng nhất */
+    border: 1px solid #ccc; /* Viền nhẹ */
+    border-radius: 5px; /* Bo góc các input và button */
+    font-size: 1rem; /* Kích thước chữ */
+    padding: 0 10px; /* Khoảng cách chữ bên trong */
+}
+
+/* Hover cho input */
+form.d-flex.align-items-center input:focus {
+    border-color: #007bff; /* Đổi màu viền khi focus */
+    outline: none; /* Ẩn outline mặc định */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng sáng */
+}
+
+/* Button */
+form.d-flex.align-items-center button {
+    background-color: #1961bf; /* Nền xanh dương */
+    color: #fff; /* Chữ trắng */
+    border: none; /* Xóa viền mặc định */
+    cursor: pointer; /* Con trỏ dạng click */
+    transition: background-color 0.3s ease; /* Hiệu ứng hover mượt */
+}
+
+/* Hover cho button */
+form.d-flex.align-items-center button:hover {
+    background-color: #0056b3; /* Màu xanh đậm hơn */
+}
+
+
+.logout-btn {
+    color: black;
+}
+
+.logout-btn:hover {
+    color: red;
+}
+
+
+.logout-btn {
+    font-size: 1.6rem; /* Kích thước chữ */
+    padding: 5px 10px; /* Khoảng cách bên trong */
+    height: auto; /* Đặt chiều cao tự động */
+    width: auto; /* Đặt chiều rộng tự động */
+    background-color: transparent; /* Màu nền trong suốt */
+    border: none; /* Loại bỏ viền */
+    cursor: pointer; /* Con trỏ dạng click */
+    transition: color 0.3s ease, font-size 0.3s ease; /* Hiệu ứng mượt */
+}
+
+.logout-btn:hover {
+    font-size: 1.7rem; /* Tăng kích thước chữ khi hover */
+    color: red; /* Đổi màu chữ khi hover */
+}

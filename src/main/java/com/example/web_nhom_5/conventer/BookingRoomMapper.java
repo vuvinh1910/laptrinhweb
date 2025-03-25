@@ -1,6 +1,6 @@
 package com.example.web_nhom_5.conventer;
 
-import com.example.web_nhom_5.dto.request.BookingRoomCreateRequestDTO;
+import com.example.web_nhom_5.dto.request.BookingRoomCreateRequest;
 import com.example.web_nhom_5.dto.response.BookingRoomResponse;
 import com.example.web_nhom_5.entity.BookingRoomEntity;
 import org.mapstruct.Mapper;
@@ -11,7 +11,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface BookingRoomMapper {
 
     @Mapping(target = "status", ignore = true)
-    BookingRoomEntity bookingRoomCreateRequestToBookingRoomEntity(BookingRoomCreateRequestDTO bookingRoomCreateRequestDTO);
+    BookingRoomEntity bookingRoomCreateRequestToBookingRoomEntity(BookingRoomCreateRequest bookingRoomCreateRequest);
 
     @Mapping(source = "user.fullName", target = "fullName")
     @Mapping(source = "room.roomName", target = "roomName")

@@ -1,9 +1,9 @@
 package com.example.web_nhom_5.controller;
 
-import com.example.web_nhom_5.dto.request.RoomCreateRequestDTO;
-import com.example.web_nhom_5.dto.request.RoomUpdateRequestDTO;
-import com.example.web_nhom_5.dto.request.ServiceCreateRequestDTO;
-import com.example.web_nhom_5.dto.request.ServiceUpdateRequestDTO;
+import com.example.web_nhom_5.dto.request.RoomCreateRequest;
+import com.example.web_nhom_5.dto.request.RoomUpdateRequest;
+import com.example.web_nhom_5.dto.request.ServiceCreateRequest;
+import com.example.web_nhom_5.dto.request.ServiceUpdateRequest;
 import com.example.web_nhom_5.dto.response.*;
 import com.example.web_nhom_5.entity.*;
 import com.example.web_nhom_5.enums.BookingStatus;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -77,13 +76,13 @@ public class AdminPageController {
     public String showAddRoomForm(Model model) {
         List<LocationResponse> locations = locationService.getAllLocation(); // Lấy danh sách các địa điểm
         model.addAttribute("locations", locations);
-        model.addAttribute("room", new RoomCreateRequestDTO());
+        model.addAttribute("room", new RoomCreateRequest());
         return "admin/add-room";
     }
 
     // Xử lý thêm mới phòng
     @PostMapping("/room/add")
-    public String addRoom(@Valid @ModelAttribute("room") RoomCreateRequestDTO roomRequest, Model model , RedirectAttributes redirectAttributes) {
+    public String addRoom(@Valid @ModelAttribute("room") RoomCreateRequest roomRequest, Model model , RedirectAttributes redirectAttributes) {
         try {
             RoomResponse newRoom = roomService.addRoom(roomRequest);
             redirectAttributes.addFlashAttribute("success", "Room added successfully: " + newRoom.getRoomName());
@@ -124,10 +123,10 @@ public class AdminPageController {
 
     @PostMapping("/room/update/{id}")
     public String updateRoom(@PathVariable Long id,
-                             @ModelAttribute("room") RoomUpdateRequestDTO roomUpdateRequestDTO,RedirectAttributes redirectAttributes,
+                             @ModelAttribute("room") RoomUpdateRequest roomUpdateRequest, RedirectAttributes redirectAttributes,
                              Model model) {
         try {
-            RoomResponse updatedRoom = roomService.updateRoom(roomUpdateRequestDTO, id);
+            RoomResponse updatedRoom = roomService.updateRoom(roomUpdateRequest, id);
             redirectAttributes.addFlashAttribute("success", "Room updated successfully!");
             return "redirect:/admin/room"; // Điều hướng trở về trang danh sách phòng sau khi cập nhật thành công
         } catch (WebException e) {
@@ -148,13 +147,13 @@ public class AdminPageController {
     // Hiển thị form thêm service
     @GetMapping("/service/add")
     public String showAddServiceForm(Model model) {
-        model.addAttribute("service", new ServiceCreateRequestDTO());
+        model.addAttribute("service", new ServiceCreateRequest());
         return "admin/add-service"; // Tên file HTML dùng để hiển thị form
     }
 
     @PostMapping("/service/add")
     public String addService(
-            @ModelAttribute("service") @Valid ServiceCreateRequestDTO serviceDTO,RedirectAttributes redirectAttributes,
+            @ModelAttribute("service") @Valid ServiceCreateRequest serviceDTO, RedirectAttributes redirectAttributes,
             Model model) {
 
         try {
@@ -189,10 +188,10 @@ public class AdminPageController {
 
     @PostMapping("/service/update/{codeName}")
     public String updateService(@PathVariable String codeName,
-                             @ModelAttribute("service") ServiceUpdateRequestDTO serviceUpdateRequestDTO,RedirectAttributes redirectAttributes,
-                             Model model) {
+                                @ModelAttribute("service") ServiceUpdateRequest serviceUpdateRequest, RedirectAttributes redirectAttributes,
+                                Model model) {
         try {
-            ServiceResponse updatedService = serviceService.updateService(serviceUpdateRequestDTO, codeName);
+            ServiceResponse updatedService = serviceService.updateService(serviceUpdateRequest, codeName);
             redirectAttributes.addFlashAttribute("success", "Service updated successfully!");
             return "redirect:/admin/service";
         } catch (WebException e) {

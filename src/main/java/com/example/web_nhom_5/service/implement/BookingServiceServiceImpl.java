@@ -2,11 +2,9 @@ package com.example.web_nhom_5.service.implement;
 
 import com.example.web_nhom_5.conventer.BookingServiceMapper;
 import com.example.web_nhom_5.conventer.PaymentMapper;
-import com.example.web_nhom_5.dto.request.BookingServiceCreateRequestDTO;
-import com.example.web_nhom_5.dto.response.BookingRoomResponse;
+import com.example.web_nhom_5.dto.request.BookingServiceCreateRequest;
 import com.example.web_nhom_5.dto.response.BookingServiceResponse;
 import com.example.web_nhom_5.dto.response.ProcessPaymentResponse;
-import com.example.web_nhom_5.entity.BookingRoomEntity;
 import com.example.web_nhom_5.entity.BookingServiceEntity;
 import com.example.web_nhom_5.entity.ServiceEntity;
 import com.example.web_nhom_5.entity.UserEntity;
@@ -45,8 +43,8 @@ public class BookingServiceServiceImpl implements BookingServiceService {
     private PaymentMapper paymentMapper;
 
     @Override
-    public BookingServiceResponse addBookingService(BookingServiceCreateRequestDTO bookingServiceCreateRequestDTO) {
-        BookingServiceEntity bookingServiceEntity = bookingServiceMapper.bookingServiceCreateToBookingServiceEntity(bookingServiceCreateRequestDTO);
+    public BookingServiceResponse addBookingService(BookingServiceCreateRequest bookingServiceCreateRequest) {
+        BookingServiceEntity bookingServiceEntity = bookingServiceMapper.bookingServiceCreateToBookingServiceEntity(bookingServiceCreateRequest);
 
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity userEntity = userRepository.findByUserName(name).orElseThrow(()
@@ -55,7 +53,7 @@ public class BookingServiceServiceImpl implements BookingServiceService {
 //        UserEntity userEntity = userRepository.findByUserName("admin").orElseThrow(()
 //        -> new WebException(ErrorCode.USER_NOT_EXISTED));
 
-        ServiceEntity serviceEntity = serviceRepository.findById(bookingServiceCreateRequestDTO.getServiceCodeName())
+        ServiceEntity serviceEntity = serviceRepository.findById(bookingServiceCreateRequest.getServiceCodeName())
                 .orElseThrow(() -> new WebException(ErrorCode.SERVICE_NOT_FOUND));
 
         bookingServiceEntity.setService(serviceEntity);

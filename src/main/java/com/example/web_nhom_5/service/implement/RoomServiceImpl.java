@@ -1,10 +1,9 @@
 package com.example.web_nhom_5.service.implement;
 
 import com.example.web_nhom_5.conventer.RoomMapper;
-import com.example.web_nhom_5.dto.request.RoomCreateRequestDTO;
-import com.example.web_nhom_5.dto.request.RoomUpdateRequestDTO;
+import com.example.web_nhom_5.dto.request.RoomCreateRequest;
+import com.example.web_nhom_5.dto.request.RoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.RoomResponse;
-import com.example.web_nhom_5.dto.response.ServiceResponse;
 import com.example.web_nhom_5.entity.LocationEntity;
 import com.example.web_nhom_5.entity.RoomEntity;
 import com.example.web_nhom_5.enums.SearchOperation;
@@ -13,7 +12,6 @@ import com.example.web_nhom_5.exception.WebException;
 import com.example.web_nhom_5.repository.LocationRepository;
 import com.example.web_nhom_5.repository.RoomRepository;
 import com.example.web_nhom_5.repository.ServiceRepository;
-import com.example.web_nhom_5.search.EntitySpecification.RoomSpecification;
 import com.example.web_nhom_5.search.SearchCriteria;
 import com.google.common.base.Joiner;
 import com.example.web_nhom_5.search.EntitySpecificationBuilder.RoomSpecificationBuilder;
@@ -21,33 +19,19 @@ import com.example.web_nhom_5.search.EntitySpecificationBuilder.RoomSpecificatio
 import com.example.web_nhom_5.service.LocationService;
 import com.example.web_nhom_5.service.RoomService;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.example.web_nhom_5.enums.SearchOperation.*;
 
 
 @Service
@@ -71,7 +55,7 @@ public class RoomServiceImpl implements RoomService {
     private final EntityManager em;
 
     @Override
-    public RoomResponse addRoom(RoomCreateRequestDTO room) {
+    public RoomResponse addRoom(RoomCreateRequest room) {
 
         RoomEntity roomEntity = roomMapper.roomCreateDtoToEntity(room);
 
@@ -91,7 +75,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomResponse updateRoom(RoomUpdateRequestDTO room, Long roomId) {
+    public RoomResponse updateRoom(RoomUpdateRequest room, Long roomId) {
         // Lấy RoomEntity hiện tại từ roomId
         RoomEntity roomEntity = getRoomById(roomId);
 

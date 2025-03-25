@@ -2,7 +2,7 @@ package com.example.web_nhom_5.service.implement;
 
 import com.example.web_nhom_5.conventer.BookingRoomMapper;
 import com.example.web_nhom_5.conventer.PaymentMapper;
-import com.example.web_nhom_5.dto.request.BookingRoomCreateRequestDTO;
+import com.example.web_nhom_5.dto.request.BookingRoomCreateRequest;
 import com.example.web_nhom_5.dto.response.BookingRoomResponse;
 import com.example.web_nhom_5.dto.response.ProcessPaymentResponse;
 import com.example.web_nhom_5.entity.BookingRoomEntity;
@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,16 +45,16 @@ public class BookingRoomServiceImpl implements BookingRoomService {
     private PaymentMapper paymentMapper;
 
     @Override
-    public BookingRoomResponse addBookingRoom(BookingRoomCreateRequestDTO bookingRoomCreateRequestDTO) {
+    public BookingRoomResponse addBookingRoom(BookingRoomCreateRequest bookingRoomCreateRequest) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
 //        UserEntity userEntity = userRepository.findByUserName("admin").orElseThrow(() -> new WebException(ErrorCode.USER_NOT_EXISTED));
         UserEntity userEntity = userRepository.findByUserName(name).orElseThrow(()
                 -> new WebException(ErrorCode.USER_NOT_EXISTED) );
 
-        BookingRoomEntity bookingRoomEntity = bookingRoomMapper.bookingRoomCreateRequestToBookingRoomEntity(bookingRoomCreateRequestDTO);
-        RoomEntity roomEntity = roomRepository.findById(bookingRoomCreateRequestDTO.getRoomId()).orElseThrow(() -> new WebException(ErrorCode.ROOM_NOT_FOUND));
+        BookingRoomEntity bookingRoomEntity = bookingRoomMapper.bookingRoomCreateRequestToBookingRoomEntity(bookingRoomCreateRequest);
+        RoomEntity roomEntity = roomRepository.findById(bookingRoomCreateRequest.getRoomId()).orElseThrow(() -> new WebException(ErrorCode.ROOM_NOT_FOUND));
 
-        if (!bookingRoomIsAvailable(bookingRoomCreateRequestDTO.getRoomId(),bookingRoomCreateRequestDTO.getCheckIn(), bookingRoomCreateRequestDTO.getCheckOut())) {
+        if (!bookingRoomIsAvailable(bookingRoomCreateRequest.getRoomId(), bookingRoomCreateRequest.getCheckIn(), bookingRoomCreateRequest.getCheckOut())) {
             throw new WebException(ErrorCode.ROOM_FULL);
         }
 
@@ -64,7 +63,7 @@ public class BookingRoomServiceImpl implements BookingRoomService {
 
         userEntity.getBookingRooms().add(bookingRoomEntity);
         roomEntity.getBookingRooms().add(bookingRoomEntity);
-        long dayBetween = ChronoUnit.DAYS.between(bookingRoomCreateRequestDTO.getCheckIn(), bookingRoomCreateRequestDTO.getCheckOut());
+        long dayBetween = ChronoUnit.DAYS.between(bookingRoomCreateRequest.getCheckIn(), bookingRoomCreateRequest.getCheckOut());
         bookingRoomEntity.setTotalPrice(roomEntity.getRoomPrice()*(dayBetween));
         BookingRoomEntity saveBookingRoomEntity = bookingRoomRepository.save(bookingRoomEntity);
         return bookingRoomMapper.bookingRoomEntityToBookingRoomResponse(saveBookingRoomEntity);

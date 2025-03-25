@@ -1,7 +1,7 @@
 package com.example.web_nhom_5.service.implement;
 
 import com.example.web_nhom_5.conventer.LocationMapper;
-import com.example.web_nhom_5.dto.request.LocationUpdateRequestDTO;
+import com.example.web_nhom_5.dto.request.LocationUpdateRequest;
 import com.example.web_nhom_5.dto.response.LocationResponse;
 import com.example.web_nhom_5.entity.LocationEntity;
 import com.example.web_nhom_5.entity.RoomEntity;
@@ -65,7 +65,7 @@ public class LocationServiceImpl implements LocationService {
 
 
     @Override
-    public LocationResponse updateLocation(LocationUpdateRequestDTO location, String locationId) {
+    public LocationResponse updateLocation(LocationUpdateRequest location, String locationId) {
         LocationEntity locationEntity = locationRepository.findById(locationId)
                 .orElseThrow(() -> new WebException(ErrorCode.LOCATION_NOT_FOUND));
         locationMapper.updateLocation(locationEntity, location);

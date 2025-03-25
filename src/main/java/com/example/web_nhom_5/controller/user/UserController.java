@@ -63,7 +63,7 @@
 //
 //    // dat phong
 //    @PostMapping(value = {"/booking-rooms","/booking-rooms/"})
-//    public ApiResponse<BookingRoomResponse> createBookingRoom(@Valid @RequestBody BookingRoomCreateRequestDTO bookingRoomCreateRequestDTO) {
+//    public ApiResponse<BookingRoomResponse> createBookingRoom(@Valid @RequestBody BookingRoomCreateRequest bookingRoomCreateRequestDTO) {
 //        return ApiResponse.<BookingRoomResponse>builder()
 //                .result(bookingRoomService.addBookingRoom(bookingRoomCreateRequestDTO))
 //                .build();
@@ -88,7 +88,7 @@
 //
 //    // dat dich vu
 //    @PostMapping(value = {"/booking-services","/booking-services/"})
-//    public ApiResponse<BookingServiceResponse> createBookingService(@Valid @RequestBody BookingServiceCreateRequestDTO bookingServiceCreateRequestDTO) {
+//    public ApiResponse<BookingServiceResponse> createBookingService(@Valid @RequestBody BookingServiceCreateRequest bookingServiceCreateRequestDTO) {
 //        return ApiResponse.<BookingServiceResponse>builder()
 //                .result(bookingServiceService.addBookingService(bookingServiceCreateRequestDTO))
 //                .build();

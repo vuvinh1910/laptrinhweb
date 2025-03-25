@@ -1,6 +1,5 @@
 package com.example.web_nhom_5.controller;
 
-import com.example.web_nhom_5.dto.api.ApiResponse;
 import com.example.web_nhom_5.dto.request.*;
 import com.example.web_nhom_5.dto.response.*;
 import com.example.web_nhom_5.enums.BookingStatus;
@@ -10,10 +9,8 @@ import com.example.web_nhom_5.service.BookingServiceService;
 import com.example.web_nhom_5.service.LocationService;
 import com.example.web_nhom_5.service.implement.AuthenticationService;
 import com.example.web_nhom_5.service.implement.UserService;
-import com.nimbusds.jose.JOSEException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -90,7 +86,7 @@ public class UserPageController {
 
     // dat phong
     @PostMapping(value = {"/booking-rooms/{roomId}","/booking-rooms/{roomId}"})
-    public String createBookingRoom(@ModelAttribute("booking") BookingRoomCreateRequestDTO request, RedirectAttributes model,@PathVariable long roomId) {
+    public String createBookingRoom(@ModelAttribute("booking") BookingRoomCreateRequest request, RedirectAttributes model, @PathVariable long roomId) {
         try {
             long id = bookingRoomService.addBookingRoom(request).getId();
             model.addFlashAttribute("bookingId", id);
@@ -160,7 +156,7 @@ public class UserPageController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @PostMapping(value = "/booking-services/{serviceId}")
-    public String createBookingService(@ModelAttribute("booking")BookingServiceCreateRequestDTO request, RedirectAttributes model, @PathVariable String serviceId) {
+    public String createBookingService(@ModelAttribute("booking") BookingServiceCreateRequest request, RedirectAttributes model, @PathVariable String serviceId) {
         try {
             long id = bookingServiceService.addBookingService(request).getId();
             model.addFlashAttribute("bookingId", id);

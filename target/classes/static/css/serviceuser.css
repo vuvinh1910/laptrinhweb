@@ -1,0 +1,30 @@
+.booking-service-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+}
+.booking-service-row div {
+    width: 180px;
+    padding: 5px;
+    text-align: center;
+}
+.paid {
+    color: green;
+}
+.unpaid {
+    color: red;
+}
+.pay-button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.pay-button:hover {
+    background-color: #0056b3;
+}

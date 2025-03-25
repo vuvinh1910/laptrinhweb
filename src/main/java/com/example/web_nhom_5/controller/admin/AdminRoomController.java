@@ -1,8 +1,8 @@
 package com.example.web_nhom_5.controller.admin;
 
 import com.example.web_nhom_5.dto.api.ApiResponse;
-import com.example.web_nhom_5.dto.request.RoomCreateRequestDTO;
-import com.example.web_nhom_5.dto.request.RoomUpdateRequestDTO;
+import com.example.web_nhom_5.dto.request.RoomCreateRequest;
+import com.example.web_nhom_5.dto.request.RoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.RoomResponse;
 import com.example.web_nhom_5.service.RoomService;
 import jakarta.validation.Valid;
@@ -34,17 +34,17 @@ public class AdminRoomController {
 
     // tao them phong
     @PostMapping
-    public ApiResponse<RoomResponse> createRoom(@Valid @RequestBody RoomCreateRequestDTO roomCreateRequestDTO) {
+    public ApiResponse<RoomResponse> createRoom(@Valid @RequestBody RoomCreateRequest roomCreateRequest) {
         return ApiResponse.<RoomResponse>builder()
-                .result(roomService.addRoom(roomCreateRequestDTO))
+                .result(roomService.addRoom(roomCreateRequest))
                 .build();
     }
 
     // cap nhat phong
     @PutMapping(value = "/{roomId}")
-    public ApiResponse<RoomResponse> updateRoom(@RequestBody RoomUpdateRequestDTO roomUpdateRequestDTO, @PathVariable("roomId") Long roomId) {
+    public ApiResponse<RoomResponse> updateRoom(@RequestBody RoomUpdateRequest roomUpdateRequest, @PathVariable("roomId") Long roomId) {
         return ApiResponse.<RoomResponse>builder()
-                .result(roomService.updateRoom(roomUpdateRequestDTO, roomId))
+                .result(roomService.updateRoom(roomUpdateRequest, roomId))
                 .build();
     }
 

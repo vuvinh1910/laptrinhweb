@@ -1,0 +1,105 @@
+/* profile.css */
+body {
+    font-family: 'Roboto', sans-serif; /* Sử dụng font đã được định nghĩa trong HTML */
+    background-color: #f4f4f4; /* Màu nền nhẹ cho toàn trang */
+    color: #333; /* Màu chữ chính */
+}
+
+.profile-container {
+    margin-left: 270px; /* Để nội dung chính không bị che bởi sidebar */
+    padding: 20px; /* Khoảng cách bên trong */
+    background-color: white; /* Màu nền trắng cho container */
+    border-radius: 8px; /* Bo tròn góc */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho container */
+}
+
+.profile-image {
+    text-align: center; /* Căn giữa hình ảnh */
+    margin-bottom: 20px; /* Khoảng cách dưới hình ảnh */
+}
+
+.profile-image img {
+    width: 150px; /* Độ rộng hình ảnh */
+    height: 150px; /* Chiều cao hình ảnh */
+    border-radius: 50%; /* Bo tròn để tạo hình tròn */
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+}
+
+h1, h2, .profile-info {
+    text-align: center; /* Căn giữa nội dung */
+}
+
+h1.info1 {
+    font-size: 3rem; /* Tăng kích thước chữ cho tiêu đề chính */
+    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+    color: #2c3e50; /* Màu chữ cho tiêu đề chính */
+}
+
+h2 {
+    font-size: 3rem; /* Tăng kích thước chữ cho tiêu đề phụ */
+    margin-top: 30px; /* Khoảng cách trên tiêu đề phụ */
+    margin-bottom: 15px; /* Khoảng cách dưới tiêu đề phụ */
+    color: #2c3e50; /* Màu chữ cho tiêu đề phụ */
+}
+
+.profile-info {
+    margin-bottom: 30px; /* Khoảng cách dưới phần thông tin người dùng */
+}
+
+.profile-info p {
+    font-size: 1.5rem; /* Tăng kích thước chữ cho thông tin người dùng */
+    line-height: 1.5; /* Tăng khoảng cách giữa các dòng */
+    margin: 10px 0; /* Khoảng cách giữa các dòng thông tin */
+}
+
+.form-group {
+    margin-bottom: 20px; /* Khoảng cách giữa các nhóm form */
+    text-align: center; /* Căn giữa nhóm form */
+}
+
+.form-group label {
+    display: block; /* Để label chiếm toàn bộ chiều rộng */
+    margin-bottom: 5px; /* Khoảng cách dưới label */
+    font-weight: 500; /* Đậm hơn cho label */
+    font-size: 1.5rem; /* Tăng kích thước chữ cho label */
+}
+
+.form-group input {
+    width: 60%; /* Rút ngắn chiều rộng của input */
+    max-width: 400px; /* Đặt chiều rộng tối đa cho input */
+    padding: 10px; /* Khoảng cách bên trong */
+    border: 1px solid #ccc; /* Đường viền nhẹ */
+    border-radius: 5px; /* Bo tròn góc cho input */
+    font-size: 1.5rem; /* Tăng kích thước chữ trong input */
+    line-height: 1.5; /* Tăng khoảng cách giữa các dòng */
+    transition: border-color 0.3s; /* Hiệu ứng chuyển màu viền */
+}
+
+.form-group input:focus {
+    border-color: #2c3e50; /* Màu viền khi input được chọn */
+    outline: none; /* Bỏ viền mặc định */
+}
+
+.nut {
+    font-size: 1.5rem;
+}
+
+button.nut {
+    background-color: #2c3e50; /* Màu nền cho nút */
+    color: white; /* Màu chữ cho nút */
+    padding: 10px 15px; /* Khoảng cách bên trong nút */
+    border: none; /* Bỏ đường viền */
+    border-radius: 5px; /* Bo tròn góc cho nút */
+    font-size: 2.5rem; /* Tăng kích thước chữ cho nút */
+    cursor: pointer; /* Con trỏ khi hover */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu nền */
+}
+
+button.nut:hover {
+    background-color: #34495e; /* Màu nền khi hover */
+}
+
+/* Căn giữa phần form */
+form {
+    text-align: center; /* Căn giữa toàn bộ form */
+}

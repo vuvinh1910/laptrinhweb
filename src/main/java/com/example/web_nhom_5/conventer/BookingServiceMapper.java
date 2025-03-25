@@ -1,6 +1,6 @@
 package com.example.web_nhom_5.conventer;
 
-import com.example.web_nhom_5.dto.request.BookingServiceCreateRequestDTO;
+import com.example.web_nhom_5.dto.request.BookingServiceCreateRequest;
 import com.example.web_nhom_5.dto.response.BookingServiceResponse;
 import com.example.web_nhom_5.entity.BookingServiceEntity;
 import org.mapstruct.Mapper;
@@ -12,7 +12,7 @@ public interface BookingServiceMapper {
     // mapstruct co chuyen enum sang string va nguoc lai ?.
 
     @Mapping(target = "status", ignore = true)
-    BookingServiceEntity bookingServiceCreateToBookingServiceEntity(BookingServiceCreateRequestDTO bookingServiceCreateRequestDTO);
+    BookingServiceEntity bookingServiceCreateToBookingServiceEntity(BookingServiceCreateRequest bookingServiceCreateRequest);
 
     @Mapping(source = "user.fullName", target = "fullName")
     @Mapping(source = "service.serviceName", target = "serviceName")

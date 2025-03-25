@@ -1,9 +1,8 @@
 package com.example.web_nhom_5.service.implement;
 
 import com.example.web_nhom_5.conventer.ServiceMapper;
-import com.example.web_nhom_5.dto.request.ServiceCreateRequestDTO;
-import com.example.web_nhom_5.dto.request.ServiceUpdateRequestDTO;
-import com.example.web_nhom_5.dto.response.RoomResponse;
+import com.example.web_nhom_5.dto.request.ServiceCreateRequest;
+import com.example.web_nhom_5.dto.request.ServiceUpdateRequest;
 import com.example.web_nhom_5.dto.response.ServiceResponse;
 import com.example.web_nhom_5.entity.ServiceEntity;
 import com.example.web_nhom_5.exception.ErrorCode;
@@ -16,7 +15,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.ServiceNotFoundException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,18 +34,18 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public ServiceResponse addService(ServiceCreateRequestDTO serviceCreateRequestDTO) {
-        if (serviceRepository.existsById(serviceCreateRequestDTO.getCodeName())) {
+    public ServiceResponse addService(ServiceCreateRequest serviceCreateRequest) {
+        if (serviceRepository.existsById(serviceCreateRequest.getCodeName())) {
             throw new WebException(ErrorCode.SERVICE_EXISTED);
         }
-        ServiceEntity serviceEntity = serviceMapper.serviceCreateRequestToServiceEntity(serviceCreateRequestDTO);
+        ServiceEntity serviceEntity = serviceMapper.serviceCreateRequestToServiceEntity(serviceCreateRequest);
         return serviceMapper.serviceEntityToServiceResponse(serviceRepository.save(serviceEntity));
     }
 
     @Override
-    public ServiceResponse updateService(ServiceUpdateRequestDTO serviceUpdateRequestDTO, String id) {
+    public ServiceResponse updateService(ServiceUpdateRequest serviceUpdateRequest, String id) {
         ServiceEntity serviceEntity = getServiceById(id);
-        serviceMapper.updateService(serviceEntity, serviceUpdateRequestDTO);
+        serviceMapper.updateService(serviceEntity, serviceUpdateRequest);
         return serviceMapper.serviceEntityToServiceResponse(serviceRepository.save(serviceEntity));
     }
 

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin cá nhân</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/popup.css}">
+    <link rel="stylesheet" th:href="@{/css/confirm.css}">
+    <link rel="stylesheet" th:href="@{/css/viewroom.css}">
+    <script th:src="@{/js/navbar.js}" defer></script>
+    <script th:src="@{/js/popup.js}" defer></script>
+    <script th:src="@{/js/confirm.js}" defer></script>
+    <script th:src="@{/js/book.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+          integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<!--thong tin phong-->
+<div class="room-details-container">
+    <div class="room-info">
+        <h1>Thông Tin Chi Tiết Phòng</h1>
+        <img th:src="@{/img/room.png}" alt="Room Photo" class="img-room" width="350px" height="350px">
+        <p><strong>Tên phòng:</strong> <span th:text="${room.roomName}"></span></p>
+        <p><strong>Tên khách sạn:</strong> <span th:text="${room.hotelName}"></span></p>
+        <p><strong>Giá phòng:</strong> <span th:text="${room.roomPrice} + ' VND'"></span></p>
+        <p><strong>Chi tiết phòng:</strong> <span th:text="${room.roomDetail}"></span></p>
+        <p><strong>Loại phòng:</strong> <span th:text="${room.roomType}"></span></p>
+    </div>
+    <div th:replace="user/bookingroom_form :: room-form"></div>
+</div>
+
+
+<!-- Popup khi đã đăng nhập -->
+<div id="confirmationPopup" style="display:none;">
+    <p>Bạn muốn đặt phòng này?</p>
+    <button id="confirmDelete">Xác nhận</button>
+    <button id="cancelDelete">Hủy</button>
+</div>
+
+<!-- Popup khi chưa đăng nhập -->
+<div id="confirmationPopup-login" style="display:none;">
+    <p>Bạn cần đăng nhập để đặt phòng. Bạn có muốn đăng nhập không?</p>
+    <button id="confirm">Xác nhận</button>
+    <button id="cancel">Hủy</button>
+</div>
+
+
+<!-- Modal thông báo -->
+<div id="myModal" class="modal" th:if="${result}">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p class="result-popup" th:text="${result}">Thông báo</p>
+        <div class="modal-buttons" th:if="${bookingId != 'no'}">
+            <!-- Nút OK chuyển đến trang thanh toán -->
+            <a th:href="@{/users/booking-rooms/{bookingId}/payment(bookingId=${bookingId})}" class="pay-button">Ok</a>
+            <!-- Nút Hủy đóng modal hoặc quay lại -->
+            <button class="btn btn-cancel" onclick="closeModal()">Hủy</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

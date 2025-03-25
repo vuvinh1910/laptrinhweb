@@ -1,0 +1,36 @@
+<h1>Thay đổi mật khẩu</h1>
+
+<form th:action="@{/users/myInfo/change-pass}" th:object="${user}" method="post">
+    <!-- Thêm phương thức PUT vào form -->
+    <input type="hidden" name="_method" value="PUT"/>
+
+    <!-- Mật khẩu cũ -->
+    <div>
+        <label for="oldPassword">Mật khẩu cũ:</label>
+        <input type="password" id="oldPassword" th:field="*{oldPassword}" required />
+    </div>
+
+    <!-- Mật khẩu mới -->
+    <div>
+        <label for="newPassword">Mật khẩu mới:</label>
+        <input type="password" id="newPassword" th:field="*{newPassword}" required />
+    </div>
+
+    <!-- Xác nhận mật khẩu mới -->
+    <div>
+        <label for="confirmPassword">Xác nhận mật khẩu mới:</label>
+        <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required />
+    </div>
+
+    <div>
+        <button type="submit">Thay đổi mật khẩu</button>
+    </div>
+</form>
+
+<!-- Modal sẽ chỉ hiển thị nếu có thông báo -->
+<div id="myModal" class="modal" th:if="${result}">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p th:text="${result}">Thông báo</p>
+    </div>
+</div>

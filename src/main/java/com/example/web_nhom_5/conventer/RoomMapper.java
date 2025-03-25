@@ -1,7 +1,7 @@
 package com.example.web_nhom_5.conventer;
 
-import com.example.web_nhom_5.dto.request.RoomCreateRequestDTO;
-import com.example.web_nhom_5.dto.request.RoomUpdateRequestDTO;
+import com.example.web_nhom_5.dto.request.RoomCreateRequest;
+import com.example.web_nhom_5.dto.request.RoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.RoomResponse;
 import com.example.web_nhom_5.entity.RoomEntity;
 import org.mapstruct.Mapper;
@@ -20,11 +20,11 @@ public interface RoomMapper {
     // neu khong muon map 1 field nao do
     //@Mapping(target = "roomName", ignore = true)
 
-    RoomEntity roomCreateDtoToEntity(RoomCreateRequestDTO roomCreateRequestDTO);
+    RoomEntity roomCreateDtoToEntity(RoomCreateRequest roomCreateRequest);
 
     @Mapping(source = "location.locationName", target = "locationName")
     RoomResponse roomEntityToRoomResponse(RoomEntity roomEntity);
 
     @Mapping(target = "id", ignore = true)
-    void updateRoom(@MappingTarget RoomEntity roomEntity, RoomUpdateRequestDTO roomUpdateRequestDTO);
+    void updateRoom(@MappingTarget RoomEntity roomEntity, RoomUpdateRequest roomUpdateRequest);
 }

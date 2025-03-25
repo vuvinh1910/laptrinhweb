@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Phòng</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/viewroom.css}">
+    <script th:src="@{/js/book.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+
+<div class="booking-form-container" th:fragment="room-form">
+    <h1>Đặt Phòng</h1>
+    <form th:action="@{/users/booking-rooms/{roomId}(roomId=${room.Id})}" method="post">
+        <!-- Thêm hidden input để truyền roomId -->
+        <input type="hidden" name="roomId" th:value="${room.id}" />
+
+        <div class="form-group">
+            <label for="checkIn">Ngày Nhận Phòng:</label>
+            <input type="text" id="checkIn" name="checkIn" placeholder="Chọn ngày nhận phòng" required oninput="checkForm()">
+        </div>
+        <div class="form-group">
+            <label for="checkOut">Ngày Trả Phòng:</label>
+            <input type="text" id="checkOut" name="checkOut" placeholder="Chọn ngày trả phòng" required oninput="checkForm()">
+        </div>
+        <div class="form-group">
+            <label for="numOfPeople">Số Người:</label>
+            <input type="number" id="numOfPeople" name="numOfPeople" min="1" placeholder="Nhập số người" required oninput="checkForm()">
+        </div>
+        <button type="submit" class="del-button" id="submitButton" disabled>Đặt Phòng</button>
+    </form>
+</div>
+
+
+</body>
+</html>

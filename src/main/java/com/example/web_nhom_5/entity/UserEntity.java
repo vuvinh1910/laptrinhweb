@@ -29,6 +29,9 @@ public class UserEntity {
     @Column(name = "user_password", nullable = false)
     private String password;
 
+    @OneToOne(mappedBy = "userEntity")
+    private ForgotPassword forgotPassword;
+
     @Column(name = "full_name", nullable = false)
     private String fullName;
 

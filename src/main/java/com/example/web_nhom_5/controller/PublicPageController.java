@@ -1,16 +1,13 @@
 package com.example.web_nhom_5.controller;
 
 import com.example.web_nhom_5.dto.request.AuthenticationRequest;
-import com.example.web_nhom_5.dto.api.ApiResponse;
 import com.example.web_nhom_5.dto.request.UserCreationRequest;
 import com.example.web_nhom_5.dto.response.LocationResponse;
 import com.example.web_nhom_5.dto.response.RoomResponse;
 import com.example.web_nhom_5.dto.response.ServiceResponse;
 import com.example.web_nhom_5.dto.response.UserResponse;
 import com.example.web_nhom_5.entity.RoomEntity;
-import com.example.web_nhom_5.entity.RoomEntity;
 import com.example.web_nhom_5.entity.ServiceEntity;
-import com.example.web_nhom_5.entity.UserEntity;
 import com.example.web_nhom_5.exception.WebException;
 import com.example.web_nhom_5.service.BookingRoomService;
 import com.example.web_nhom_5.service.LocationService;
@@ -36,10 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/public")
@@ -207,7 +201,7 @@ public class PublicPageController {
 
                 // Kiểm tra quyền admin từ token
                 if (authenticationService.isAdminToken(authResponse.getToken())) {
-                    return "redirect:/admin/room";  // Chuyển hướng tới trang admin
+                    return "redirect:/admin/dashboard";  // Chuyển hướng tới trang admin
                 } else {
                     return "redirect:/public/home";  // Chuyển hướng tới trang home
                 }

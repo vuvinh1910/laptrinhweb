@@ -1,54 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-        <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-        <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Add New Room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Room</title>
     <link rel="stylesheet" th:href="@{/css/add-room-service.css}">
 </head>
 
 <body>
 <h1>Update Room</h1>
 
-
-<!-- Hiển thị thông báo -->
-<div th:if="${success}" class="alert alert-success" role="alert" style="display: flex; justify-content: center; color: red;">
-    <p th:text="${success}"></p>
-</div>
-
-<div th:if="${error}" class="alert alert-danger" role="alert" style="display: flex; justify-content: center; color: green;">
-    <p th:text="${error}"></p>
-</div>
-
-
-<form th:object="${bService}" th:action="@{/admin/booking/service/update/status/{id}(id=${bService.id})}" method="post">
-
+<form th:object="${bService}" th:action="@{/admin/booking/service/update/{id}(id=${bService.id})}" method="post">
     <div>
         <label for="fullName">Customer Name:</label>
         <input type="text" id="fullName" name="fullName" th:value="${bService.user.fullName}" required>
     </div>
-
 
     <div>
         <label for="serviceName">Service Name:</label>
         <input type="text" id="serviceName" name="serviceName" th:value="${bService.service.serviceName}" required>
     </div>
 
-
     <div>
         <label for="bServicePrice">Price:</label>
-        <input type="number" id="bServicePrice" name="bRoomPrice" th:value="${bService.totalPrice}" required></input>
+        <input type="number" id="bServicePrice" name="totalPrice" th:value="${bService.totalPrice}" required>
     </div>
 
-
     <div>
-        <label for="bServicePaid">Paid:</label>
-        <input type="text" id="bServicePaid" name="roomType" th:value="${bService.paid}" required>
+        <label for="paid">Paid:</label>
+        <select id="paid" name="paid" required>
+            <option th:value="true" th:selected="${bService.paid == true}">True</option>
+            <option th:value="false" th:selected="${bService.paid == false}">False</option>
+        </select>
     </div>
 
     <div>
@@ -57,14 +41,14 @@
             <option value="" disabled selected>Select a status</option>
             <option th:each="status : ${statuses}"
                     th:value="${status}"
-                    th:text="${status}"></option>
+                    th:text="${status}"
+                    th:selected="${status == bService.status}"></option>
         </select>
     </div>
 
-
     <div class="form-actions">
         <button type="submit">Update</button>
-        <button type="button" class="back-button" ><a th:href="@{/admin/booking/service}">Back</a></button>
+        <a th:href="@{/admin/booking/service}" class="back-button">Back</a>
     </div>
 </form>
 </body>

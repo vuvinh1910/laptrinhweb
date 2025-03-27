@@ -1,6 +1,7 @@
 package com.example.web_nhom_5.service;
 
 import com.example.web_nhom_5.dto.request.BookingServiceCreateRequest;
+import com.example.web_nhom_5.dto.request.BookingServiceUpdateRequest;
 import com.example.web_nhom_5.dto.response.BookingServiceResponse;
 import com.example.web_nhom_5.entity.BookingServiceEntity;
 import com.example.web_nhom_5.enums.BookingStatus;
@@ -14,10 +15,11 @@ public interface BookingServiceService extends BookingCancellationService,Proces
     List<BookingServiceResponse> getAllBookingServiceList();
     BookingStatus getBookingStatusById(long bookingId);
     BookingStatus updateBookingStatusById(long bookingId, BookingStatus newBookingStatus);
+    void updateBookingService(long bookingId, BookingServiceUpdateRequest bookingServiceUpdateRequest);
     void deleteBookingServiceById(long bookingId);
     List<BookingServiceResponse> getAllBookingServicesByUser();
     List<BookingServiceResponse> getAllBookingServicesByServiceId(String codeName);
     List<BookingServiceResponse> getAllBookingServicesByPaid(boolean paid);
-
+    long sumTotalPrice();
     List<BookingServiceResponse> filterBookingServices(BookingStatus status, Boolean isPaid);
 }

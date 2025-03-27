@@ -1,62 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-        <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-        <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Add New Room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Service</title>
     <link rel="stylesheet" th:href="@{/css/add-room-service.css}">
 </head>
-
 <body>
-<h1>Add New Service</h1>
+    <h1>Add New Service</h1>
 
-<!-- Hiển thị thông báo -->
-<!-- Hiển thị thông báo -->
-<div th:if="${success}" class="alert alert-success" role="alert" style="display: flex; justify-content: center; color: green;">
-    <p th:text="${success}"></p>
-</div>
+    <!-- Form thêm dịch vụ -->
+    <form th:action="@{/admin/service/add}" th:object="${service}" method="post">
+        <div>
+            <label for="codeName">Service Code:</label>
+            <input type="text" id="codeName" th:field="*{codeName}" placeholder="Enter code name" required>
+        </div>
 
-<div th:if="${error}" class="alert alert-danger" role="alert" style="display: flex; justify-content: center; color: red;">
-    <p th:text="${error}"></p>
-</div>
+        <div>
+            <label for="serviceName">Service Name:</label>
+            <input type="text" id="serviceName" th:field="*{serviceName}" placeholder="Enter service name" required>
+        </div>
 
+        <div>
+            <label for="servicePrice">Service Price:</label>
+            <input type="number" id="servicePrice" th:field="*{servicePrice}" placeholder="Enter service price" required>
+        </div>
 
-<form th:action="@{/admin/service/add}" th:object="${service}" method="post">
-    <!-- Tên phòng -->
-    <div>
-        <label for="codeName">Service Code:</label>
-        <input type="text" id="codeName" name="codeName" th:field="*{codeName}" placeholder="Enter code name" required>
-    </div>
+        <div>
+            <label for="serviceDetail">Service Detail:</label>
+            <textarea id="serviceDetail" th:field="*{serviceDetail}" placeholder="Enter service details" required></textarea>
+        </div>
 
-
-    <div>
-        <label for="serviceName">Service Name:</label>
-        <input type="text" id="serviceName" name="serviceName" th:field="*{serviceName}" placeholder="Enter service name" required>
-    </div>
-
-
-    <div>
-        <label for="servicePrice">Service Price:</label>
-        <input type="number" id="servicePrice" name="servicePrice" th:field="*{servicePrice}" placeholder="Enter service price" required>
-    </div>
-
-    <!-- Mô tả phòng -->
-    <div>
-        <label for="serviceDetail">Service Detail:</label>
-        <textarea id="serviceDetail" name="serviceDetail" th:field="*{serviceDetail}" placeholder="Enter service details" required></textarea>
-    </div>
-
-    <!-- Nút thêm dịch vụ và quay lại -->
-    <div class="form-actions">
-        <button type="submit">Add Service</button>
-        <button type="button" class="back-button" ><a th:href="@{/admin/service}">Back</a></button>
-    </div>
-</form>
+        <div class="form-actions">
+            <button type="submit">Add Service</button>
+            <a th:href="@{/admin/service}" class="back-button">Back</a>
+        </div>
+    </form>
 </body>
-
 </html>

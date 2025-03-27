@@ -1,6 +1,7 @@
 package com.example.web_nhom_5.service;
 
 import com.example.web_nhom_5.dto.request.BookingRoomCreateRequest;
+import com.example.web_nhom_5.dto.request.BookingRoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.BookingRoomResponse;
 import com.example.web_nhom_5.entity.BookingRoomEntity;
 import com.example.web_nhom_5.enums.BookingStatus;
@@ -13,6 +14,8 @@ public interface BookingRoomService extends BookingCancellationService,ProcessPa
     BookingRoomEntity getBookingRoomById(Long bookingRoomId);
     BookingStatus getBookingStatusByBookingRoomId(Long bookingRoomId);
     BookingStatus updateBookingStatusByBookingRoomId(Long bookingRoomId, BookingStatus bookingStatus);
+    void updateBookingRoom(Long bookingRoomId, BookingRoomUpdateRequest bookingRoomUpdateRequest);
+
     void deleteBookingRoomById(Long bookingRoomId);
     List<BookingRoomResponse> getAllBookingRooms();
     List<BookingRoomResponse> getAllBookingRoomsByStatus(BookingStatus bookingStatus);
@@ -20,6 +23,8 @@ public interface BookingRoomService extends BookingCancellationService,ProcessPa
     List<BookingRoomEntity> getAllBookingRoomsByRoomId(Long roomId);
     boolean bookingRoomIsAvailable(Long roomId,LocalDate checkIn, LocalDate checkOut);
     List<BookingRoomResponse> getAllBookingRoomsByPaid(boolean paid);
-
-    List<BookingRoomResponse> filterBookingRooms(BookingStatus status, Boolean isPaid);
+    long countPending();
+    long countPendingComplete();
+    long sumTotalPrice();
+    List<BookingRoomEntity> filterBookingRooms(BookingStatus status, Boolean isPaid);
 }

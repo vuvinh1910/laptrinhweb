@@ -3,6 +3,7 @@ package com.example.web_nhom_5.service.implement;
 import com.example.web_nhom_5.conventer.BookingServiceMapper;
 import com.example.web_nhom_5.conventer.PaymentMapper;
 import com.example.web_nhom_5.dto.request.BookingServiceCreateRequest;
+import com.example.web_nhom_5.dto.request.BookingServiceUpdateRequest;
 import com.example.web_nhom_5.dto.response.BookingServiceResponse;
 import com.example.web_nhom_5.dto.response.ProcessPaymentResponse;
 import com.example.web_nhom_5.entity.BookingServiceEntity;
@@ -111,6 +112,13 @@ public class BookingServiceServiceImpl implements BookingServiceService {
     }
 
     @Override
+    public void updateBookingService(long bookingId, BookingServiceUpdateRequest bookingServiceUpdateRequest) {
+        BookingServiceEntity bookingServiceEntity = getBookingServiceById(bookingId);
+        bookingServiceMapper.updateBookingService(bookingServiceEntity, bookingServiceUpdateRequest);
+        bookingServiceRepository.save(bookingServiceEntity);
+    }
+
+    @Override
     public void deleteBookingServiceById(long bookingId) {
         bookingServiceRepository.deleteById(bookingId);
     }
@@ -131,6 +139,11 @@ public class BookingServiceServiceImpl implements BookingServiceService {
                 .filter(bookingServiceEntity -> !bookingServiceEntity.getStatus().equals(BookingStatus.CANCELLED))
                 .map(bookingServiceMapper::bookingServiceEntityToBookingServiceResponse)
                 .toList();
+    }
+
+    @Override
+    public long sumTotalPrice() {
+        return bookingServiceRepository.sumAllPriceByStatus(true);
     }
 
     @Override

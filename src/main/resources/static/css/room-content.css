@@ -1,0 +1,120 @@
+#room-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#room-content h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Container cho filter và nút Thêm phòng */
+.filter-add-container {
+    display: flex;
+    justify-content: space-between; /* Đẩy filter sang trái, add sang phải */
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%; /* Đảm bảo block chiếm toàn bộ chiều rộng */
+}
+
+/* Filter theo địa điểm */
+.filter-location {
+    display: flex;
+    align-items: center;
+}
+
+.filter-location label {
+    margin-right: 10px;
+}
+
+.filter-location select {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Nút Thêm phòng */
+.add-room .add-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.add-room .add-btn:hover {
+    background: #225bb7;
+}
+
+/* Bảng */
+#room-content table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+#room-content th,
+#room-content td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    word-break: break-word; /* Tự động xuống dòng khi vượt quá chiều rộng */
+    white-space: normal; /* Cho phép xuống dòng thay vì giữ một dòng */
+    max-width: 0; /* Giới hạn chiều rộng để kích hoạt xuống dòng */
+}
+
+/* Đảm bảo cột Hành động không bị xuống dòng */
+#room-content td:last-child {
+    white-space: nowrap; /* Giữ các nút Cập nhật và Xóa trên cùng một dòng */
+}
+
+#room-content th {
+    background: #f8f9fa;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Loại bỏ viền dọc ở cột cuối */
+#room-content th:last-child,
+#room-content td:last-child {
+    border-right: none;
+}
+
+/* Loại bỏ viền ngang ở hàng cuối */
+#room-content tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Nút Cập nhật và Xóa (1/2 kích thước ô) */
+#room-content .update-btn {
+    display: inline-block;
+    padding: 7px 10px; /* 1/2 so với 15px của td */
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-right: 5px; /* Khoảng cách giữa Cập nhật và Xóa */
+    font-size: 14px; /* Giảm kích thước chữ nếu cần */
+}
+
+#room-content .update-btn:hover {
+    background: #2980b9;
+}
+
+#room-content .delete-btn {
+    display: inline-block;
+    padding: 7px 10px; /* 1/2 so với 15px của td */
+    background: #403938;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px; /* Giảm kích thước chữ nếu cần */
+}
+
+#room-content .delete-btn:hover {
+    background: #c0392b;
+}

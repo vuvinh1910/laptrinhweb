@@ -1,60 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-        <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-        <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Add New Room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Room</title>
     <link rel="stylesheet" th:href="@{/css/add-room-service.css}">
 </head>
-
 <body>
 <h1>Update Room</h1>
 
-
-<!-- Hiển thị thông báo -->
-<div th:if="${success}" class="alert alert-success" role="alert" style="display: flex; justify-content: center; color: green;">
-    <p th:text="${success}"></p>
-</div>
-
-<div th:if="${error}" class="alert alert-danger" role="alert" style="display: flex; justify-content: center; color: red;">
-    <p th:text="${error}"></p>
-</div>
-
-
-<form th:object="${bRoom}" th:action="@{/admin/booking/room/update/status/{id}(id=${bRoom.id})}" method="post">
-
+<form th:object="${bookings}" th:action="@{/admin/booking/room/update/{id}(id=${bookings.id})}" method="post">
     <div>
         <label for="checkIn">Check In:</label>
-        <input type="date" id="checkIn" name="checkIn" th:value="${bRoom.checkIn}" required>
+        <input type="date" id="checkIn" name="checkIn" th:value="${bookings.checkIn}" required>
     </div>
 
-
     <div>
-        <label for="hotelName">Check Out:</label>
-        <input type="date" id="hotelName" name="hotelName" th:value="${bRoom.checkOut}" required>
+        <label for="checkOut">Check Out:</label>
+        <input type="date" id="checkOut" name="checkOut" th:value="${bookings.checkOut}" required>
     </div>
 
-
     <div>
-        <label for="numOfPeople">NumOfPeople:</label>
-        <input type="number" id="numOfPeople" name="NumOfPeople" th:value="${bRoom.numOfPeople}" required>
+        <label for="numOfPeople">Num Of People:</label>
+        <input type="number" id="numOfPeople" name="numOfPeople" th:value="${bookings.numOfPeople}" required>
     </div>
 
-
     <div>
-        <label for="bRoomPrice">Price:</label>
-        <input type="number" id="bRoomPrice" name="bRoomPrice" th:value="${bRoom.totalPrice}" required></input>
+        <label for="totalPrice">Price:</label>
+        <input type="number" id="totalPrice" name="totalPrice" th:value="${bookings.totalPrice}" required>
     </div>
 
-
     <div>
-        <label for="bRoomPaid">Paid:</label>
-        <input type="text" id="bRoomPaid" name="roomType" th:value="${bRoom.paid}" required>
+        <label for="paid">Paid:</label>
+        <select id="paid" name="paid" required>
+            <option th:value="true" th:selected="${bookings.paid == true}">True</option>
+            <option th:value="false" th:selected="${bookings.paid == false}">False</option>
+        </select>
     </div>
 
     <div>
@@ -63,16 +44,15 @@
             <option value="" disabled selected>Select a status</option>
             <option th:each="status : ${statuses}"
                     th:value="${status}"
-                    th:text="${status}"></option>
+                    th:text="${status}"
+                    th:selected="${status == bookings.status}"></option>
         </select>
     </div>
 
-
     <div class="form-actions">
         <button type="submit">Update</button>
-        <button type="button" class="back-button" ><a th:href="@{/admin/booking/room}">Back</a></button>
+        <a th:href="@{/admin/booking/room}" class="back-button">Back</a>
     </div>
 </form>
 </body>
-
 </html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/dashboard-content.css}">
+</head>
+<body>
+<div th:fragment="content" id="dashboard-content">
+    <h3>Bảng Thống Kê</h3>
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <h4>Tổng thu nhập</h4>
+            <p th:text="${tongThuNhap} + ' VND'" class="value">0 VND</p>
+        </div>
+        <div class="dashboard-card">
+            <h4>Số người dùng</h4>
+            <p th:text="${numUser}" class="value">0</p>
+        </div>
+        <div class="dashboard-card">
+            <h4>Số đơn đang chờ</h4>
+            <p th:text="${soDonDangCho}" class="value">0</p>
+        </div>
+        <div class="dashboard-card">
+            <h4>Đang chờ trả phòng</h4>
+            <p th:text="${soDangChoTraPhong}" class="value">0</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

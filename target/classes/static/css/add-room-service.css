@@ -1,116 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    padding: 30px; /* Tăng padding body */
+}
 
 h1 {
-    text-align: center; /* Căn giữa theo chiều ngang */
-    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
-    font-size: 2.5rem; /* Tăng kích thước chữ (nếu cần) */
-    color: #333; /* Màu sắc chữ */
-    font-family: Arial, sans-serif;
-}
-
-
-/* Đặt kiểu dáng tổng quan cho form */
-form {
-    max-width: 600px; /* Giới hạn chiều rộng form */
-    margin: 0 auto; /* Căn giữa form */
-    padding: 20px;
-    background-color: #f9f9f9; /* Màu nền nhẹ */
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng đổ bóng */
-    font-family: Arial, sans-serif;
-}
-
-/* Tiêu đề label */
-form label {
-    display: block; /* Hiển thị label trên input */
-    margin-bottom: 8px; /* Khoảng cách giữa label và input */
-    font-weight: bold;
     color: #333;
+    margin-bottom: 30px; /* Tăng margin */
+    text-align: center;
+    font-size: 32px; /* Tăng kích thước chữ */
 }
 
-/* Các ô nhập liệu */
-form input[type="text"],
-form input[type="number"],
-form textarea,
-form select {
-    width: 100%; /* Chiếm toàn bộ chiều ngang */
-    padding: 10px;
-    margin-bottom: 16px; /* Khoảng cách giữa các trường */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    background-color: #fff;
-    transition: border-color 0.3s;
+form {
+    max-width: 800px; /* Tăng chiều rộng tối đa */
+    margin: 0 auto;
+    background: white;
+    padding: 30px; /* Tăng padding form */
+    border-radius: 10px; /* Tăng bo góc */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); /* Tăng bóng */
 }
 
-/* Hiệu ứng khi focus vào input */
-form input[type="text"]:focus,
-form input[type="number"]:focus,
-form textarea:focus,
-form select:focus {
-    border-color: #007bff; /* Đổi màu viền khi focus */
-    outline: none;
+form div {
+    margin-bottom: 20px; /* Tăng khoảng cách giữa các trường */
 }
 
-/* Định dạng chung cho các nút */
-.form-actions button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+label {
+    display: block;
+    margin-bottom: 8px; /* Tăng margin */
+    color: #555;
+    font-size: 18px; /* Tăng kích thước chữ */
 }
 
-/* Nút "Add Room" */
-.form-actions button[type="submit"] {
-    background-color: #007bff;
-    color: white;
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px; /* Tăng padding ô nhập liệu */
+    border: 1px solid #ddd;
+    border-radius: 6px; /* Tăng bo góc */
+    box-sizing: border-box;
+    font-size: 16px; /* Tăng kích thước chữ */
 }
 
-.form-actions button[type="submit"]:hover {
-    background-color: #0056b3;
+textarea {
+    height: 120px; /* Tăng chiều cao textarea */
+    resize: vertical;
 }
 
-/* Nút "Back" */
-.form-actions .back-button {
-    background-color: #6c757d; /* Màu xám */
-    color: white;
-    margin-left: 10px; /* Khoảng cách giữa các nút */
+select {
+    padding: 12px; /* Tăng padding select */
 }
 
-.form-actions .back-button:hover {
-    background-color: #5a6268;
-}
-
-/* Đặt căn chỉnh cho các nút */
 .form-actions {
     display: flex;
-    justify-content: flex-end; /* Đẩy nút sang bên phải */
-    gap: 10px; /* Khoảng cách giữa các nút */
+    justify-content: space-between;
+    margin-top: 30px; /* Tăng margin trên */
 }
 
-
-/* Định dạng riêng cho textarea */
-form textarea {
-    min-height: 100px;
-    resize: vertical; /* Cho phép resize dọc */
+button[type="submit"] {
+    padding: 12px 30px; /* Tăng kích thước nút */
+    background: #2980b9; /* Màu xanh dương tối */
+    color: white;
+    border: none;
+    border-radius: 6px; /* Tăng bo góc */
+    cursor: pointer;
+    font-size: 16px; /* Tăng kích thước chữ */
 }
 
-/* Tùy chỉnh dropdown */
-form select {
-    height: 40px;
-    background-color: #fff;
-    color: #333;
+button[type="submit"]:hover {
+    background: #1f6391; /* Màu xanh dương đậm hơn khi hover */
 }
 
-/* Đặt khoảng cách giữa các div */
-form > div {
-    margin-bottom: 16px;
+.back-button {
+    display: inline-block;
+    padding: 12px 30px; /* Tăng kích thước nút */
+    background: #3498db; /* Màu xanh dương mặc định */
+    color: white;
+    text-decoration: none;
+    border-radius: 6px; /* Tăng bo góc */
+    font-size: 16px; /* Tăng kích thước chữ */
 }
 
-/* Đáp ứng trên thiết bị nhỏ */
-@media (max-width: 768px) {
-    form {
-        padding: 15px;
-    }
+.back-button:hover {
+    background: #c0392b; /* Màu đỏ sậm khi hover */
 }

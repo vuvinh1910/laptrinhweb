@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/booking-room.css}">
+</head>
+<body>
+<div th:fragment="content" id="bookingRoom-content">
+    <h3>Quản lý đặt phòng</h3>
+    <!-- Filter Form -->
+    <form th:action="@{/admin/booking/room}" method="get" class="filter-form">
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="status">Trạng thái:</label>
+                <select name="status" id="status">
+                    <option value="">Tất cả</option>
+                    <option th:each="bookingStatus : ${status}"
+                            th:value="${bookingStatus}"
+                            th:text="${bookingStatus}"
+                            th:selected="${bookingStatus == selectedStatus}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="isPaid">Trạng thái thanh toán:</label>
+                <select name="isPaid" id="isPaid">
+                    <option value="">Tất cả</option>
+                    <option value="true" th:selected="${isPaid != null and isPaid}">Đã thanh toán</option>
+                    <option value="false" th:selected="${isPaid != null and !isPaid}">Chưa thanh toán</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <button type="submit" class="filter-btn">Lọc</button>
+                <a th:href="@{/admin/booking/room}" class="reset-btn">Hủy</a>
+            </div>
+        </div>
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th>Tên Người Đặt</th>
+            <th>Thông tin phòng</th>
+            <th>CheckIn</th>
+            <th>CheckOut</th>
+            <th>Tổng tiền</th>
+            <th>IsPaid</th>
+            <th>Status</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking : ${bookings}">
+            <td th:text="${booking.user.fullName}"></td>
+            <td>
+                <p th:text="${'-' + booking.room.roomName}"></p>
+                <p th:text="${'-' + booking.room.hotelName}"></p>
+                <p th:text="${'-' + booking.room.location.locationName}"></p>
+            </td>
+            <td th:text="${booking.checkIn}"></td>
+            <td th:text="${booking.checkOut}"></td>
+            <td th:text="${booking.totalPrice} + ' VND'"></td>
+            <td th:text="${booking.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}"></td>
+            <td th:text="${booking.status}"></td>
+            <td>
+                <a th:href="@{/admin/booking/room/update/{id}(id=${booking.id})}" class="update-btn">Cập nhật</a>
+                <a th:href="@{/admin/booking/room/delete/{id}(id=${booking.id})}" class="delete-btn">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

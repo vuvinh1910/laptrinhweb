@@ -1,0 +1,65 @@
+#customer-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#customer-content h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Bảng */
+#customer-content table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+#customer-content th,
+#customer-content td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    word-break: break-word; /* Tự động xuống dòng khi vượt quá chiều rộng */
+    white-space: normal; /* Cho phép xuống dòng thay vì giữ một dòng */
+    max-width: 0; /* Giới hạn chiều rộng để kích hoạt xuống dòng */
+}
+
+/* Đảm bảo cột Hành động không bị xuống dòng */
+#customer-content td:last-child {
+    white-space: nowrap; /* Giữ nút Xóa trên cùng một dòng */
+}
+
+#customer-content th {
+    background: #f8f9fa;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Loại bỏ viền dọc ở cột cuối */
+#customer-content th:last-child,
+#customer-content td:last-child {
+    border-right: none;
+}
+
+/* Loại bỏ viền ngang ở hàng cuối */
+#customer-content tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Nút Xóa */
+#customer-content .delete-btn {
+    display: inline-block;
+    padding: 7px 10px; /* 1/2 so với 15px của td */
+    background: #403938; /* Màu xám đậm */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+#customer-content .delete-btn:hover {
+    background: #c0392b; /* Màu đỏ sậm khi hover */
+}

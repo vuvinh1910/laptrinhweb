@@ -23,7 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtDecoder jwtDecoder) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers( "/public/**", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers( "/public/**", "/css/**", "/js/**", "/img/**", "/api/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("USER")
                         .anyRequest().authenticated() // Yêu cầu xác thực cho các endpoint khác

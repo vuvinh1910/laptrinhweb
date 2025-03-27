@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/service-content.css}">
+    <!-- <link rel="stylesheet" href="/static/css/service-content.css"> -->
+</head>
+<body>
+<div th:fragment="content" id="service-content">
+    <h3>Quản lý dịch vụ</h3>
+    <div class="add-container">
+        <!-- Nút Thêm dịch vụ -->
+        <div class="add-service">
+            <a th:href="@{/admin/service/add}" class="add-btn">Thêm dịch vụ</a>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã dịch vụ</th>
+                <th>Tên dịch vụ</th>
+                <th>Mô tả</th>
+                <th>Giá tiền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="service : ${services}">
+                <td th:text="${service.codeName}"></td>
+                <td th:text="${service.serviceName}"></td>
+                <td th:text="${service.serviceDetail}"></td>
+                <td th:text="${service.servicePrice} + ' VND'"></td>
+                <td>
+                    <a th:href="@{/admin/service/update/{id}(id=${service.codeName})}" class="update-btn">Thông tin&Cập nhật</a>
+                    <a th:href="@{/admin/service/delete/{id}(id=${service.codeName})}" class="delete-btn">Xóa</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

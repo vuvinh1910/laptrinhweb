@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/css/customer-content.css}">
+</head>
+<body>
+<div th:fragment="content" id="customer-content">
+  <h3>Quản lý khách hàng</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>IMG</th>
+      <th>Họ và tên</th>
+      <th>Tên đăng nhập</th>
+      <th>Email</th>
+      <th>Roles</th>
+      <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="customer : ${customers}">
+      <td>
+        <img th:src="@{/img/user.png}" alt="User" width="50" height="50">
+      </td>
+      <td th:text="${customer.fullName}"></td>
+      <td th:text="${customer.fullName}"></td>
+      <td th:text="${customer.email}"></td>
+      <td>
+        <span th:each="role : ${customer.roles}" th:text="${role.name}+' '"></span>
+      </td>
+      <td>
+        <a th:href="@{/admin/customer/delete/{id}(id=${customer.id})}" class="delete-btn">Xóa</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

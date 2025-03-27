@@ -3,6 +3,7 @@ package com.example.web_nhom_5.service.implement;
 import com.example.web_nhom_5.conventer.BookingRoomMapper;
 import com.example.web_nhom_5.conventer.PaymentMapper;
 import com.example.web_nhom_5.dto.request.BookingRoomCreateRequest;
+import com.example.web_nhom_5.dto.request.BookingRoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.BookingRoomResponse;
 import com.example.web_nhom_5.dto.response.ProcessPaymentResponse;
 import com.example.web_nhom_5.entity.BookingRoomEntity;
@@ -95,6 +96,13 @@ public class BookingRoomServiceImpl implements BookingRoomService {
     }
 
     @Override
+    public void updateBookingRoom(Long bookingRoomId, BookingRoomUpdateRequest bookingRoomUpdateRequest) {
+        BookingRoomEntity bookingRoomEntity = getBookingRoomById(bookingRoomId);
+        bookingRoomMapper.updateBookingRoom(bookingRoomEntity,bookingRoomUpdateRequest);
+        bookingRoomRepository.save(bookingRoomEntity);
+    }
+
+    @Override
     public void deleteBookingRoomById(Long bookingRoomId) {
         bookingRoomRepository.deleteById(bookingRoomId);
     }
@@ -147,6 +155,22 @@ public class BookingRoomServiceImpl implements BookingRoomService {
     }
 
     @Override
+    public long countPending() {
+        return bookingRoomRepository.countPendingConfirm(BookingStatus.PENDING);
+    }
+
+    @Override
+    public long countPendingComplete() {
+        LocalDate now = LocalDate.now();
+        return bookingRoomRepository.countPendingCheckOut(now,BookingStatus.CONFIRMED);
+    }
+
+    @Override
+    public long sumTotalPrice() {
+        return bookingRoomRepository.sumAllPriceByStatus(true);
+    }
+
+    @Override
     @Scheduled(fixedRate = 120000)
     public void cancelExpiredBooking() {
         LocalDateTime oneHourAgo = LocalDateTime.now().minusMinutes(10);
@@ -181,7 +205,7 @@ public class BookingRoomServiceImpl implements BookingRoomService {
     }
 
     @Override
-    public List<BookingRoomResponse> filterBookingRooms(BookingStatus status, Boolean isPaid) {
+    public List<BookingRoomEntity> filterBookingRooms(BookingStatus status, Boolean isPaid) {
         List<BookingRoomEntity> filterBookingRooms;
 
         if (status != null && isPaid != null) {
@@ -194,9 +218,7 @@ public class BookingRoomServiceImpl implements BookingRoomService {
             filterBookingRooms = bookingRoomRepository.findAll();
         }
 
-        return filterBookingRooms.stream()
-                .map(bookingRoomMapper::bookingRoomEntityToBookingRoomResponse)
-                .toList();
+        return filterBookingRooms;
     }
 
 }

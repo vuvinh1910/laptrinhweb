@@ -1,17 +1,17 @@
 package com.example.web_nhom_5.controller;
 
-import com.example.web_nhom_5.dto.request.RoomCreateRequest;
-import com.example.web_nhom_5.dto.request.RoomUpdateRequest;
-import com.example.web_nhom_5.dto.request.ServiceCreateRequest;
-import com.example.web_nhom_5.dto.request.ServiceUpdateRequest;
+import com.example.web_nhom_5.dto.request.*;
 import com.example.web_nhom_5.dto.response.*;
 import com.example.web_nhom_5.entity.*;
 import com.example.web_nhom_5.enums.BookingStatus;
 import com.example.web_nhom_5.exception.WebException;
+import com.example.web_nhom_5.repository.BookingRoomRepository;
+import com.example.web_nhom_5.repository.UserRepository;
 import com.example.web_nhom_5.service.*;
 import com.example.web_nhom_5.service.implement.AuthenticationService;
 import com.example.web_nhom_5.service.implement.UserService;
 import jakarta.validation.Valid;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -28,6 +30,9 @@ public class AdminPageController {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private LocationService locationService;
@@ -48,27 +53,46 @@ public class AdminPageController {
     private AuthenticationService authenticationService;
 
     @GetMapping("/dashboard")
-    public String showDashBoard(Model model){
-        return "admin/dashboard";
-    }
+    public String showDashBoard(Model model,@CookieValue(value = "Authorization", required = false) String authToken){
 
-    @GetMapping("room")
-    public String showRoom(@CookieValue(value = "Authorization", required = false) String authToken, Model model){
-        // Log giá trị token để kiểm tra
-        System.out.println("Auth Token: " + authToken);  // Kiểm tra giá trị token trong cookie
+        System.out.println("Auth Token: " + authToken);
         if (authToken == null) {
             return "redirect:/login"; // Chuyển hướng tới trang đăng nhập nếu token không có
         }
 
-        // Kiểm tra xem token có hợp lệ hay không
         if (!authenticationService.isAdminToken(authToken)) {
             return "redirect:/public/home"; // Nếu không phải admin, chuyển hướng tới trang home
         }
 
-        List<RoomResponse> rooms = roomService.getAllRooms();
-        model.addAttribute("rooms", rooms);
+        long soLuongDangChoTraPhong = bookingRoomService.countPendingComplete();
+        long numUser = userService.countUser()-1;
+        long soDonDangCho = bookingRoomService.countPending();
+        long tongThuNhap = bookingRoomService.sumTotalPrice()+bookingServiceService.sumTotalPrice();
+        model.addAttribute("soDonDangCho", soDonDangCho);
+        model.addAttribute("tongThuNhap", tongThuNhap);
+        model.addAttribute("numUser", numUser);
+        model.addAttribute("soDangChoTraPhong",soLuongDangChoTraPhong);
+        model.addAttribute("activePage", "dashboard");
+        model.addAttribute("pageTitle", "Dashboard");
+        model.addAttribute("content", "admin/test/dashboard"); // Tên file fragment
+        return "admin/test/layout";
+    }
 
-        return "admin/room";
+    @GetMapping("room")
+    public String showRoom(@RequestParam(value = "locationCode", required = false) String locationCode, Model model) {
+        List<RoomResponse> rooms;
+        if (locationCode == null || locationCode.isEmpty()) {
+            rooms = roomService.getAllRooms();
+        } else {
+            rooms = roomService.getAllRoomsByLocationCode(locationCode);
+        }
+        model.addAttribute("rooms", rooms);
+        model.addAttribute("locations", locationService.getAllLocation());
+        model.addAttribute("selectedLocationCode", locationCode); // Giữ giá trị đã chọn
+        model.addAttribute("activePage", "room");
+        model.addAttribute("pageTitle", "Service");
+        model.addAttribute("content", "admin/test/room"); // Tên file fragment
+        return "admin/test/layout";
     }
 
     // Hiển thị form thêm mới phòng
@@ -95,7 +119,7 @@ public class AdminPageController {
         // Nếu có lỗi, vẫn hiển thị lại form và các lựa chọn địa điểm
         List<LocationResponse> locations = locationService.getAllLocation();
         model.addAttribute("locations", locations);
-        return "redirect:/admin/room/add";
+        return "redirect:/admin/room";
     }
 
     @GetMapping("/room/delete/{id}")
@@ -141,7 +165,11 @@ public class AdminPageController {
     public String showService(Model model){
         List<ServiceResponse> services = serviceService.getAllServices();
         model.addAttribute("services", services);
-        return "admin/service";
+
+        model.addAttribute("activePage", "service");
+        model.addAttribute("pageTitle", "Service");
+        model.addAttribute("content", "admin/test/service"); // Tên file fragment
+        return "admin/test/layout";
     }
 
     // Hiển thị form thêm service
@@ -162,7 +190,7 @@ public class AdminPageController {
         } catch (WebException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
-        return "redirect:/admin/service/add";
+        return "redirect:/admin/service";
     }
 
     @GetMapping("/service/delete/{codeName}")
@@ -202,9 +230,12 @@ public class AdminPageController {
 
     @GetMapping("/customer")
     public String showUser(Model model){
-        List<UserResponse> users = userService.getAllUser();
-        model.addAttribute("users", users);
-        return "admin/user";
+        List<UserResponse> customers = userService.getAllUser();
+        model.addAttribute("customers", customers);
+        model.addAttribute("activePage", "customer");
+        model.addAttribute("pageTitle", "Customer");
+        model.addAttribute("content", "admin/test/customer"); // Tên file fragment
+        return "admin/test/layout";
     }
 
     @GetMapping("/customer/delete/{id}")
@@ -222,21 +253,17 @@ public class AdminPageController {
     public String showBRoom(@RequestParam(value = "status", required = false) BookingStatus status,
                             @RequestParam(value = "isPaid", required = false) Boolean isPaid,
                             Model model){
-        List<BookingRoomResponse> bRooms;
-
-        // Xử lý bộ lọc
-        if (status != null || isPaid != null) {
-            bRooms = bookingRoomService.filterBookingRooms(status, isPaid);
-        } else {
-            bRooms = bookingRoomService.getAllBookingRooms();
-        }
+        List<BookingRoomEntity> bookingRooms = bookingRoomService.filterBookingRooms(status, isPaid);
 
         // Truyền danh sách trạng thái xuống view
-        model.addAttribute("statuses", BookingStatus.values());
+        model.addAttribute("status", BookingStatus.values());
         model.addAttribute("selectedStatus", status);
         model.addAttribute("isPaid", isPaid);
-        model.addAttribute("bRooms", bRooms);
-        return "admin/booking-room";
+        model.addAttribute("bookings", bookingRooms);
+        model.addAttribute("activePage", "bookingRoom");
+        model.addAttribute("pageTitle", "Booking Room");
+        model.addAttribute("content", "admin/test/bookingroom"); // Tên file fragment
+        return "admin/test/layout";
     }
 
     @GetMapping("/booking/service")
@@ -244,20 +271,17 @@ public class AdminPageController {
                                @RequestParam(value = "isPaid", required = false) Boolean isPaid,
                                Model model){
         List<BookingServiceResponse> bServices;
-
-        // Xử lý bộ lọc
-        if (status != null || isPaid != null) {
-            bServices = bookingServiceService.filterBookingServices(status, isPaid);
-        } else {
-            bServices = bookingServiceService.getAllBookingServiceList();
-        }
+        bServices = bookingServiceService.filterBookingServices(status, isPaid);
 
         // Truyền danh sách trạng thái xuống view
-        model.addAttribute("statuses", BookingStatus.values());
+        model.addAttribute("status", BookingStatus.values());
         model.addAttribute("selectedStatus", status);
         model.addAttribute("isPaid", isPaid);
-        model.addAttribute("bServices", bServices);
-        return "admin/booking-service";
+        model.addAttribute("bookings", bServices);
+        model.addAttribute("activePage", "bookingService");
+        model.addAttribute("pageTitle", "Booking Service");
+        model.addAttribute("content", "admin/test/bookingservice"); // Tên file fragment
+        return "admin/test/layout";
     }
 
     @GetMapping("/booking/room/delete/{id}")
@@ -282,22 +306,22 @@ public class AdminPageController {
         return "redirect:/admin/booking/service";  // Chuyển hướng về trang danh sách phòng
     }
 
-    @GetMapping("/booking/room/update/status/{bookingRoomId}")
+    @GetMapping("/booking/room/update/{bookingRoomId}")
     public String updateBookingRoomForm(Model model, @PathVariable Long bookingRoomId) {
         BookingRoomEntity bRoom = bookingRoomService.getBookingRoomById(bookingRoomId);
 
-        model.addAttribute("bRoom", bRoom);
+        model.addAttribute("bookings", bRoom);
         model.addAttribute("statuses", BookingStatus.values());
         return "admin/udt-broom";
     }
 
-    @PostMapping("/booking/room/update/status/{bookingRoomId}")
-    public String updateBookingStatusByBookingId(
+    @PostMapping("/booking/room/update/{bookingRoomId}")
+    public String updateBookingRoom(
             @PathVariable long bookingRoomId,
-            @RequestParam BookingStatus status,
+            @ModelAttribute("bookingRoom") @Valid BookingRoomUpdateRequest bookingRoomUpdateRequest,
             RedirectAttributes redirectAttributes) {
         try {
-            bookingRoomService.updateBookingStatusByBookingRoomId(bookingRoomId, status);
+            bookingRoomService.updateBookingRoom(bookingRoomId, bookingRoomUpdateRequest);
             redirectAttributes.addFlashAttribute("success", "Status updated successfully.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
@@ -305,7 +329,7 @@ public class AdminPageController {
         return "redirect:/admin/booking/room"; // Chuyển hướng về danh sách phòng
     }
 
-    @GetMapping("/booking/service/update/status/{bookingServiceId}")
+    @GetMapping("/booking/service/update/{bookingServiceId}")
     public String updateBookingServiceForm(Model model, @PathVariable Long bookingServiceId) {
         BookingServiceEntity bService = bookingServiceService.getBookingServiceById(bookingServiceId);
 
@@ -314,13 +338,13 @@ public class AdminPageController {
         return "admin/udt-bservice";
     }
 
-    @PostMapping("/booking/service/update/status/{bookingServiceId}")
+    @PostMapping("/booking/service/update/{bookingServiceId}")
     public String updateBookingStatusById(
             @PathVariable long bookingServiceId,
-            @RequestParam BookingStatus status,
+            @ModelAttribute("bookingService") BookingServiceUpdateRequest bookingServiceUpdateRequest,
             RedirectAttributes redirectAttributes) {
         try {
-            bookingServiceService.updateBookingStatusById(bookingServiceId, status);
+            bookingServiceService.updateBookingService(bookingServiceId, bookingServiceUpdateRequest);
             redirectAttributes.addFlashAttribute("success", "Status updated successfully.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());

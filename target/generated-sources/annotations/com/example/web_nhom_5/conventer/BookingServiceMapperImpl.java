@@ -1,6 +1,7 @@
 package com.example.web_nhom_5.conventer;
 
 import com.example.web_nhom_5.dto.request.BookingServiceCreateRequest;
+import com.example.web_nhom_5.dto.request.BookingServiceUpdateRequest;
 import com.example.web_nhom_5.dto.response.BookingServiceResponse;
 import com.example.web_nhom_5.entity.BookingServiceEntity;
 import com.example.web_nhom_5.entity.ServiceEntity;
@@ -45,6 +46,19 @@ public class BookingServiceMapperImpl implements BookingServiceMapper {
         }
 
         return bookingServiceResponse;
+    }
+
+    @Override
+    public void updateBookingService(BookingServiceEntity bookingServiceEntity, BookingServiceUpdateRequest bookingServiceUpdateRequest) {
+        if ( bookingServiceUpdateRequest == null ) {
+            return;
+        }
+
+        bookingServiceEntity.setTotalPrice( bookingServiceUpdateRequest.getTotalPrice() );
+        bookingServiceEntity.setPaid( bookingServiceUpdateRequest.isPaid() );
+        if ( bookingServiceUpdateRequest.getStatus() != null ) {
+            bookingServiceEntity.setStatus( bookingServiceUpdateRequest.getStatus() );
+        }
     }
 
     private String bookingServiceEntityUserFullName(BookingServiceEntity bookingServiceEntity) {

@@ -1,6 +1,7 @@
 package com.example.web_nhom_5.conventer;
 
 import com.example.web_nhom_5.dto.request.BookingRoomCreateRequest;
+import com.example.web_nhom_5.dto.request.BookingRoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.BookingRoomResponse;
 import com.example.web_nhom_5.entity.BookingRoomEntity;
 import com.example.web_nhom_5.entity.RoomEntity;
@@ -51,6 +52,26 @@ public class BookingRoomMapperImpl implements BookingRoomMapper {
         bookingRoomResponse.setTotalPrice( bookingRoomEntity.getTotalPrice() );
 
         return bookingRoomResponse;
+    }
+
+    @Override
+    public void updateBookingRoom(BookingRoomEntity bookingRoomEntity, BookingRoomUpdateRequest bookingRoomUpdateRequest) {
+        if ( bookingRoomUpdateRequest == null ) {
+            return;
+        }
+
+        if ( bookingRoomUpdateRequest.getStatus() != null ) {
+            bookingRoomEntity.setStatus( bookingRoomUpdateRequest.getStatus() );
+        }
+        if ( bookingRoomUpdateRequest.getCheckIn() != null ) {
+            bookingRoomEntity.setCheckIn( bookingRoomUpdateRequest.getCheckIn() );
+        }
+        if ( bookingRoomUpdateRequest.getCheckOut() != null ) {
+            bookingRoomEntity.setCheckOut( bookingRoomUpdateRequest.getCheckOut() );
+        }
+        bookingRoomEntity.setNumOfPeople( bookingRoomUpdateRequest.getNumOfPeople() );
+        bookingRoomEntity.setTotalPrice( bookingRoomUpdateRequest.getTotalPrice() );
+        bookingRoomEntity.setPaid( bookingRoomUpdateRequest.isPaid() );
     }
 
     private String bookingRoomEntityUserFullName(BookingRoomEntity bookingRoomEntity) {

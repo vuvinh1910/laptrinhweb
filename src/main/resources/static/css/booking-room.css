@@ -1,0 +1,141 @@
+#bookingRoom-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#bookingRoom-content h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Bảng */
+#bookingRoom-content table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+#bookingRoom-content th,
+#bookingRoom-content td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    word-break: break-word; /* Tự động xuống dòng khi vượt quá chiều rộng */
+    white-space: normal; /* Cho phép xuống dòng thay vì giữ một dòng */
+    max-width: 0; /* Giới hạn chiều rộng để kích hoạt xuống dòng */
+}
+
+/* Cột Hành động tự điều chỉnh theo nội dung */
+#bookingRoom-content td:last-child {
+    white-space: nowrap; /* Giữ các nút trên cùng một dòng */
+    width: auto; /* Chiều rộng tự điều chỉnh theo nội dung */
+    padding: 15px 10px; /* Giảm padding ngang để gọn hơn */
+}
+
+#bookingRoom-content th {
+    background: #f8f9fa;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Loại bỏ viền dọc ở cột cuối */
+#bookingRoom-content th:last-child,
+#bookingRoom-content td:last-child {
+    border-right: none;
+}
+
+/* Loại bỏ viền ngang ở hàng cuối */
+#bookingRoom-content tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Nút Cập nhật */
+#bookingRoom-content .update-btn {
+    display: inline-block;
+    padding: 7px 10px;
+    background: #3498db; /* Màu xanh dương */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-right: 5px; /* Khoảng cách giữa Cập nhật và Xóa */
+}
+
+#bookingRoom-content .update-btn:hover {
+    background: #2980b9;
+}
+
+/* Nút Xóa */
+#bookingRoom-content .delete-btn {
+    display: inline-block;
+    padding: 7px 10px;
+    background: #403938; /* Màu xám đậm */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+#bookingRoom-content .delete-btn:hover {
+    background: #c0392b; /* Màu đỏ sậm */
+}
+
+#bookingRoom-content .filter-form {
+    margin-bottom: 20px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+#bookingRoom-content .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#bookingRoom-content .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#bookingRoom-content .filter-group label {
+    white-space: nowrap;
+}
+
+#bookingRoom-content .filter-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 150px;
+}
+
+#bookingRoom-content .filter-btn,
+#bookingRoom-content .reset-btn {
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    width: 60px;
+    height: 40px;
+}
+
+#bookingRoom-content .filter-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+#bookingRoom-content .reset-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+
+#bookingRoom-content .no-results {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}

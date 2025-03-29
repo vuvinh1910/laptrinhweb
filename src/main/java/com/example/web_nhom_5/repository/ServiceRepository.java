@@ -21,4 +21,12 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, String>,
     List<ServiceEntity> findServicesByFilter(
             @Param("status") String status,
             @Param("paid") String paid);
+
+    @Query("SELECT s FROM ServiceEntity s WHERE " +
+            "(:minPrice IS NULL OR s.servicePrice >= :minPrice) AND " +
+            "(:maxPrice IS NULL OR s.servicePrice <= :maxPrice) AND " +
+            "(:serviceType IS NULL OR s.codeName LIKE CONCAT(:serviceType, '%'))"
+    )
+    List<ServiceEntity> filterService(Long minPrice, Long maxPrice, String serviceType);
+
 }

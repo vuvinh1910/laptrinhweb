@@ -5,10 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" th:href="@{/css/log-sign.css}">
+    <link rel="stylesheet" th:href="@{/css/public/log-sign.css}">
     <title>Ludiflex | Login</title>
 </head>
-<body>
+<body th:style="|background-image: url('@{/img/hotel-bg.jpg}')|">
+
 <div class="wrapper">
     <nav class="nav">
         <div class="nav-menu" id="navMenu">
@@ -24,6 +25,14 @@
 
     <div class="form-box">
         <div class="login-container">
+            <div th:if="${error}" class="alert alert-danger" role="alert"
+                 style="display: flex; justify-content: center; color: red;">
+                <p th:text="${error}"></p>
+            </div>
+            <div th:if="${success}" class="alert alert-success" role="alert"
+                 style="display: flex; justify-content: center; color: green;">
+                <p th:text="${success}"></p>
+            </div>
             <div class="top">
                 <span>Don't have an account? <a th:href="@{/public/signup}">Sign Up</a></span>
                 <header>Login</header>

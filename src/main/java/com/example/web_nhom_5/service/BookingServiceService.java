@@ -22,4 +22,5 @@ public interface BookingServiceService extends BookingCancellationService,Proces
     List<BookingServiceResponse> getAllBookingServicesByPaid(boolean paid);
     long sumTotalPrice();
     List<BookingServiceResponse> filterBookingServices(BookingStatus status, Boolean isPaid);
+    int countBookingServicesPending();
 }

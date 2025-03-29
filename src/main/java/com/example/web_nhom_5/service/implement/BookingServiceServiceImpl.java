@@ -206,4 +206,9 @@ public class BookingServiceServiceImpl implements BookingServiceService {
                 .map(bookingServiceMapper::bookingServiceEntityToBookingServiceResponse)
                 .toList();
     }
+
+    @Override
+    public int countBookingServicesPending() {
+        return bookingServiceRepository.countAllByStatusAndPaid(BookingStatus.CANCELLED,true);
+    }
 }

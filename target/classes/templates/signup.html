@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" th:href="@{/css/log-sign.css}">
-    <title>Ludiflex | SignUp</title>
+    <link rel="stylesheet" th:href="@{/css/public/log-sign.css}">
+    <title>SignUp</title>
 </head>
-<body>
+<body th:style="|background-image: url('@{/img/hotel-bg.jpg}')|">
 <div class="wrapper">
     <nav class="nav">
         <div class="nav-menu" id="navMenu">
@@ -23,26 +23,28 @@
     </nav>
 
 
-
     <div class="form-box">
         <form th:action="@{/public/signup}" th:object="${user}" method="post" class="register-container">
             <div class="top">
-                <span>Have an account? <a th:href="@{/pubic/login}">Login</a></span>
+                <span>Have an account? <a th:href="@{/public/login}">Login</a></span>
                 <header>Sign Up</header>
             </div>
-            <div th:if="${error}" class="alert alert-danger" role="alert" style="display: flex; justify-content: center; color: red;">
+            <div th:if="${error}" class="alert alert-danger" role="alert"
+                 style="display: flex; justify-content: center; color: red;">
                 <p th:text="${error}"></p>
             </div>
             <div class="two-forms">
                 <div class="input-box">
                     <input type="text" th:field="*{fullName}" class="input-field" placeholder="Full Name" required>
                     <i class="bx bx-user"></i>
-                    <span th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" style="color: red;">Error</span>
+                    <span th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"
+                          style="color: red;">Error</span>
                 </div>
                 <div class="input-box">
                     <input type="text" th:field="*{userName}" class="input-field" placeholder="User Name" required>
                     <i class="bx bx-user"></i>
-                    <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" style="color: red;">Error</span>
+                    <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"
+                          style="color: red;">Error</span>
                 </div>
             </div>
             <div class="input-box">

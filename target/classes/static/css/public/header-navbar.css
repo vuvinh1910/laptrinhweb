@@ -1,0 +1,6 @@
+.header-navbar {
+    position: fixed; /* Cố định navbar */
+    top: 0; /* Đặt ở đầu trang */
+    width: 100%; /* Chiếm toàn chiều rộng */
+    z-index: 1000; /* Đảm bảo navbar nằm trên các phần tử khác */
+}

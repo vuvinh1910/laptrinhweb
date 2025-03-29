@@ -13,6 +13,7 @@ public interface ServiceService {
     ServiceResponse updateService(ServiceUpdateRequest serviceUpdateRequest, String id);
     List<ServiceResponse> getAllServices();
     void deleteService(String serviceId);
+    List<ServiceResponse> filterService(Long minPrice, Long maxPrice, String serviceType);
 
     // can them cac ham chuc nang tim kiem, loc theo yeu cau.
     List<ServiceResponse> listAllServiceByKeyword(String keyword);

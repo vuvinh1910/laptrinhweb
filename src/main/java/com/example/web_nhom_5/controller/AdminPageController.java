@@ -5,13 +5,11 @@ import com.example.web_nhom_5.dto.response.*;
 import com.example.web_nhom_5.entity.*;
 import com.example.web_nhom_5.enums.BookingStatus;
 import com.example.web_nhom_5.exception.WebException;
-import com.example.web_nhom_5.repository.BookingRoomRepository;
 import com.example.web_nhom_5.repository.UserRepository;
 import com.example.web_nhom_5.service.*;
 import com.example.web_nhom_5.service.implement.AuthenticationService;
 import com.example.web_nhom_5.service.implement.UserService;
 import jakarta.validation.Valid;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,8 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -66,7 +62,7 @@ public class AdminPageController {
 
         long soLuongDangChoTraPhong = bookingRoomService.countPendingComplete();
         long numUser = userService.countUser()-1;
-        long soDonDangCho = bookingRoomService.countPending();
+        long soDonDangCho = bookingRoomService.countPending() + bookingServiceService.countBookingServicesPending();
         long tongThuNhap = bookingRoomService.sumTotalPrice()+bookingServiceService.sumTotalPrice();
         model.addAttribute("soDonDangCho", soDonDangCho);
         model.addAttribute("tongThuNhap", tongThuNhap);
@@ -74,8 +70,8 @@ public class AdminPageController {
         model.addAttribute("soDangChoTraPhong",soLuongDangChoTraPhong);
         model.addAttribute("activePage", "dashboard");
         model.addAttribute("pageTitle", "Dashboard");
-        model.addAttribute("content", "admin/test/dashboard"); // Tên file fragment
-        return "admin/test/layout";
+        model.addAttribute("content", "admin/dashboard"); // Tên file fragment
+        return "admin/layout";
     }
 
     @GetMapping("room")
@@ -91,8 +87,8 @@ public class AdminPageController {
         model.addAttribute("selectedLocationCode", locationCode); // Giữ giá trị đã chọn
         model.addAttribute("activePage", "room");
         model.addAttribute("pageTitle", "Service");
-        model.addAttribute("content", "admin/test/room"); // Tên file fragment
-        return "admin/test/layout";
+        model.addAttribute("content", "admin/room"); // Tên file fragment
+        return "admin/layout";
     }
 
     // Hiển thị form thêm mới phòng
@@ -168,8 +164,8 @@ public class AdminPageController {
 
         model.addAttribute("activePage", "service");
         model.addAttribute("pageTitle", "Service");
-        model.addAttribute("content", "admin/test/service"); // Tên file fragment
-        return "admin/test/layout";
+        model.addAttribute("content", "admin/service"); // Tên file fragment
+        return "admin/layout";
     }
 
     // Hiển thị form thêm service
@@ -234,8 +230,8 @@ public class AdminPageController {
         model.addAttribute("customers", customers);
         model.addAttribute("activePage", "customer");
         model.addAttribute("pageTitle", "Customer");
-        model.addAttribute("content", "admin/test/customer"); // Tên file fragment
-        return "admin/test/layout";
+        model.addAttribute("content", "admin/customer"); // Tên file fragment
+        return "admin/layout";
     }
 
     @GetMapping("/customer/delete/{id}")
@@ -262,8 +258,8 @@ public class AdminPageController {
         model.addAttribute("bookings", bookingRooms);
         model.addAttribute("activePage", "bookingRoom");
         model.addAttribute("pageTitle", "Booking Room");
-        model.addAttribute("content", "admin/test/bookingroom"); // Tên file fragment
-        return "admin/test/layout";
+        model.addAttribute("content", "admin/bookingroom"); // Tên file fragment
+        return "admin/layout";
     }
 
     @GetMapping("/booking/service")
@@ -280,8 +276,8 @@ public class AdminPageController {
         model.addAttribute("bookings", bServices);
         model.addAttribute("activePage", "bookingService");
         model.addAttribute("pageTitle", "Booking Service");
-        model.addAttribute("content", "admin/test/bookingservice"); // Tên file fragment
-        return "admin/test/layout";
+        model.addAttribute("content", "admin/bookingservice"); // Tên file fragment
+        return "admin/layout";
     }
 
     @GetMapping("/booking/room/delete/{id}")

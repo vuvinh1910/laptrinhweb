@@ -16,13 +16,19 @@ public interface BookingRoomRepository extends JpaRepository<BookingRoomEntity, 
     List<BookingRoomEntity> findAllByStatus(BookingStatus status);
     @Query("SELECT COUNT(b) FROM BookingRoomEntity b WHERE b.checkOut > :now and b.status = :status")
     long countPendingCheckOut(LocalDate now, BookingStatus status);
-    @Query("SELECT count(b) from BookingRoomEntity b where b.status = :status")
-    long countPendingConfirm(BookingStatus status);
+    @Query("SELECT count(b) from BookingRoomEntity b where b.status = :status and b.paid = :paid")
+    long countPendingConfirm(BookingStatus status, Boolean paid);
     @Query("select coalesce(sum(b.totalPrice),0) from BookingRoomEntity b where b.paid = :paid")
     long sumAllPriceByStatus(boolean paid);
     List<BookingRoomEntity> findAllByRoom_Id(Long roomId);
     List<BookingRoomEntity> findAllByPaid(boolean paid);
     List<BookingRoomEntity> findAllByStatusAndPaid(BookingStatus status, boolean paid);
     List<BookingRoomEntity> findAllByStatusAndCreatedAtBeforeAndPaid(BookingStatus status, LocalDateTime createdAt, boolean paid);
-    long countByRoom_IdAndCheckInBeforeAndCheckOutAfterAndStatusNotAndStatusNot(Long roomId, LocalDate checkOut, LocalDate checkIn, BookingStatus status1, BookingStatus status2);
+
+    @Query("SELECT COUNT(b) FROM BookingRoomEntity b " +
+            "WHERE b.room.id = :roomId " +
+            "AND (:checkOut IS NULL OR b.checkOut > :checkIn) " +
+            "AND (:checkIn IS NULL OR b.checkIn < :checkOut) " +
+            "AND b.status = :status")
+    long countRoomAvailable(Long roomId, LocalDate checkIn, LocalDate checkOut, BookingStatus status);
 }

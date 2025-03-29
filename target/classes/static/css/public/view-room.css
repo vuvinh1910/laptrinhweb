@@ -1,0 +1,110 @@
+/* CSS với màu chủ đạo: đen xám (#343A40), xám (#6C757D), xanh đậm (#007BFF) */
+
+/* Thiết lập cho body với class view-room */
+body.view-room {
+    background-color: #22334417; /* Nền trắng để làm nổi bật nội dung */
+    color: #6C757D; /* Chữ xám */
+    font-family: Arial, sans-serif;
+}
+
+/* Container thông tin phòng */
+.view-room .room-details-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 85px auto;
+}
+
+/* Thông tin phòng (bên trái) */
+.view-room .room-info {
+    padding: 20px;
+    background-color: #5a62a617;
+}
+
+.view-room .room-info h1 {
+    color: #343A40; /* Đen xám cho tiêu đề */
+    margin-bottom: 20px;
+}
+
+.view-room .img-room {
+    width: 100%; /* Bằng chiều rộng của container */
+    height: auto; /* Giữ tỷ lệ ảnh */
+    border-radius: 5px; /* Tùy chọn: bo góc */
+}
+
+.view-room .room-info p {
+    margin: 10px 0;
+}
+
+.view-room .room-info strong {
+    color: #343A40; /* Đen xám cho chữ in đậm */
+}
+
+.room-detail-images {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.img-detail {
+    width: 49%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Form đặt phòng (bên phải) */
+.view-room .booking-form-container {
+    padding: 20px;
+    background-color: #F8F9FA; /* Nền xám nhạt */
+    border-radius: 8px; /* Bo góc nhẹ */
+    margin: 86px 0 0 0;
+}
+
+.view-room .booking-form-container h1 {
+    color: #343A40; /* Đen xám cho tiêu đề */
+    margin-bottom: 20px;
+    font-size: 1.5rem; /* Giảm kích thước tiêu đề để phù hợp với không gian nhỏ */
+}
+
+.view-room .form-group {
+    margin-bottom: 15px;
+}
+
+.view-room .form-group label {
+    color: #343A40; /* Đen xám cho nhãn */
+    display: block;
+    margin-bottom: 5px;
+}
+
+.view-room .form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #007BFF; /* Viền xanh đậm */
+    border-radius: 4px;
+    color: #6C757D; /* Chữ xám */
+}
+
+.view-room .form-group input:focus {
+    border-color: #0056B3; /* Xanh đậm hơn khi focus */
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Hiệu ứng focus */
+}
+
+/* Nút Đặt Phòng */
+.view-room .del-button {
+    background-color: #007BFF; /* Xanh đậm */
+    border: none;
+    padding: 10px 20px;
+    color: #FFFFFF; /* Chữ trắng */
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%; /* Nút chiếm toàn bộ chiều rộng của form */
+}
+
+.view-room .del-button:disabled {
+    background-color: #6C757D; /* Xám khi disabled */
+    cursor: not-allowed;
+}
+
+.view-room .del-button:hover:not(:disabled) {
+    background-color: #0056B3; /* Xanh đậm hơn khi hover */
+}

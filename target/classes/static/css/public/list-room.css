@@ -1,0 +1,111 @@
+/* CSS với màu chủ đạo: trắng (#FFFFFF), xám (#6C757D), xanh dương nhạt (#A3BFFA) */
+
+/* Thiết lập cho body với class room-page */
+body.room-page {
+    background-color: #FFFFFF; /* Nền trắng */
+    color: #6C757D; /* Chữ xám */
+    padding-top: 80px;
+    font-family: Arial, sans-serif;
+}
+
+/* Section với class py-5 */
+section.py-5 {
+    background-color: #FFFFFF; /* Nền trắng */
+}
+
+/* Tiêu đề chính trong section */
+section.py-5 h1.text-center {
+    color: #6C757D; /* Chữ xám */
+}
+
+/* Filter Sidebar */
+section.py-5 .filter-sidebar {
+    background-color: #F8F9FA; /* Xám nhạt mặc định của Bootstrap */
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #A3BFFA; /* Viền xanh dương nhạt */
+    position: sticky;
+    top: 100px; /* Adjust based on your navbar height */
+    z-index: 10;
+    max-height: calc(100vh - 120px); /* Prevent overflow */
+    overflow-y: auto; /* Allow scrolling if content is too long */
+}
+
+section.py-5 .form-label {
+    color: #6C757D; /* Chữ xám */
+}
+
+section.py-5 .form-control {
+    border-color: #A3BFFA; /* Viền xanh dương nhạt */
+    color: #6C757D; /* Chữ xám */
+}
+
+section.py-5 .form-control:focus {
+    border-color: #728FCE; /* Xanh đậm hơn khi focus */
+    box-shadow: 0 0 0 0.2rem rgba(163, 191, 250, 0.25); /* Hiệu ứng focus */
+}
+
+/* Nút lọc */
+section.py-5 .btn-primary {
+    background-color: #A3BFFA; /* Xanh dương nhạt */
+    border-color: #A3BFFA;
+    color: #FFFFFF; /* Chữ trắng */
+}
+
+section.py-5 .btn-primary:hover {
+    background-color: #728FCE; /* Tông xanh đậm hơn khi hover */
+    border-color: #728FCE;
+}
+
+/* Card phòng */
+section.py-5 .card {
+    background-color: #FFFFFF; /* Nền trắng */
+    border: 1px solid #A3BFFA; /* Viền xanh dương nhạt */
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin-bottom: 1rem; /* Thay cho mb-3 */
+}
+
+/* Ảnh trong card - Tăng chiều dài */
+section.py-5 .card img {
+    width: 250px;  /* Tăng từ 150px lên 250px */
+    height: 200px; /* Tăng từ 150px lên 200px */
+    object-fit: cover;
+}
+
+/* Nội dung trong card */
+section.py-5 .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+section.py-5 .card-body h5 {
+    color: #6C757D; /* Chữ xám cho tên phòng */
+    margin: 0;
+}
+
+section.py-5 .card-body p {
+    color: #6C757D; /* Chữ xám cho mô tả */
+    margin: 5px 0 0 0;
+}
+
+/* Nút Book Now */
+section.py-5 .btn-sm.btn-primary {
+    background-color: #A3BFFA; /* Xanh dương nhạt */
+    border-color: #A3BFFA;
+    color: #FFFFFF; /* Chữ trắng */
+    align-self: flex-end;
+}
+
+section.py-5 .btn-sm.btn-primary:hover {
+    background-color: #728FCE; /* Tông xanh đậm hơn khi hover */
+    border-color: #728FCE;
+}
+
+/* Thông báo không tìm thấy phòng */
+section.py-5 .text-center.mt-4 p {
+    color: #6C757D; /* Chữ xám */
+}

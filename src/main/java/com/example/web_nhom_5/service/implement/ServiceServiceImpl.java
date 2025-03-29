@@ -58,6 +58,16 @@ public class ServiceServiceImpl implements ServiceService {
     public void deleteService(String serviceId) {
         serviceRepository.deleteById(serviceId);
     }
+
+    @Override
+    public List<ServiceResponse> filterService(Long minPrice, Long maxPrice, String serviceType) {
+        if(serviceType.isEmpty()) {
+            serviceType = null;
+        }
+        List<ServiceEntity> serviceEntities = serviceRepository.filterService(minPrice, maxPrice,serviceType);
+        return serviceEntities.stream().map(serviceMapper::serviceEntityToServiceResponse).toList();
+    }
+
     @Override
     public List<ServiceResponse> listAllServiceByKeyword(String keyword)
     {

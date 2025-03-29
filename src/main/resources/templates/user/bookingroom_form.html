@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
-
 <div class="booking-form-container" th:fragment="room-form">
     <h1>Đặt Phòng</h1>
     <form th:action="@{/users/booking-rooms/{roomId}(roomId=${room.Id})}" method="post">
@@ -33,7 +32,5 @@
         <button type="submit" class="del-button" id="submitButton" disabled>Đặt Phòng</button>
     </form>
 </div>
-
-
 </body>
 </html>

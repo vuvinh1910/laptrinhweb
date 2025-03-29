@@ -21,7 +21,7 @@ public interface BookingRoomService extends BookingCancellationService,ProcessPa
     List<BookingRoomResponse> getAllBookingRoomsByStatus(BookingStatus bookingStatus);
     List<BookingRoomResponse> getAllBookingRoomsByUser();
     List<BookingRoomEntity> getAllBookingRoomsByRoomId(Long roomId);
-    boolean bookingRoomIsAvailable(Long roomId,LocalDate checkIn, LocalDate checkOut);
+    boolean bookingRoomIsAvailable(Long roomId,LocalDate checkIn,LocalDate checkOut);
     List<BookingRoomResponse> getAllBookingRoomsByPaid(boolean paid);
     long countPending();
     long countPendingComplete();

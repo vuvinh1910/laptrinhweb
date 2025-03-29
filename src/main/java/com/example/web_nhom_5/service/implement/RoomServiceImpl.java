@@ -4,6 +4,7 @@ import com.example.web_nhom_5.conventer.RoomMapper;
 import com.example.web_nhom_5.dto.request.RoomCreateRequest;
 import com.example.web_nhom_5.dto.request.RoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.RoomResponse;
+import com.example.web_nhom_5.entity.BookingRoomEntity;
 import com.example.web_nhom_5.entity.LocationEntity;
 import com.example.web_nhom_5.entity.RoomEntity;
 import com.example.web_nhom_5.enums.SearchOperation;
@@ -13,6 +14,7 @@ import com.example.web_nhom_5.repository.LocationRepository;
 import com.example.web_nhom_5.repository.RoomRepository;
 import com.example.web_nhom_5.repository.ServiceRepository;
 import com.example.web_nhom_5.search.SearchCriteria;
+import com.example.web_nhom_5.service.BookingRoomService;
 import com.google.common.base.Joiner;
 import com.example.web_nhom_5.search.EntitySpecificationBuilder.RoomSpecificationBuilder;
 
@@ -27,6 +29,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.Normalizer;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.*;
 
@@ -46,6 +50,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private LocationService locationService;
+
+    @Autowired
+    private BookingRoomService bookingRoomService;
 
     @Autowired
     private LocationRepository locationRepository;
@@ -121,6 +128,38 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public List<RoomResponse> filterRooms(String locationName, LocalDate checkIn, LocalDate checkOut, int numOfPeople, Long price, String roomType) {
+        String locationCode = null;
+        if(roomType.isEmpty()) {
+            roomType = null;
+        }
+        if (!locationName.isEmpty()) {
+            locationName = removeVietnameseAccents(locationName).toLowerCase();
+            locationCode = switch (locationName) {
+                case "hn", "hanoi", "ha noi", "ha-noi" -> "HA-NOI";
+                case "hcm", "hochiminh", "ho chi minh", "ho-chi-minh" -> "HCM";
+                case "dn", "danang", "da nang", "da-nang" -> "DA-NANG";
+                case "ha", "hoian", "hoi an", "hoi-an" -> "HOI-AN";
+                case "pq", "phuquoc", "phu quoc", "phu-quoc" -> "PHU-QUOC";
+                default -> "~";
+            };
+        }
+
+        List<RoomEntity> roomEntities = roomRepository.filterRooms(locationCode, price, roomType);
+        return roomEntities.stream()
+                .filter(room -> bookingRoomService.bookingRoomIsAvailable(room.getId(), checkIn, checkOut))
+                .map(roomMapper::roomEntityToRoomResponse).toList();
+    }
+
+    // Hàm chuẩn hóa chuỗi (loại bỏ dấu tiếng Việt)
+    private String removeVietnameseAccents(String input) {
+        if (input == null) return null;
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{M}");
+        return pattern.matcher(normalized).replaceAll("").replace("đ", "d").replace("Đ", "D").toLowerCase();
+    }
+
+    @Override
     public List<RoomResponse> getLimitedRooms() {
         List<RoomEntity> rooms = roomRepository.findAll(); // Lấy tất cả các phòng
         // Giới hạn chỉ lấy 4 phòng đầu tiên
@@ -129,24 +168,22 @@ public class RoomServiceImpl implements RoomService {
 
     //search room
     @Override
-    public List<RoomResponse> listAll(String keyword)
-    {
+    public List<RoomResponse> listAll(String keyword) {
         List<RoomEntity> roomEntities;
-        if (keyword!=null)
-        {
-            roomEntities=roomRepository.listAll(keyword);
+        if (keyword != null) {
+            roomEntities = roomRepository.listAll(keyword);
 
-        } else
-        {
-            roomEntities=roomRepository.findAll();
+        } else {
+            roomEntities = roomRepository.findAll();
         }
         return roomEntities.stream().map(roomMapper::roomEntityToRoomResponse).toList();
     }
+
     @Override
     public List<RoomResponse> findAllBySpecification(String search) {
         RoomSpecificationBuilder builder = new RoomSpecificationBuilder();
         String operationSetExper = Joiner.on("|").join(SearchOperation.SIMPLE_OPERATION_SET);
-        Pattern pattern = Pattern.compile("((\\w+?)([:<>!~])(\\w[\\w\\s]*))(\\p{Punct})?",Pattern.UNICODE_CHARACTER_CLASS);
+        Pattern pattern = Pattern.compile("((\\w+?)([:<>!~])(\\w[\\w\\s]*))(\\p{Punct})?", Pattern.UNICODE_CHARACTER_CLASS);
 
         Matcher matcher = pattern.matcher(search + ",");
         while (matcher.find()) {
@@ -161,41 +198,42 @@ public class RoomServiceImpl implements RoomService {
         Specification<RoomEntity> spec = builder.build();
         return roomRepository.findAll(spec).stream().map(roomMapper::roomEntityToRoomResponse).toList();
     }
-    @Override
-    public List<RoomResponse> filterBySpecificationAndAddress(String room,String address) {
 
-        CriteriaBuilder builder=em.getCriteriaBuilder();
-        CriteriaQuery<RoomEntity> query=builder.createQuery(RoomEntity.class);
-        Root<RoomEntity> roomRoot=query.from(RoomEntity.class);
-        Join<RoomEntity,LocationEntity> locationRoot=roomRoot.join("location");
-        List<Predicate> roomPre=new ArrayList<>();
-        List<Predicate> locationPre=new ArrayList<>();
-        Pattern pattern = Pattern.compile("((\\w+?)([:<>!~])(\\w[\\w\\s]*))(\\p{Punct})?",Pattern.UNICODE_CHARACTER_CLASS);
-        Matcher matcher=pattern.matcher(room+',');
-        while(matcher.find()) {
-         SearchCriteria criteria=new SearchCriteria(matcher.group(2),matcher.group(3),matcher.group(4),matcher.group(1),matcher.group(5));
+    @Override
+    public List<RoomResponse> filterBySpecificationAndAddress(String room, String address) {
+
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<RoomEntity> query = builder.createQuery(RoomEntity.class);
+        Root<RoomEntity> roomRoot = query.from(RoomEntity.class);
+        Join<RoomEntity, LocationEntity> locationRoot = roomRoot.join("location");
+        List<Predicate> roomPre = new ArrayList<>();
+        List<Predicate> locationPre = new ArrayList<>();
+        Pattern pattern = Pattern.compile("((\\w+?)([:<>!~])(\\w[\\w\\s]*))(\\p{Punct})?", Pattern.UNICODE_CHARACTER_CLASS);
+        Matcher matcher = pattern.matcher(room + ',');
+        while (matcher.find()) {
+            SearchCriteria criteria = new SearchCriteria(matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(1), matcher.group(5));
             System.out.println(matcher.group(1));
             System.out.println(matcher.group(2));
             System.out.println(matcher.group(3));
             System.out.println(matcher.group(4));
             System.out.println(matcher.group(5));
-         Predicate pre=toPredicate(roomRoot,builder,criteria);
-         roomPre.add(pre);
+            Predicate pre = toPredicate(roomRoot, builder, criteria);
+            roomPre.add(pre);
         }
-        Matcher matcher1=pattern.matcher(address+',');
-        while (matcher1.find())
-        {
-            SearchCriteria criteria =new SearchCriteria(matcher1.group(2),matcher1.group(3),matcher1.group(4),matcher1.group(1),matcher1.group(5));
-            Predicate pre=toPredicate(locationRoot,builder,criteria);
+        Matcher matcher1 = pattern.matcher(address + ',');
+        while (matcher1.find()) {
+            SearchCriteria criteria = new SearchCriteria(matcher1.group(2), matcher1.group(3), matcher1.group(4), matcher1.group(1), matcher1.group(5));
+            Predicate pre = toPredicate(locationRoot, builder, criteria);
             locationPre.add(pre);
         }
-        Predicate roomPreToArr=builder.or(roomPre.toArray(new Predicate[0]));
-        Predicate locationPreToArr=builder.or(locationPre.toArray(new Predicate[0]));
-        Predicate finalPre=builder.and(roomPreToArr,locationPreToArr);
+        Predicate roomPreToArr = builder.or(roomPre.toArray(new Predicate[0]));
+        Predicate locationPreToArr = builder.or(locationPre.toArray(new Predicate[0]));
+        Predicate finalPre = builder.and(roomPreToArr, locationPreToArr);
         query.where(finalPre);
         return em.createQuery(query).getResultList().stream().map(roomMapper::roomEntityToRoomResponse).toList();
     }
-    public Predicate toPredicate(@NotNull Root<RoomEntity> root,@NotNull CriteriaBuilder criteriaBuilder,SearchCriteria searchCriteria){
+
+    public Predicate toPredicate(@NotNull Root<RoomEntity> root, @NotNull CriteriaBuilder criteriaBuilder, SearchCriteria searchCriteria) {
         return switch (searchCriteria.getOperation()) {
             case EQUALITY -> criteriaBuilder.equal(root.get(searchCriteria.getKeyword()), searchCriteria.getValue());
             case NEGATION -> criteriaBuilder.notEqual(root.get(searchCriteria.getKeyword()), searchCriteria.getValue());
@@ -214,7 +252,8 @@ public class RoomServiceImpl implements RoomService {
             default -> null;
         };
     }
-    public Predicate toPredicate(@NotNull Join<RoomEntity,LocationEntity> root,@NotNull CriteriaBuilder criteriaBuilder,SearchCriteria searchCriteria){
+
+    public Predicate toPredicate(@NotNull Join<RoomEntity, LocationEntity> root, @NotNull CriteriaBuilder criteriaBuilder, SearchCriteria searchCriteria) {
         return switch (searchCriteria.getOperation()) {
             case EQUALITY -> criteriaBuilder.equal(root.get(searchCriteria.getKeyword()), searchCriteria.getValue());
             case NEGATION -> criteriaBuilder.notEqual(root.get(searchCriteria.getKeyword()), searchCriteria.getValue());
@@ -233,4 +272,4 @@ public class RoomServiceImpl implements RoomService {
             default -> null;
         };
     }
-    }
+}

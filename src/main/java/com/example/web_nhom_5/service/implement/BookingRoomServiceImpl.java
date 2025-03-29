@@ -138,10 +138,10 @@ public class BookingRoomServiceImpl implements BookingRoomService {
 
     @Override
     public boolean bookingRoomIsAvailable(Long roomId,LocalDate checkIn, LocalDate checkOut) {
-        if (checkIn.isAfter(checkOut)) {
+        if (checkIn!=null && checkOut!=null && checkIn.isAfter(checkOut)) {
             throw new WebException(ErrorCode.INVALID_BOOKING_CHECKIN_CHECKOUT);
         }
-        long count = bookingRoomRepository.countByRoom_IdAndCheckInBeforeAndCheckOutAfterAndStatusNotAndStatusNot(roomId,checkOut,checkIn,BookingStatus.CANCELLED, BookingStatus.COMPLETED);
+        long count = bookingRoomRepository.countRoomAvailable(roomId,checkIn,checkOut,BookingStatus.CONFIRMED);
         return count == 0;
     }
 
@@ -156,7 +156,7 @@ public class BookingRoomServiceImpl implements BookingRoomService {
 
     @Override
     public long countPending() {
-        return bookingRoomRepository.countPendingConfirm(BookingStatus.PENDING);
+        return bookingRoomRepository.countPendingConfirm(BookingStatus.CANCELLED,true);
     }
 
     @Override
@@ -192,12 +192,13 @@ public class BookingRoomServiceImpl implements BookingRoomService {
         if (amount < bookingRoomEntity.getTotalPrice() || amount <= 0) {
             throw new WebException(ErrorCode.INVALID_NUM);
         }
-
+        if(!bookingRoomIsAvailable(bookingRoomEntity.getRoom().getId(),bookingRoomEntity.getCheckIn(),bookingRoomEntity.getCheckOut())) {
+            throw new WebException(ErrorCode.ROOM_IS_OUT);
+        }
         bookingRoomEntity.setPaid(true);
         bookingRoomEntity.setStatus(BookingStatus.CONFIRMED);
         bookingRoomRepository.save(bookingRoomEntity);
         ProcessPaymentResponse processPaymentResponse = paymentMapper.bookingRoomToPaymentResponse(bookingRoomEntity);
-
         processPaymentResponse.setAmount(bookingRoomEntity.getTotalPrice());
         processPaymentResponse.setCashBack(amount - processPaymentResponse.getAmount());
         processPaymentResponse.setSuccess(true);

@@ -18,6 +18,7 @@ public interface BookingServiceRepository extends JpaRepository<BookingServiceEn
     List<BookingServiceEntity> findAllByPaid(Boolean paid);
     @Query("select coalesce(sum(b.totalPrice),0) from BookingServiceEntity b where b.paid = :paid")
     long sumAllPriceByStatus(boolean paid);
+    int countAllByStatusAndPaid(BookingStatus status, Boolean paid);
     List<BookingServiceEntity> findAllByStatusAndPaid(BookingStatus status, boolean paid);
     List<BookingServiceEntity> findAllByStatusAndCreatedAtBeforeAndPaid(BookingStatus status, LocalDateTime createdAt, boolean paid);
 }

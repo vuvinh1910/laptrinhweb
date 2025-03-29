@@ -1,0 +1,53 @@
+#confirmationPopup, #confirmationPopup-login {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
+    width: 350px; /* Tăng width */
+}
+
+#confirmationPopup p, #confirmationPopup-login p {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 18px; /* Tăng cỡ chữ */
+    line-height: 1.5;
+}
+
+#confirmDelete, #confirm {
+    background-color: rgba(32, 43, 159, 0.73);
+    color: white;
+    border: none;
+    padding: 12px 24px; /* Tăng padding */
+    margin: 0 10px; /* Tăng khoảng cách giữa các nút */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px; /* Tăng cỡ chữ */
+    font-weight: 500;
+}
+
+#cancelDelete, #cancel {
+    background-color: #666;
+    color: white;
+    border: none;
+    padding: 12px 24px; /* Tăng padding */
+    margin: 0 10px; /* Tăng khoảng cách giữa các nút */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px; /* Tăng cỡ chữ */
+    font-weight: 500;
+}
+
+/* Hiệu ứng hover */
+#confirmDelete:hover, #confirm:hover {
+    background-color: #333;
+}
+
+#cancelDelete:hover, #cancel:hover {
+    background-color: #888;
+}

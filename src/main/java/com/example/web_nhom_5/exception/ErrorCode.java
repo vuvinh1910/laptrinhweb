@@ -20,6 +20,7 @@ public enum ErrorCode {
     DO_NOT_CHANGE_THIS(1110, "Do not change this booking",HttpStatus.BAD_REQUEST),
     ROOM_FULL(1111, "Room full",HttpStatus.BAD_REQUEST),
     EMAIL_ALREADY_EXISTS(1112, "Email already exists",HttpStatus.BAD_REQUEST),
+    ROOM_IS_OUT(1113, "Phòng bạn đặt đã hết. Không thể thanh toán",HttpStatus.BAD_REQUEST),
     INVALID_KEY(1004, "Invalid key" , HttpStatus.BAD_REQUEST),
     USER_EXISTED(1001,"User already existed",HttpStatus.BAD_REQUEST),
     USERNAME_EXISTED(1002,"username chua it nhat 5 ki tu", HttpStatus.BAD_REQUEST),

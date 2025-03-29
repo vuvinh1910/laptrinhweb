@@ -1,0 +1,121 @@
+/* CSS với màu chủ đạo: trắng (#FFFFFF), xám (#6C757D), xanh dương nhạt (#A3BFFA) */
+
+/* Thiết lập cho body với class service-page */
+body.service-page {
+    background-color: #FFFFFF; /* Nền trắng */
+    color: #6C757D; /* Chữ xám */
+    padding-top: 80px;
+    font-family: Arial, sans-serif;
+}
+
+/* Section với class py-5 */
+section.py-5 {
+    background-color: #FFFFFF; /* Nền trắng */
+}
+
+/* Tiêu đề chính trong section */
+section.py-5 h1.text-center {
+    color: #6C757D; /* Chữ xám */
+}
+
+section.py-5 .btn-container {
+    display: flex;
+    justify-content: flex-end; /* Đẩy nút về bên phải */
+    margin-top: auto; /* Giữ nó ở vị trí cuối cùng của card-body */
+}
+
+/* Filter Sidebar */
+section.py-5 .filter-sidebar {
+    background-color: #F8F9FA; /* Xám nhạt mặc định của Bootstrap */
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #A3BFFA; /* Viền xanh dương nhạt */
+    position: sticky;
+    top: 100px; /* Điều chỉnh dựa trên chiều cao navbar */
+    z-index: 10;
+    max-height: calc(100vh - 120px); /* Ngăn tràn nội dung */
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
+}
+
+section.py-5 .form-label {
+    color: #6C757D; /* Chữ xám */
+}
+
+section.py-5 .form-control {
+    border-color: #A3BFFA; /* Viền xanh dương nhạt */
+    color: #6C757D; /* Chữ xám */
+}
+
+section.py-5 .form-control:focus {
+    border-color: #728FCE; /* Xanh đậm hơn khi focus */
+    box-shadow: 0 0 0 0.2rem rgba(163, 191, 250, 0.25); /* Hiệu ứng focus */
+}
+
+/* Nút lọc */
+section.py-5 .btn-primary {
+    background-color: #A3BFFA; /* Xanh dương nhạt */
+    border-color: #A3BFFA;
+    color: #FFFFFF; /* Chữ trắng */
+}
+
+section.py-5 .btn-primary:hover {
+    background-color: #728FCE; /* Tông xanh đậm hơn khi hover */
+    border-color: #728FCE;
+}
+
+/* Card dịch vụ */
+section.py-5 .card {
+    background-color: #FFFFFF; /* Nền trắng */
+    border: 1px solid #A3BFFA; /* Viền xanh dương nhạt */
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin-bottom: 1rem; /* Thay cho mb-3 */
+}
+
+/* Ảnh trong card - Tăng chiều dài */
+section.py-5 .card img {
+    width: 250px;  /* Tăng từ 150px lên 250px */
+    height: 200px; /* Tăng từ 150px lên 200px */
+    object-fit: cover;
+}
+
+/* Nội dung trong card */
+section.py-5 .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+section.py-5 .card-body h5 {
+    color: #6C757D; /* Chữ xám cho tên dịch vụ */
+    margin: 0;
+}
+
+section.py-5 .card-body p {
+    color: #6C757D; /* Chữ xám cho mô tả */
+    margin: 5px 0 0 0;
+}
+
+/* Nút Đặt Ngay với class del-button */
+section.py-5 .del-button {
+    background-color: #A3BFFA; /* Xanh dương nhạt */
+    border-color: #A3BFFA;
+    color: #FFFFFF; /* Chữ trắng */
+    padding: 0.25rem 0.5rem; /* Kích thước nhỏ như btn-sm */
+    border-radius: 0.2rem; /* Bo góc nhẹ */
+    border: 1px solid transparent; /* Để đồng bộ với btn-primary */
+    align-self: flex-end; /* Đẩy nút về cuối card-body */
+}
+
+section.py-5 .del-button:hover {
+    background-color: #728FCE; /* Tông xanh đậm hơn khi hover */
+    border-color: #728FCE;
+    color: #FFFFFF; /* Giữ chữ trắng khi hover */
+}
+
+/* Thông báo không tìm thấy dịch vụ */
+section.py-5 .text-center.mt-4 p {
+    color: #6C757D; /* Chữ xám */
+}

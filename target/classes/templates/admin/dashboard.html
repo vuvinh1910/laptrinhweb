@@ -1,17 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" th:href="@{/css/ad-header.css}">
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" th:href="@{/css/admin/dashboard-content.css}">
 </head>
 <body>
-<div th:replace="admin/header :: header"></div>
-<h1 style="margin-left:730px;color:blue;">Welcome to DashBoard</h1>
+<div th:fragment="content" id="dashboard-content">
+    <h3>Bảng Thống Kê</h3>
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <h4>Tổng thu nhập</h4>
+            <p th:text="${tongThuNhap} + ' VND'" class="value">0 VND</p>
+        </div>
+        <div class="dashboard-card">
+            <h4>Số người dùng</h4>
+            <p th:text="${numUser}" class="value">0</p>
+        </div>
+        <div class="dashboard-card">
+            <h4>Số đơn đang chờ hoàn tiền</h4>
+            <p th:text="${soDonDangCho}" class="value">0</p>
+        </div>
+        <div class="dashboard-card">
+            <h4>Đang chờ trả phòng</h4>
+            <p th:text="${soDangChoTraPhong}" class="value">0</p>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -61,26 +61,34 @@ public class PublicPageController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @GetMapping({"/home","/","/home/"})
+    @GetMapping({"/home", "/home/"})
     public String getHome(Model model) {
-        List<RoomResponse> rooms = roomService.getLimitedRooms(); // Lấy 4 phòng
-        List<LocationResponse> locations = locationService.getAllLocation();
-        List<ServiceResponse> services = serviceService.getAllServices();
-        model.addAttribute("rooms", rooms);
-        model.addAttribute("services", services);
-        model.addAttribute("locations", locations);
-        return "home";
+        return "/public/home";
     }
 
+    @GetMapping({"/rooms/", "/rooms"})
+    public String roomFilter(
+            @RequestParam(required = false, defaultValue = "") String location,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate checkIn,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate checkOut,
+            @RequestParam(required = false, defaultValue = "1") Integer numOfPeople,
+            @RequestParam(required = false) Long maxPrice,
+            @RequestParam(required = false, defaultValue = "") String roomType,
+            Model model) {
 
-    @GetMapping({"/all-rooms","/","/all-rooms/"})
-    public String getRooms(Model model) {
-
-        List<RoomResponse> rooms = roomService.getAllRooms();
-        List<LocationResponse> locations = locationService.getAllLocation();
+        List<RoomResponse> rooms = roomService.filterRooms(location, checkIn, checkOut, numOfPeople, maxPrice, roomType);
         model.addAttribute("rooms", rooms);
-        model.addAttribute("locations", locations);
-        return "rooms";
+        return "/public/rooms";
+    }
+
+    @GetMapping({"/services","/services/"})
+    public String serviceFilter(@RequestParam(required = false) Long minPrice,
+                                @RequestParam(required = false) Long maxPrice,
+                                @RequestParam(required = false, defaultValue = "") String serviceType,
+                                Model model) {
+        List<ServiceResponse> services = serviceService.filterService(minPrice, maxPrice,serviceType);
+        model.addAttribute("services", services);
+        return "/public/services";
     }
 
     @GetMapping()
@@ -102,24 +110,27 @@ public class PublicPageController {
         return "rooms";
     }
 
-    @GetMapping({"/login","/","/login/"})
+    @GetMapping({"/login", "/login/"})
     public String getLogIn(Model model) {
         model.addAttribute("authen", new AuthenticationRequest());
         return "login";
     }
 
-    @GetMapping({"/signup", "/", "/signup/"})
+    @GetMapping({"/signup", "/signup/"})
     public String getSignUp(Model model) {
         model.addAttribute("user", new UserCreationRequest());
         return "signup";
     }
 
     @PostMapping("/signup")
-    public String registerUser(@Valid @ModelAttribute("user") UserCreationRequest request, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String registerUser(
+            @Valid @ModelAttribute("user") UserCreationRequest request,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            // Nếu có lỗi validation, trả về trang signup với thông báo lỗi
-            return "signup";
+            redirectAttributes.addFlashAttribute("error", "Invalid input. Please check again.");
+            return "redirect:/public/signup"; // Chuyển hướng để tránh lỗi bị lặp lại
         }
 
         try {
@@ -127,19 +138,15 @@ public class PublicPageController {
             redirectAttributes.addFlashAttribute("success", "Account created successfully.");
             return "redirect:/public/login";
         } catch (WebException e) {
-            model.addAttribute("error", e.getMessage());
-            return "signup";
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/public/signup"; // Chuyển hướng để lỗi không bị lặp lại
         } catch (Exception ex) {
-            model.addAttribute("error", "Unexpected error occurred: " + ex.getMessage());
-            return "signup";
+            redirectAttributes.addFlashAttribute("error", "Unexpected error occurred: " + ex.getMessage());
+            return "redirect:/public/signup"; // Chuyển hướng để lỗi không bị lặp lại
         }
     }
 
-    @GetMapping("/search-form")
-    public String showSearchForm(Model model) {
-        // Truyền thêm bất kỳ dữ liệu nào cần thiết vào model nếu cần
-        return "search-form"; // Tên file HTML giao diện tìm kiếm (search-form.html)
-    }
+
 
     @Autowired
     private SearchRoomService searchRoomService;
@@ -175,44 +182,33 @@ public class PublicPageController {
     public String authenticationResponseApiResponse(
             @ModelAttribute("authen") AuthenticationRequest authenticationRequest,
             HttpServletResponse response,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
 
         try {
             var authResponse = authenticationService.authenticate(authenticationRequest);
 
-            log.info("Generated Token: {}", authResponse.getToken());
             if (authResponse != null && authResponse.getToken() != null) {
-                // Tạo cookie lưu trữ token
-                try {
-                    String encodedToken = authResponse.getToken();
-                    log.info("Encoded Token using Base64 URL-safe: {}", encodedToken);
+                // Lưu token vào cookie
+                Cookie authCookie = new Cookie("Authorization", authResponse.getToken().trim());
+                authCookie.setPath("/");
+                authCookie.setHttpOnly(true);
+                authCookie.setSecure(false);
+                authCookie.setMaxAge(3600);
+                response.addCookie(authCookie);
 
-                    Cookie authCookie = new Cookie("Authorization",encodedToken.trim());
-                    authCookie.setPath("/");  // Đảm bảo cookie có phạm vi trên toàn bộ website
-                    authCookie.setHttpOnly(true);  // Đảm bảo không thể truy cập qua JavaScript
-                    authCookie.setSecure(false);  // Chỉ cần false khi chạy trên HTTP
-                    authCookie.setMaxAge(3600);  // Thời gian sống của cookie là 3600 giây = 1 giờ
-                    response.addCookie(authCookie);
-                    log.info("Token stored in cookie: Bearer {}", encodedToken);
-
-                } catch (Exception e) {
-                    log.error("Error storing token in cookie: {}", e.getMessage());
-                }
-
-                // Kiểm tra quyền admin từ token
+                // Kiểm tra quyền admin
                 if (authenticationService.isAdminToken(authResponse.getToken())) {
-                    return "redirect:/admin/dashboard";  // Chuyển hướng tới trang admin
+                    return "redirect:/admin/dashboard";
                 } else {
-                    return "redirect:/public/home";  // Chuyển hướng tới trang home
+                    return "redirect:/public/home";
                 }
             } else {
-                model.addAttribute("errorMessage", "Authentication failed. Please try again.");
-                return "login";
+                redirectAttributes.addFlashAttribute("error", "Authentication failed. Please try again.");
+                return "redirect:/public/login";  // Chuyển hướng để tránh lỗi lặp lại
             }
         } catch (WebException e) {
-            log.error("Authentication error: {}", e.getMessage(), e);
-            model.addAttribute("errorMessage", "Invalid username or password");
-            return "login";
+            redirectAttributes.addFlashAttribute("error", "Invalid username or password");
+            return "redirect:/public/login";  // Chuyển hướng để lỗi không bị lặp lại
         }
     }
 
@@ -223,7 +219,7 @@ public class PublicPageController {
         model.addAttribute("locations", locations);
         RoomEntity rooms = roomService.getRoomById(id);
         model.addAttribute("room", rooms);
-        return "viewroom";
+        return "public/viewroom";
     }
 
     @GetMapping(value = "/service/{id}")
@@ -239,8 +235,8 @@ public class PublicPageController {
     @GetMapping("/room/{roomId}/availability")
     @ResponseBody
     public Object checkRoomAvailability(@PathVariable("roomId") Long roomId,
-                                                     @RequestParam("checkIn") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate checkIn,
-                                                     @RequestParam("checkOut") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate checkOut) {
+                                        @RequestParam("checkIn") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate checkIn,
+                                        @RequestParam("checkOut") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate checkOut) {
         return bookingRoomService.bookingRoomIsAvailable(roomId, checkIn, checkOut);
     }
 

@@ -165,7 +165,7 @@ public class UserPageController {
             model.addFlashAttribute("bookingId","no");
             model.addFlashAttribute("result",e.getMessage());
         }
-        return "redirect:/public/service/{serviceId}";
+        return "redirect:/public/services";
     }
 
     // list dat dich vu

@@ -1,53 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông tin cá nhân</title>
-    <link rel="stylesheet" th:href="@{/css/base.css}">
-    <link rel="stylesheet" th:href="@{/css/navbar.css}">
-    <link rel="stylesheet" th:href="@{/css/changepass.css}">
-    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
-    <link rel="stylesheet" th:href="@{/css/popup.css}">
-    <script th:src="@{/js/navbar.js}" defer></script>
+    <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/user/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/public/header-navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/user/change-pass.css}">
+    <link rel="stylesheet" th:href="@{/css/public/popup-confirm.css}">
+    <link rel="stylesheet" th:href="@{/css/public/popup-login.css}">
     <script th:src="@{/js/popup.js}" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-          integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script th:src="@{/js/confirm.js}" defer></script>
 </head>
-<body>
+<body class="change-password">
 <!-- Thanh điều hướng -->
-<div th:replace="header :: header"></div>
-
-<div class="container">
-    <div th:include="sidebar :: sidebar" class="sidebar"></div>
-
+<div th:replace="public/header-navbar :: header"></div>
+<div th:include="user/sidebar :: sidebar" class="sidebar"></div>
+<div class="password-container">
     <h1>Thay đổi mật khẩu</h1>
-
     <form class="change-pass" th:action="@{/users/myInfo/change-pass}" method="POST" th:object="${user}">
-        <input type="hidden" name="_method" value="PUT" />
+        <input type="hidden" name="_method" value="PUT"/>
 
         <!-- Mật khẩu cũ -->
         <div>
             <label for="oldPassword">Mật khẩu cũ:</label>
-            <input type="password" id="oldPassword" th:field="*{oldPassword}" required />
+            <input type="password" id="oldPassword" th:field="*{oldPassword}" required/>
         </div>
 
         <!-- Mật khẩu mới -->
         <div>
             <label for="newPassword">Mật khẩu mới:</label>
-            <input type="password" id="newPassword" th:field="*{newPassword}" required minlength="8" />
+            <input type="password" id="newPassword" th:field="*{newPassword}" required minlength="8"/>
             <small style="color: red; display: none;" id="password-error">Mật khẩu phải có ít nhất 8 ký tự.</small>
         </div>
 
         <!-- Xác nhận mật khẩu mới -->
         <div>
             <label for="confirmPassword">Xác nhận mật khẩu mới:</label>
-            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required minlength="8" />
+            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required minlength="8"/>
             <small style="color: red; display: none;" id="confirm-password-error">Mật khẩu xác nhận không khớp.</small>
         </div>
 
@@ -66,5 +58,7 @@
     </div>
 
 </div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

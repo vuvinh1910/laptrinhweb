@@ -2,6 +2,7 @@ package com.example.web_nhom_5.controller;
 
 import com.example.web_nhom_5.dto.request.*;
 import com.example.web_nhom_5.dto.response.*;
+import com.example.web_nhom_5.entity.BookingRoomEntity;
 import com.example.web_nhom_5.enums.BookingStatus;
 import com.example.web_nhom_5.exception.WebException;
 import com.example.web_nhom_5.service.BookingRoomService;
@@ -62,7 +63,7 @@ public class UserPageController {
     }
 
     // doi mat khau
-    @GetMapping(value = {"/myInfo/change-pass","/myInfo/change-pass/"})
+    @GetMapping(value = {"/myInfo/change-pass", "/myInfo/change-pass/"})
     public String changePass(Model model) {
         model.addAttribute("user", new UpdatePasswordRequest()); // Khởi tạo đối tượng user
         List<LocationResponse> locations = locationService.getAllLocation();
@@ -71,7 +72,7 @@ public class UserPageController {
     }
 
     // api doi mat khau
-    @PutMapping(value = {"/myInfo/change-pass","/myInfo/change-pass"})
+    @PutMapping(value = {"/myInfo/change-pass", "/myInfo/change-pass"})
     public String updateUserPassword(@ModelAttribute("user") UpdatePasswordRequest request, RedirectAttributes model) {
         try {
             String result = userService.updatePassword(request);
@@ -85,15 +86,15 @@ public class UserPageController {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // dat phong
-    @PostMapping(value = {"/booking-rooms/{roomId}","/booking-rooms/{roomId}"})
+    @PostMapping(value = {"/booking-rooms/{roomId}", "/booking-rooms/{roomId}"})
     public String createBookingRoom(@ModelAttribute("booking") BookingRoomCreateRequest request, RedirectAttributes model, @PathVariable long roomId) {
         try {
             long id = bookingRoomService.addBookingRoom(request).getId();
             model.addFlashAttribute("bookingId", id);
-            model.addFlashAttribute("result","Đặt phòng thành công.\n Chuyển đến trang thanh toán ?");
+            model.addFlashAttribute("result", "Đặt phòng thành công.\n Chuyển đến trang thanh toán ?");
         } catch (WebException e) {
-            model.addFlashAttribute("bookingId","no");
-            model.addFlashAttribute("result",e.getMessage());
+            model.addFlashAttribute("bookingId", "no");
+            model.addFlashAttribute("result", e.getMessage());
         }
         return "redirect:/public/room/{roomId}";
     }
@@ -104,7 +105,6 @@ public class UserPageController {
         List<LocationResponse> locations = locationService.getAllLocation();
         model.addAttribute("locations", locations);
         List<BookingRoomResponse> bookedRooms = bookingRoomService.getAllBookingRoomsByUser();
-//        List<BookingRoomResponse> bookedRooms = bookingRoomService.getAllBookingRooms();
         model.addAttribute("bookedRooms", bookedRooms);
         return "user/listbookingrooms";
     }
@@ -114,7 +114,7 @@ public class UserPageController {
     public String deleteBookingRoom(@PathVariable long roomId, RedirectAttributes model) {
         try {
             bookingRoomService.deleteBookingRoomById(roomId);
-            model.addFlashAttribute("result","đã xóa");
+            model.addFlashAttribute("result", "đã xóa");
         } catch (WebException e) {
             model.addFlashAttribute("result", e.getMessage());
         }
@@ -124,7 +124,9 @@ public class UserPageController {
     // trang thanh toan phong
     @GetMapping(value = "/booking-rooms/{bookingId}/payment")
     public String getPaymentForm(Model model, @PathVariable long bookingId) {
+        Long price = bookingRoomService.getBookingRoomById(bookingId).getTotalPrice();
         model.addAttribute("bookingId", bookingId);
+        model.addAttribute("price", price);
         return "user/paymentroom";
     }
 
@@ -132,8 +134,9 @@ public class UserPageController {
     @PostMapping(value = "/booking-rooms/{bookingId}/payment")
     public String doRoomProcessPayment(@PathVariable long bookingId, @RequestParam("amount") Long amount, RedirectAttributes model) {
         try {
-            String result = "Thanh toán thành công.\n Tiền thừa: ";
-            result += Long.toString(bookingRoomService.processPayment(bookingId, amount).getCashBack());
+            bookingRoomService.processPayment(bookingId, amount);
+            String result = "Thanh toán thành công.\n Tổng tiền: ";
+            result += Long.toString(bookingRoomService.getBookingRoomById(bookingId).getTotalPrice());
             model.addFlashAttribute("result", result);
         } catch (WebException e) {
             model.addFlashAttribute("result", e.getMessage());
@@ -160,16 +163,16 @@ public class UserPageController {
         try {
             long id = bookingServiceService.addBookingService(request).getId();
             model.addFlashAttribute("bookingId", id);
-            model.addFlashAttribute("result","Đặt dịch vụ thành công.\n Chuyển đến trang thanh toán ?");
+            model.addFlashAttribute("result", "Đặt dịch vụ thành công.\n Chuyển đến trang thanh toán ?");
         } catch (WebException e) {
-            model.addFlashAttribute("bookingId","no");
-            model.addFlashAttribute("result",e.getMessage());
+            model.addFlashAttribute("bookingId", "no");
+            model.addFlashAttribute("result", e.getMessage());
         }
         return "redirect:/public/services";
     }
 
     // list dat dich vu
-    @GetMapping(value = {"/myInfo/booking-services","/myInfo/booking-services/"})
+    @GetMapping(value = {"/myInfo/booking-services", "/myInfo/booking-services/"})
     public String getAllBookingServicesByUser(Model model) {
         List<LocationResponse> locations = locationService.getAllLocation();
         model.addAttribute("locations", locations);
@@ -179,11 +182,11 @@ public class UserPageController {
     }
 
     // xoa dich vu
-    @DeleteMapping(value = {"/myInfo/booking-services/{id}","/myInfo/booking-services/{id}"})
+    @DeleteMapping(value = {"/myInfo/booking-services/{id}", "/myInfo/booking-services/{id}"})
     public String deleteBookingService(@PathVariable long id, RedirectAttributes model) {
         try {
             bookingServiceService.deleteBookingServiceById(id);
-            model.addFlashAttribute("result","đã xóa");
+            model.addFlashAttribute("result", "đã xóa");
         } catch (WebException e) {
             model.addFlashAttribute("result", e.getMessage());
         }
@@ -193,7 +196,9 @@ public class UserPageController {
     // trang thanh toan dich vu
     @GetMapping(value = "/booking-services/{bookingId}/payment")
     public String getPaymentService(@PathVariable long bookingId, Model model) {
+        Long price = bookingServiceService.getBookingServiceById(bookingId).getTotalPrice();
         model.addAttribute("bookingId", bookingId);
+        model.addAttribute("price", price);
         return "user/paymentservice";
     }
 
@@ -201,8 +206,9 @@ public class UserPageController {
     @PostMapping(value = "/booking-services/{bookingId}/payment")
     public String doPaymentService(@PathVariable long bookingId, @RequestParam("amount") Long amount, RedirectAttributes model) {
         try {
-            String result = "Thanh toán thành công.\n Tiền thừa: ";
-            result += Long.toString(bookingServiceService.processPayment(bookingId, amount).getCashBack());
+            bookingServiceService.processPayment(bookingId, amount);
+            String result = "Thanh toán thành công.\n Tổng tiền: ";
+            result += Long.toString(bookingServiceService.getBookingServiceById(bookingId).getTotalPrice());
             model.addFlashAttribute("result", result);
         } catch (WebException e) {
             model.addFlashAttribute("result", e.getMessage());
@@ -249,12 +255,12 @@ public class UserPageController {
             } else {
                 // Nếu không có token, hiển thị thông báo lỗi
                 model.addAttribute("errorMessage", "No active session found.");
-                return "login";
+                return "public/login";
             }
         } catch (Exception e) {
             log.error("Error during logout: {}", e.getMessage(), e);
             model.addAttribute("errorMessage", "Logout failed. Please try again.");
-            return "login";
+            return "public/login";
         }
     }
 

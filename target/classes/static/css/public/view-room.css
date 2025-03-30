@@ -1,9 +1,9 @@
-/* CSS với màu chủ đạo: đen xám (#343A40), xám (#6C757D), xanh đậm (#007BFF) */
+/* CSS với chữ đen, nền xám trắng, nút xám đậm */
 
-/* Thiết lập cho body với class view-room */
+/* Body */
 body.view-room {
-    background-color: #22334417; /* Nền trắng để làm nổi bật nội dung */
-    color: #6C757D; /* Chữ xám */
+    background-color: #F8F9FA; /* Nền xám trắng */
+    color: #000000; /* Chữ đen */
     font-family: Arial, sans-serif;
 }
 
@@ -17,28 +17,32 @@ body.view-room {
 /* Thông tin phòng (bên trái) */
 .view-room .room-info {
     padding: 20px;
-    background-color: #5a62a617;
+    background-color: #FFFFFF; /* Nền trắng */
+    border: 1px solid #CED4DA;
+    border-radius: 5px;
 }
 
 .view-room .room-info h1 {
-    color: #343A40; /* Đen xám cho tiêu đề */
+    color: #000000; /* Tiêu đề chữ đen */
     margin-bottom: 20px;
 }
 
 .view-room .img-room {
-    width: 100%; /* Bằng chiều rộng của container */
-    height: auto; /* Giữ tỷ lệ ảnh */
-    border-radius: 5px; /* Tùy chọn: bo góc */
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
 }
 
 .view-room .room-info p {
     margin: 10px 0;
+    color: #000000;
 }
 
 .view-room .room-info strong {
-    color: #343A40; /* Đen xám cho chữ in đậm */
+    color: #000000;
 }
 
+/* Hình ảnh chi tiết phòng */
 .room-detail-images {
     display: flex;
     justify-content: space-between;
@@ -54,15 +58,16 @@ body.view-room {
 /* Form đặt phòng (bên phải) */
 .view-room .booking-form-container {
     padding: 20px;
-    background-color: #F8F9FA; /* Nền xám nhạt */
-    border-radius: 8px; /* Bo góc nhẹ */
+    background-color: #FFFFFF; /* Nền trắng */
+    border: 1px solid #CED4DA;
+    border-radius: 8px;
     margin: 86px 0 0 0;
 }
 
 .view-room .booking-form-container h1 {
-    color: #343A40; /* Đen xám cho tiêu đề */
+    color: #000000;
     margin-bottom: 20px;
-    font-size: 1.5rem; /* Giảm kích thước tiêu đề để phù hợp với không gian nhỏ */
+    font-size: 1.5rem;
 }
 
 .view-room .form-group {
@@ -70,7 +75,7 @@ body.view-room {
 }
 
 .view-room .form-group label {
-    color: #343A40; /* Đen xám cho nhãn */
+    color: #000000;
     display: block;
     margin-bottom: 5px;
 }
@@ -78,33 +83,34 @@ body.view-room {
 .view-room .form-group input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #007BFF; /* Viền xanh đậm */
+    border: 1px solid #343A40; /* Viền đen/xám đậm */
     border-radius: 4px;
-    color: #6C757D; /* Chữ xám */
+    color: #000000;
+    background-color: #FFFFFF;
 }
 
 .view-room .form-group input:focus {
-    border-color: #0056B3; /* Xanh đậm hơn khi focus */
+    border-color: #007BFF; /* Xanh khi focus */
     outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Hiệu ứng focus */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 /* Nút Đặt Phòng */
 .view-room .del-button {
-    background-color: #007BFF; /* Xanh đậm */
+    background-color: #495057; /* Nút có màu xám đậm hơn */
     border: none;
     padding: 10px 20px;
     color: #FFFFFF; /* Chữ trắng */
     border-radius: 4px;
     cursor: pointer;
-    width: 100%; /* Nút chiếm toàn bộ chiều rộng của form */
+    width: 100%;
 }
 
 .view-room .del-button:disabled {
-    background-color: #6C757D; /* Xám khi disabled */
+    background-color: #CED4DA; /* Xám nhạt khi disabled */
     cursor: not-allowed;
 }
 
 .view-room .del-button:hover:not(:disabled) {
-    background-color: #0056B3; /* Xanh đậm hơn khi hover */
+    background-color: #6C757D; /* Màu xám đậm chuyển sang xám nhạt hơn khi hover */
 }

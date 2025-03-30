@@ -1,0 +1,197 @@
+/* Điều chỉnh container chính */
+.user-booking-room-list .booking-container {
+    max-width: 1200px;
+    margin: 80px 20px 20px 320px;
+    padding: 30px;
+    background-color: #2d2d2d;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    transition: margin 0.3s ease;
+    color: #e0e0e0;
+    overflow: auto;
+}
+
+body.user-booking-room-list {
+    background-color: #1a1a1a;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+/* Responsive cho màn hình nhỏ hơn */
+@media (max-width: 1200px) {
+    .user-booking-room-list .booking-container {
+        margin-left: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-booking-room-list .booking-container {
+        margin: 80px 15px 15px 15px;
+        padding: 20px;
+        background-color: #333;
+    }
+}
+
+/* Tiêu đề chính */
+.user-booking-room-list h1 {
+    text-align: center;
+    color: #4a90e2;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+/* Hàng header */
+.user-booking-room-list .header-row {
+    display: grid;
+    grid-template-columns: 50px 1fr 120px 150px 150px 120px 150px;
+    gap: 15px;
+    padding: 15px;
+    background-color: #333;
+    font-weight: bold;
+    border-bottom: 2px solid #444;
+    color: #ffffff;
+}
+
+/* Các hàng booking */
+.user-booking-room-list .booking-row {
+    display: grid;
+    grid-template-columns: 50px 1fr 120px 150px 150px 120px 150px;
+    gap: 15px;
+    padding: 15px;
+    align-items: center;
+    border-bottom: 1px solid #444;
+    transition: background-color 0.2s;
+}
+
+.user-booking-room-list .booking-row:hover {
+    background-color: #333333;
+}
+
+/* Nút xóa */
+.user-booking-room-list .del-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-booking-room-list .del-button:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+/* Các nút hành động - Phiên bản cải tiến */
+.user-booking-room-list .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+/* Áp dụng cho cả trạng thái đã thanh toán */
+.user-booking-room-list .paid.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.user-booking-room-list .pay-button,
+.user-booking-room-list .cancel-button {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    min-width: 100px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.user-booking-room-list .pay-button {
+    background-color: #4a90e2;
+    color: white;
+    order: 1;
+}
+
+.user-booking-room-list .cancel-button {
+    background-color: #ff6b6b;
+    color: white;
+    order: 2;
+}
+
+/* Hiệu ứng hover */
+.user-booking-room-list .pay-button:hover,
+.user-booking-room-list .cancel-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.user-booking-room-list .pay-button:hover {
+    background-color: #357abd;
+}
+
+.user-booking-room-list .cancel-button:hover {
+    background-color: #ff5252;
+}
+
+/* Trạng thái đã thanh toán */
+.user-booking-room-list .paid {
+    color: #27ae60;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .user-booking-room-list .header-row {
+        display: none;
+    }
+
+    .user-booking-room-list .booking-row {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        position: relative;
+    }
+
+    .user-booking-room-list .del-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .user-booking-room-list .booking-row > div {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+    }
+
+    .user-booking-room-list .booking-row > div::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 15px;
+        color: #4a90e2;
+    }
+
+    .user-booking-room-list .action-buttons,
+    .user-booking-room-list .paid.action-buttons {
+        width: 100%;
+    }
+
+    .user-booking-room-list .pay-button,
+    .user-booking-room-list .cancel-button {
+        width: 100%;
+        padding: 8px 15px;
+    }
+}

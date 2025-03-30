@@ -24,7 +24,7 @@
         <img th:src="@{/img/user.png}" alt="User" width="50" height="50">
       </td>
       <td th:text="${customer.fullName}"></td>
-      <td th:text="${customer.fullName}"></td>
+      <td th:text="${customer.userName}"></td>
       <td th:text="${customer.email}"></td>
       <td>
         <span th:each="role : ${customer.roles}" th:text="${role.name}+' '"></span>

@@ -11,7 +11,9 @@
     <link rel="stylesheet" th:href="@{/css/admin/booking-room.css}">
     <link rel="stylesheet" th:href="@{/css/admin/booking-service.css}">
     <link rel="stylesheet" th:href="@{/css/admin/dashboard-content.css}">
+    <link rel="stylesheet" th:href="@{/css/public/popup-login.css}">
     <script th:src="@{/js/admin-filter-room.js}" defer></script>
+    <script th:src="@{/js/admin-delete-confirm.js}" defer></script>
     <script>
         var success = "[[${success}]]";
         var error = "[[${error}]]";
@@ -62,6 +64,12 @@
             <!-- Nội dung động sẽ được nhúng vào đây -->
             <div th:replace="${content} :: content"></div>
         </div>
+    </div>
+    <!-- Popup Xác Nhận -->
+    <div id="confirmationPopup" style="display:none;">
+        <p>Bạn có chắc chắn muốn xóa không? Hành động này không thể hoàn tác.</p>
+        <button id="confirmDelete">Xóa</button>
+        <button id="cancelDelete">Hủy</button>
     </div>
 </body>
 </html>

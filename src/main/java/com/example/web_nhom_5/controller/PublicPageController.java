@@ -14,7 +14,6 @@ import com.example.web_nhom_5.service.LocationService;
 import com.example.web_nhom_5.service.RoomService;
 import com.example.web_nhom_5.service.ServiceService;
 import com.example.web_nhom_5.service.implement.AuthenticationService;
-import com.example.web_nhom_5.service.implement.SearchRoomService;
 import com.example.web_nhom_5.service.implement.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -91,35 +90,16 @@ public class PublicPageController {
         return "/public/services";
     }
 
-    @GetMapping()
-    public String getLocation(Model model) {
-        List<LocationResponse> locations = locationService.getAllLocation();
-        model.addAttribute("locations", locations);
-        return "header";
-    }
-
-    @GetMapping("/hotel/{locationCode}")
-    public String getRoomsByLocation(@PathVariable("locationCode") String locationCode, Model model) {
-
-        List<RoomResponse> rooms = roomService.getAllRoomsByLocationCode(locationCode);
-        model.addAttribute("rooms", rooms);
-
-        List<LocationResponse> locations = locationService.getAllLocation();
-        model.addAttribute("locations", locations);
-
-        return "rooms";
-    }
-
     @GetMapping({"/login", "/login/"})
     public String getLogIn(Model model) {
         model.addAttribute("authen", new AuthenticationRequest());
-        return "login";
+        return "public/login";
     }
 
     @GetMapping({"/signup", "/signup/"})
     public String getSignUp(Model model) {
         model.addAttribute("user", new UserCreationRequest());
-        return "signup";
+        return "public/signup";
     }
 
     @PostMapping("/signup")
@@ -145,38 +125,6 @@ public class PublicPageController {
             return "redirect:/public/signup"; // Chuyển hướng để lỗi không bị lặp lại
         }
     }
-
-
-
-    @Autowired
-    private SearchRoomService searchRoomService;
-
-    @GetMapping("/room/search")
-    public String searchRooms(
-            @RequestParam("locationName") String locationName,
-            @RequestParam(value = "minPrice", required = false) Long minPrice,
-            @RequestParam(value = "maxPrice", required = false) Long maxPrice,
-            @RequestParam("checkIn") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
-            @RequestParam("checkOut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
-            Model model) {
-
-        if (minPrice == null) {
-            minPrice = 0L; // Hoặc giá trị mặc định khác, chẳng hạn 0 nếu không có giá trị nhập
-        }
-        if (maxPrice == null) {
-            maxPrice = Long.MAX_VALUE; // Hoặc giá trị lớn nhất nếu không có giá trị nhập
-        }
-
-        List<LocationResponse> locations = locationService.getAllLocation();
-
-        // Tìm các phòng có sẵn dựa trên các tham số
-        List<RoomEntity> availableRooms = searchRoomService.findAvailableRooms(locationName, minPrice, maxPrice, checkIn, checkOut);
-        model.addAttribute("rooms", availableRooms);
-
-        model.addAttribute("locations", locations);
-        return "rooms"; // Tên của view (Thymeleaf template)
-    }
-
 
     @PostMapping("/login")
     public String authenticationResponseApiResponse(
@@ -228,7 +176,7 @@ public class PublicPageController {
         model.addAttribute("locations", locations);
         ServiceEntity service = serviceService.getServiceById(id);
         model.addAttribute("service", service);
-        return "viewservice";
+        return "public/viewservice";
     }
 
     //hien thi trang thai nut dat phong la het phong hay dat phong khi chon ngay.

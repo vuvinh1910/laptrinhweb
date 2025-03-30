@@ -1,0 +1,66 @@
+/* Áp dụng cho trang service-view */
+body.service-view {
+    background-color: #F8F9FA; /* Nền xám trắng */
+    color: #000000; /* Chữ đen */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding-top: 80px; /* Toàn bộ nội dung cách phía trên 80px */
+}
+
+/* Nút Quay Lại */
+.back-button {
+    display: inline-block;
+    margin: 20px 0 20px 135px; /* Sát bên trái, không cần margin-top vì đã có padding-top cho body */
+    padding: 10px 20px;
+    background-color: #495057; /* Màu nút xám đậm */
+    color: #FFFFFF; /* Chữ trắng */
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Hiệu ứng hover cho nút */
+.back-button:hover {
+    background-color: #6C757D; /* Xám nhạt hơn khi hover */
+}
+
+/* Container thông tin dịch vụ */
+.service-details-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Thông tin dịch vụ */
+.service-info {
+    padding: 20px;
+    background-color: #FFFFFF; /* Nền trắng */
+    border: 1px solid #CED4DA;
+    border-radius: 5px;
+}
+
+/* Tiêu đề thông tin dịch vụ */
+.service-info h1 {
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+/* Ảnh dịch vụ */
+.img-service {
+    width: 100%;
+    max-width: 500px; /* Giới hạn kích thước tối đa của mỗi ảnh là 500px */
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Đoạn văn bản */
+.service-info p {
+    margin: 10px 0;
+    color: #000000;
+}
+
+/* Phần nhấn mạnh trong văn bản */
+.service-info strong {
+    color: #000000;
+}

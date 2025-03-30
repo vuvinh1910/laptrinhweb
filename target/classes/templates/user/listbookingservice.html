@@ -1,31 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông tin cá nhân</title>
-    <link rel="stylesheet" th:href="@{/css/base.css}">
-    <link rel="stylesheet" th:href="@{/css/navbar.css}">
-    <link rel="stylesheet" th:href="@{/css/roomuser.css}">
-    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
-    <link rel="stylesheet" th:href="@{/css/popup.css}">
-    <link rel="stylesheet" th:href="@{/css/confirm.css}">
-    <script th:src="@{/js/navbar.js}" defer></script>
+    <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/user/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/public/header-navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/user/list-booking-service.css}">
+    <link rel="stylesheet" th:href="@{/css/public/popup-confirm.css}">
+    <link rel="stylesheet" th:href="@{/css/public/popup-login.css}">
     <script th:src="@{/js/popup.js}" defer></script>
     <script th:src="@{/js/confirm.js}" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-          integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
-<body>
-<div th:replace="header :: header"></div>
-<div th:include="sidebar :: sidebar" class="sidebar"></div>
-
-
+<body class="user-booking-service-list">
+<div th:replace="public/header-navbar :: header"></div>
+<div th:include="user/sidebar :: sidebar" class="sidebar"></div>
 <div class="booking-container">
     <h1>Lịch sử đặt dịch vụ </h1>
     <div class="booking-row header-row">
@@ -37,16 +28,19 @@
     </div>
     <div th:each="booking : ${bookedServices}">
         <div class="booking-row">
-            <form th:action="@{/users/myInfo/booking-services/{roomId}(roomId=${booking.id})}" method="POST" style="display: inline;">
+            <form th:action="@{/users/myInfo/booking-services/{roomId}(roomId=${booking.id})}" method="POST"
+                  style="display: inline;">
                 <input type="hidden" name="_method" value="DELETE">
-                <button type="submit" class="del-button">X</button>
+                <button type="submit" class="del-button">
+                    <i class="fas fa-trash-alt"></i> <!-- Icon thùng rác -->
+                </button>
             </form>
 
             <div>
-                <a th:href="@{/public/service/{roomId}(roomId=${booking.serviceId})}" th:text="${booking.serviceName}">Tên dv</a>
+                <a th:href="@{/public/service/{roomId}(roomId=${booking.serviceId})}" th:text="${booking.serviceName}">Tên dịch vụ</a>
             </div>
             <div th:text="${booking.status}">Trạng thái</div>
-            <div th:text="${booking.totalPrice}">Tổng giá tiền</div>
+            <div th:text="${booking.totalPrice} + ' VND'">Tổng giá tiền</div>
 
             <!-- Kiểm tra trạng thái của booking -->
             <div th:if="${booking.status == 'CANCELLED'}">
@@ -61,8 +55,8 @@
                        onclick="return confirm('Bạn có chắc chắn muốn hủy dịch vụ này?');">Hủy</a>
                 </div>
 
-                <div th:if="${booking.isPaid}" class="paid">
-                    Đã thanh toán
+                <div th:if="${booking.isPaid}" class="paid action-buttons"> <!-- Thêm class action-buttons -->
+                    <span>Đã thanh toán</span>
                     <a th:href="@{/users/booking-services/{bookingId}/cancel(bookingId=${booking.id})}"
                        class="cancel-button"
                        onclick="return confirm('Bạn muốn hủy thanh toán?');">Hủy</a>
@@ -87,5 +81,7 @@
     </div>
 </div>
 
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

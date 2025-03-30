@@ -2,14 +2,13 @@
 body.user-profile-page {
     background-color: #1a1a1a;
     color: #ffffff;
-    min-height: 100vh;
     font-family: Arial, sans-serif;
 }
 
 .user-container {
     max-width: 800px;
     margin: 20px auto;
-    padding: 75px 20px 20px 20px;
+    padding: 65px 20px 20px 20px;
 }
 
 .profile-container {

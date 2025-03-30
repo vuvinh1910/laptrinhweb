@@ -1,0 +1,57 @@
+.change-password .password-container {
+    max-width: 600px;
+    margin: 85px auto; /* Cách trên 85px, căn giữa theo chiều ngang */
+    padding: 30px;
+    background-color: #2d2d2d;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    color: #e0e0e0;
+}
+
+body.change-password {
+    background-color: #1a1a1a;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+/* Tiêu đề */
+.change-password .password-container h1 {
+    text-align: center;
+    color: #4a90e2;
+    margin-bottom: 30px;
+}
+
+/* Style cho form thay đổi mật khẩu */
+.change-password .change-pass div {
+    margin-bottom: 20px;
+}
+
+.change-password .change-pass label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.change-password .change-pass input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #3d3d3d;
+    color: #e0e0e0;
+}
+
+.change-password .change-pass button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4a90e2;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.change-password .change-pass button:hover {
+    background-color: #357abd;
+}

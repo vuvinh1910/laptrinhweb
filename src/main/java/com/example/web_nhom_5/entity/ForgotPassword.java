@@ -1,5 +1,6 @@
 package com.example.web_nhom_5.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,8 @@ public class ForgotPassword {
     @Column(nullable = false)
     private Boolean isVerified = false;
 
-    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity userEntity;
 }

@@ -29,8 +29,9 @@ public class UserEntity {
     @Column(name = "user_password", nullable = false)
     private String password;
 
-    @OneToOne(mappedBy = "userEntity")
-    private ForgotPassword forgotPassword;
+    @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ForgotPassword> forgotPassword;
 
     @Column(name = "full_name", nullable = false)
     private String fullName;

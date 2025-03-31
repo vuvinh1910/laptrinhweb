@@ -1,19 +1,85 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Verify OTP</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" th:href="@{/css/public/verify.css}">
+    <script>
+        function startCountdown(duration) {
+            const now = Math.floor(Date.now() / 1000); // Lấy thời gian hiện tại (giây)
+            const storedTime = localStorage.getItem("otp_expire_time");
+            let expireTime;
+            if (storedTime) {
+                expireTime = parseInt(storedTime);
+            } else {
+                expireTime = now + duration;
+                localStorage.setItem("otp_expire_time", expireTime);
+            }
+            function updateTimer() {
+                const currentTime = Math.floor(Date.now() / 1000);
+                let remainingTime = expireTime - currentTime;
+                const timerDisplay = document.getElementById('timer');
+
+                if (remainingTime <= 0) {
+                    clearInterval(countdown);
+                    timerDisplay.textContent = "Hết hạn";
+                    localStorage.removeItem("otp_expire_time");
+                    return;
+                }
+                let minutes = Math.floor(remainingTime / 60);
+                let seconds = remainingTime % 60;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                timerDisplay.textContent = minutes + ":" + seconds;
+            }
+            updateTimer();
+            const countdown = setInterval(updateTimer, 1000);
+        }
+        window.onload = function() {
+            const resetTimer = document.getElementById("resetTimerFlag")?.value; // Lấy giá trị từ th:attr
+            if (resetTimer === "true") {
+                localStorage.removeItem("otp_expire_time"); // Xóa thời gian cũ khi gửi OTP mới
+            }
+            startCountdown(300); // Bắt đầu đếm ngược 5 phút
+        };
+    </script>
+    <title>Ludiflex | Login</title>
 </head>
-<body>
-<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+<body th:style="|background-image: url('@{/img/hotel-bg.jpg}')|">
+<div class="wrapper">
+    <nav class="nav">
+        <div class="nav-menu" id="navMenu">
+            <ul>
+                <li><a th:href="@{/public/home}" class="link active">Home</a></li>
+            </ul>
+        </div>
+        <div class="nav-button">
+            <button class="btn white-btn" th:onclick="|window.location.href='@{/public/login}'|">Log In</button>
+            <button class="btn" th:onclick="|window.location.href='@{/public/signup}'|">Sign Up</button>
+        </div>
+    </nav>
 
-<form th:action="@{/public/forgotPassword/verifyOtp}" method="post">
-    <input type="hidden" name="email" th:value="${email}">
+    <div class="form-box">
+        <!-- Tiêu đề chính -->
+        <h2>Reset Your Password</h2>
+        <!-- Đoạn mô tả ngắn -->
+        <p>
+            Vui lòng kiểm tra hộp thư của bạn, chúng tôi đã gửi mã OTP xác nhận.
+            <br> Mã sẽ hết hạn trong <span id="timer">5:00</span>
+        </p>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <form th:action="@{/public/forgotPassword/verifyOtp}" method="post">
+            <input type="hidden" id="resetTimerFlag" th:value="${resetTimer}">
+            <input type="hidden" name="email" th:value="${email}">
 
-    <div>
-        <label>OTP Code:</label>
-        <input type="number" name="otp" required>
+            <div>
+                <label>OTP Code:</label>
+                <input type="number" name="otp" required>
+            </div>
+            <button type="submit">Verify OTP</button>
+        </form>
     </div>
-    <button type="submit">Verify OTP</button>
-</form>
+</div>
 </body>
 </html>

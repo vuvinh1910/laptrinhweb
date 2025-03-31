@@ -1,0 +1,187 @@
+/* POPPINS FONT */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Giảm chiều cao để không bị tràn quá nhiều */
+    background: rgba(39, 39, 39, 0.4);
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    background: linear-gradient(rgba(39, 39, 39, 0.6), transparent);
+    z-index: 100;
+}
+
+.nav-menu ul {
+    display: flex;
+}
+
+.nav-menu ul li {
+    list-style-type: none;
+}
+
+.nav-menu ul li .link {
+    text-decoration: none;
+    font-weight: 500;
+    color: #fff;
+    padding-bottom: 15px;
+    margin: 0 25px;
+}
+
+.link:hover, .active {
+    border-bottom: 2px solid #fff;
+}
+
+.nav-button .btn {
+    width: 130px;
+    height: 40px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.nav-button .btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.btn.white-btn {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.btn.white-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.form-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 400px; /* Giảm chiều rộng để gọn hơn */
+    height: auto; /* Chiều cao tự động để vừa nội dung */
+    background: #fff; /* Nền trắng */
+    border-radius: 15px;
+    padding: 40px 30px; /* Padding cân đối */
+    z-index: 2;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng nhẹ */
+}
+
+.form-box h2 {
+    color: #333;
+    font-size: 24px; /* Giảm kích thước chữ cho cân đối */
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.form-box p {
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.form-box form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-box label {
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    align-self: flex-start;
+}
+
+.form-box input[type="email"] {
+    font-size: 14px;
+    background: #f5f5f5; /* Nền nhạt cho input */
+    color: #333;
+    height: 45px; /* Giảm chiều cao input */
+    width: 100%;
+    padding: 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 25px; /* Bo góc nhẹ hơn */
+    outline: none;
+    transition: .2s ease;
+}
+
+.form-box input[type="email"]:hover,
+.form-box input[type="email"]:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+}
+
+.form-box button[type="submit"] {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    height: 45px;
+    width: 200px; /* Giảm chiều rộng nút để không quá dài */
+    border: none;
+    border-radius: 25px;
+    background: #2ecc71; /* Xanh lá */
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    margin-top: 10px; /* Thêm khoảng cách trên */
+}
+
+.form-box button[type="submit"]:hover {
+    background: #27ae60;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.alert-danger {
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+}
+
+.form-box form div {
+    width: 90%;
+}
+
+@media only screen and (max-width: 540px) {
+    .form-box {
+        width: 90%;
+        padding: 30px 20px;
+    }
+
+    .form-box button[type="submit"] {
+        width: 150px; /* Giảm thêm chiều rộng nút trên mobile */
+    }
+}

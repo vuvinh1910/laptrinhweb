@@ -98,6 +98,7 @@ public class ForgotPasswordController {
             forgotPasswordRepository.save(forgotPassword);
 
             redirectAttributes.addFlashAttribute("email", email);
+            redirectAttributes.addFlashAttribute("resetTimer", true);
             return "redirect:/public/forgotPassword/verify-otp";
 
         } catch (WebException e) {

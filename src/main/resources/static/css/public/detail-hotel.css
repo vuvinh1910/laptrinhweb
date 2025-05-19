@@ -1,0 +1,375 @@
+body.view-hotel {
+    padding-top: 80px;
+}
+.reviews-section {
+    background-color: #f8f9fa;
+    padding: 50px 0;
+}
+
+.reviews-section h2 {
+    text-align: center;
+    font-size: 2.0rem;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.overall-rating {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.overall-rating .score {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000000; /* Thay đổi thành màu đen */
+}
+
+.overall-rating .rating-label {
+    display: block;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+.overall-rating .read-all {
+    display: block;
+    font-size: 1rem;
+    color: #e74c3c;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.overall-rating .read-all:hover {
+    text-decoration: underline;
+}
+
+.rating-breakdown {
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+.rating-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.rating-item span:first-child {
+    flex: 0 0 200px; /* Chiều rộng cố định cho nhãn */
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.rating-item .rating-bar {
+    flex-grow: 1;
+    height: 10px;
+    background: #e9ecef;
+    border-radius: 5px;
+    position: relative;
+    margin: 0 10px;
+}
+
+.rating-item .rating-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: #ffca28; /* Màu vàng cho thanh đánh giá */
+    border-radius: 5px;
+    width: var(--width); /* Sử dụng biến CSS để điều chỉnh chiều dài */
+}
+
+.rating-item:nth-child(1) .rating-bar::before { --width: 98%; }
+.rating-item:nth-child(2) .rating-bar::before { --width: 90%; }
+.rating-item:nth-child(3) .rating-bar::before { --width: 90%; }
+.rating-item:nth-child(4) .rating-bar::before { --width: 88%; }
+
+.rating-item span:last-child {
+    font-size: 1.1rem;
+    color: #ffca28; /* Màu vàng cho điểm số */
+}
+
+.carousel {
+    position: relative;
+    max-width: 1000px; /* Giới hạn chiều rộng carousel */
+    margin: 0 auto;
+}
+
+.carousel-inner .row {
+    margin: 0; /* Xóa margin mặc định của row */
+}
+
+.comment {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: 100%; /* Đảm bảo các comment có chiều cao bằng nhau */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-name {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.comment-date {
+    display: block;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.comment-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-rating span:first-child {
+    font-weight: bold;
+    color: #ffca28; /* Màu vàng cho điểm số */
+}
+
+.comment-rating span:last-child {
+    color: #2c3e50;
+}
+
+.comment p {
+    margin: 5px 0;
+    color: #34495e;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%; /* Điều chỉnh chiều rộng của nút */
+    opacity: 0.8;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #daa69c; /* Màu nền của icon nút */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1;
+}
+/* Style cho phần ảnh */
+.gallery-images {
+    display: grid; /* Sử dụng Grid Layout */
+    grid-template-columns: 2fr 1fr; /* Chia làm 2 cột: cột trái 2 phần, cột phải 1 phần */
+    gap: 5px; /* Khoảng cách giữa các cột (đã giảm từ 10px xuống 5px) */
+    max-height: 400px; /* Giới hạn chiều cao tối đa của gallery */
+    overflow: hidden; /* Đảm bảo không bị tràn ra ngoài */
+    /* background-color: #f0f0f0; /* Thêm màu nền tạm để dễ nhìn boundary */
+}
+
+/* Style cho ảnh lớn bên trái */
+.main-image {
+    grid-column: 1; /* Đặt vào cột thứ nhất */
+    height: 100%; /* Chiều cao bằng container gallery */
+    overflow: hidden; /* Ẩn phần ảnh bị tràn */
+    border-radius: 8px; /* Bo tròn góc */
+    min-height: 0; /* Rất quan trọng: Ngăn phần tử con mở rộng quá mức trong Grid */
+}
+
+.main-image img {
+    display: block; /* Loại bỏ khoảng trống dưới ảnh */
+    width: 100%; /* Ảnh lấp đầy chiều rộng container */
+    height: 100%; /* Ảnh lấp đầy chiều cao container */
+    object-fit: cover; /* Giữ tỷ lệ ảnh và cắt phần thừa để lấp đầy */
+}
+
+/* Style cho container 4 ảnh nhỏ bên phải */
+.sub-images {
+    grid-column: 2; /* Đặt vào cột thứ hai */
+    display: grid; /* Sử dụng Grid Layout cho các ảnh nhỏ */
+    grid-template-columns: 1fr 1fr; /* Chia làm 2 cột bằng nhau */
+    grid-template-rows: 1fr 1fr; /* Chia làm 2 hàng bằng nhau */
+    gap: 5px; /* Khoảng cách giữa các ảnh nhỏ (đã giảm từ 10px xuống 5px) */
+    height: 100%; /* Chiều cao bằng container gallery */
+    min-height: 0; /* Rất quan trọng: Ngăn phần tử con mở rộng quá mức trong Grid cha */
+}
+
+/* Style cho từng ảnh nhỏ */
+.sub-image {
+    overflow: hidden; /* Ẩn phần ảnh bị tràn */
+    border-radius: 8px; /* Bo tròn góc */
+    position: relative; /* Cần thiết để định vị overlay bên trong */
+    min-height: 0; /* Rất quan trọng: Ngăn phần tử con mở rộng quá mức trong Grid cha (sub-images) */
+}
+
+.sub-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Giữ tỷ lệ ảnh và cắt phần thừa */
+}
+
+/* Style cho các overlay */
+.sub-image .overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* Nền đen mờ */
+    pointer-events: none; /* Đảm bảo không chặn click vào ảnh nếu cần */
+}
+
+.sub-image .overlay.bottom-0.end-0 {
+    /* Tùy chỉnh thêm cho overlay chứa số +2 */
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+/* --- Các style bổ sung cho các phần khác (tùy chọn) --- */
+
+/* Style cho liên kết quay lại */
+.container a.text-primary.mb-3 {
+    text-decoration: none; /* Bỏ gạch chân */
+    font-size: 1rem;
+}
+
+/* Style cho phần đánh giá */
+.d-flex.align-items-start > div > .d-flex.align-items-baseline {
+    margin-bottom: 5px;
+}
+
+/* Style cho các icon tiện ích */
+.mb-3 span i.fa {
+    margin-right: 5px; /* Khoảng cách giữa icon và chữ */
+}
+
+/* Style cho phần giá */
+.d-flex.align-items-center.justify-content-between.border-top.pt-3 {
+    /* Bootstrap đã xử lý khá tốt phần này */
+}
+
+/* Nút chọn phòng */
+.btn-warning {
+    /* Bootstrap đã có style */
+}
+
+
+/* --- Responsive (Tùy chọn) --- */
+/* Stack ảnh trên màn hình nhỏ hơn */
+@media (max-width: 768px) { /* Điều chỉnh breakpoint tùy theo thiết kế */
+    .gallery-images {
+        grid-template-columns: 1fr; /* Chỉ 1 cột trên màn hình nhỏ */
+        max-height: none; /* Bỏ giới hạn chiều cao */
+    }
+
+    .main-image {
+        grid-column: 1;
+        height: 300px; /* Hoặc auto, tùy bạn muốn chiều cao cố định hay tự động */
+        margin-bottom: 5px; /* Khoảng cách dưới ảnh chính */
+        min-height: 0; /* Đảm bảo tuân thủ height/max-height */
+    }
+
+    .sub-images {
+        grid-column: 1;
+        grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 ảnh nhỏ nằm ngang (hoặc 2x2 tùy ý) */
+        grid-template-rows: auto; /* Chiều cao tự động */
+        height: auto;
+        min-height: 0; /* Đảm bảo tuân thủ height/max-height */
+    }
+    .sub-image {
+        height: 80px; /* Chiều cao cố định cho ảnh nhỏ trên mobile */
+        min-height: 0; /* Đảm bảo tuân thủ height */
+    }
+    .sub-image img {
+        object-fit: cover;
+    }
+}
+
+@media (max-width: 576px) { /* Ví dụ cho màn hình rất nhỏ */
+    .sub-images {
+        grid-template-columns: 1fr 1fr; /* Chuyển thành 2x2 trên màn hình rất nhỏ */
+        grid-template-rows: 1fr 1fr;
+    }
+    .sub-image {
+        height: 100px; /* Tăng chiều cao ảnh nhỏ */
+        min-height: 0; /* Đảm bảo tuân thủ height */
+    }
+}
+.hotel-info span:last-child {
+    color: gold; /* Hoặc sử dụng mã màu vàng khác như #FFD700 hoặc màu vàng cam #ffc107 giống tiêu đề */
+    font-weight: bold; /* Tùy chọn: in đậm chữ và sao */
+}
+.hotel-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.hotel-intro {
+    font-size: 1rem; /* Cỡ chữ tiêu chuẩn, khoảng 16px (có thể điều chỉnh 1.1rem ~ 18px nếu text dài) */
+    line-height: 1.7; /* Khoảng cách giữa các dòng, giúp dễ đọc hơn */
+    color: #333; /* Màu chữ xám đậm, dịu mắt hơn màu đen tuyền trên nền sáng */
+    margin-top: 0; /* Đảm bảo không có margin thừa phía trên nếu phần tử trước đã có margin-bottom */
+    margin-bottom: 15px; /* Khoảng cách dưới đoạn mô tả (có thể điều chỉnh tùy bố cục tiếp theo) */
+    /* font-family: 'Roboto', Arial, sans-serif; /* Tùy chọn: Chọn font chữ dễ đọc, đảm bảo font này được import */
+}
+
+/* Điều chỉnh khoảng cách dưới phần thông tin nhanh (Nâng cấp, Phòng...) */
+/* Đảm bảo có khoảng cách hợp lý giữa dòng info và đoạn mô tả */
+.hotel-info {
+    /* ... các style hiện có ... */
+    margin-bottom: 20px; /* Tăng khoảng cách dưới dòng info một chút để tách biệt với intro */
+    /* ... */
+}
+.hotel-policies p,
+.hotel-policies ul,
+.hotel-policies li {
+    font-size: 0.95rem; /* Giảm kích thước chữ xuống còn khoảng 95% kích thước gốc (tức khoảng 15.2px nếu gốc là 16px) */
+    /* Nếu muốn nhỏ hơn nữa, bạn có thể thử 0.9rem (khoảng 14.4px) */
+    /* line-height: 1.6; /* Tùy chọn: Đảm bảo khoảng cách dòng vẫn tốt cho dễ đọc */
+}
+
+/* Tùy chọn: Điều chỉnh kích thước chữ cho các tiêu đề phụ H3 bên trong mỗi mục chính sách nếu cần */
+.policy-section h3 {
+    font-size: 1.15rem; /* Ví dụ: làm nhỏ hơn H4 chính nhưng vẫn lớn hơn nội dung */
+    /* margin-bottom: 10px; /* Khoảng cách dưới tiêu đề phụ */
+}
+
+/* Tùy chọn: Một số style để các mục chính sách trông tách biệt và gọn gàng hơn (giống như các website chuyên nghiệp thường làm) */
+.policy-section {
+    margin-bottom: 20px; /* Khoảng cách dưới mỗi mục chính sách */
+    padding-bottom: 15px; /* Khoảng cách nội dung đến viền dưới của mục */
+    border-bottom: 1px solid #eee; /* Thêm đường kẻ phân cách */
+}
+
+/* Loại bỏ đường kẻ dưới mục cuối cùng */
+.policy-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+/* Điều chỉnh margin cho list */
+.policy-section ul {
+    margin-bottom: 10px; /* Khoảng cách dưới list */
+}
+.policy-section li {
+    margin-bottom: 5px; /* Khoảng cách giữa các item trong list */
+}
+
+.view-hotel footer {
+    background: #2c3e50;
+    color: white;
+    padding: 40px 0;
+}

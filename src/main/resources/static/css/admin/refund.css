@@ -1,0 +1,210 @@
+.alert-success,
+.alert-danger {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.alert-success {
+    background: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+}
+
+.alert-danger {
+    background: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+}
+
+
+/* General Styles */
+.refund-admin {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    background-color: #f4f7f6; /* Light grayish-blue background */
+    min-height: 100vh;
+    position: relative; /* Needed for the blur effect */
+}
+
+.refund-list {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.refund-list h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em; /* Larger heading */
+}
+
+.refund-item {
+    display: flex; /* Enable flexbox for alignment */
+    justify-content: space-between; /* Space out content and buttons */
+    align-items: center; /* Vertically align items */
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    transition: box-shadow 0.3s ease;
+}
+
+.refund-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.refund-item p {
+    margin: 0;
+    color: #555;
+    flex-grow: 1; /* Allow paragraph to take available space */
+}
+
+.refund-item p strong {
+    color: #007bff; /* Highlight the name */
+}
+
+.processed-text {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.text-success {
+    color: #28a745;
+    background-color: #e9f7ef; /* Light green background for processed text */
+    border: 1px solid #a3d8b4;
+}
+
+/* Button Styles */
+.process-button,
+.delete-btn,
+.confirm-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-left: 10px; /* Add some space between buttons */
+}
+
+.process-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.process-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.delete-btn {
+    background-color: #403938;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Align Process and Delete buttons */
+.refund-item form {
+    display: inline-block; /* Keep form on the same line as the button */
+    margin-left: 10px;
+}
+
+/* Modal Styles */
+.modalRefund {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity for background dim */
+    backdrop-filter: blur(5px); /* Blur effect for the background */
+    -webkit-backdrop-filter: blur(5px); /* For Safari */
+}
+
+.refund-modal-content {
+    background-color: #fff;
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 30px;
+    border: 1px solid #ddd;
+    width: 80%;
+    max-width: 500px; /* Max width */
+    max-height: 347px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: fadeInModal 0.3s ease-out;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-refund-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.close-refund-modal:hover,
+.close-refund-modal:focus {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.refund-modal-content h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.refund-modal-content p {
+    font-size: 1.1em; /* Slightly larger text in modal */
+    margin-bottom: 12px;
+    color: #444;
+}
+
+.refund-modal-content p strong {
+    color: #007bff;
+    min-width: 120px; /* Ensure consistent alignment of values */
+    display: inline-block;
+}
+
+.confirm-button {
+    background-color: #28a745;
+    color: white;
+    display: block; /* Make button take full width */
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    margin-top: 20px;
+}
+
+.confirm-button:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+/* Utility class to apply blur to the main content when modal is open */
+.content-blur {
+    filter: blur(5px);
+    transition: filter 0.3s ease-out;
+}

@@ -1,108 +1,213 @@
 /* user/my-info.css */
 body.user-profile-page {
-    background-color: #1a1a1a;
-    color: #ffffff;
-    font-family: Arial, sans-serif;
+    background-color: #f5f7fa; /* Màu nền trang */
+    color: #333; /* Màu chữ chung */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Sử dụng font mềm mại hơn */
+    margin: 0; /* Đảm bảo không có margin mặc định */
+    padding-top: 58px;
+    line-height: 1.6; /* Tăng khoảng cách dòng cho dễ đọc */
 }
 
 .user-container {
     max-width: 800px;
-    margin: 20px auto;
-    padding: 65px 20px 20px 20px;
+    margin: 30px auto; /* Điều chỉnh margin trên dưới */
+    padding: 0 20px; /* Padding ngang */
 }
 
 .profile-container {
-    background-color: #2d2d2d;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    background-color: #ffffff; /* Màu nền container */
+    border-radius: 10px; /* Bo góc */
+    padding: 30px; /* Padding bên trong */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Điều chỉnh đổ bóng đậm hơn một chút */
+}
+
+.profile-header {
+    text-align: center; /* Căn giữa nội dung header */
+    margin-bottom: 30px; /* Khoảng cách dưới header */
 }
 
 .profile-image {
-    text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 15px; /* Khoảng cách dưới ảnh */
 }
 
 .profile-image img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 3px solid #4a90e2;
-    padding: 5px;
+    width: 120px; /* Giảm kích thước ảnh một chút */
+    height: 120px; /* Giảm kích thước ảnh một chút */
+    border-radius: 50%; /* Bo tròn */
+    border: 4px solid #3498db; /* Tăng độ dày viền ảnh */
+    padding: 4px; /* Giảm padding ảnh */
+    background-color: #fff; /* Nền trắng cho ảnh để nổi bật viền */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Thêm đổ bóng nhẹ cho ảnh */
 }
 
 h1.info1 {
-    color: #4a90e2;
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2.2em;
+    color: #2c3e50; /* Màu tiêu đề H1 */
+    margin-bottom: 0; /* Bỏ khoảng cách dưới H1 khi nằm trong header */
+    font-size: 2em; /* Kích thước font H1 */
 }
 
-.profile-info {
-    background-color: #333;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
+.profile-details {
+    margin-bottom: 30px; /* Khoảng cách dưới phần chi tiết */
+    padding-bottom: 20px; /* Padding dưới phần chi tiết */
+    border-bottom: 1px solid #eee; /* Thêm đường kẻ nhẹ phân tách */
 }
 
+.profile-details h2 {
+    color: #2c3e50; /* Màu tiêu đề H2 */
+    margin-bottom: 20px; /* Khoảng cách dưới H2 */
+    font-size: 1.6em; /* Kích thước font H2 */
+    border-bottom: 2px solid #3498db; /* Đường gạch chân màu xanh cho tiêu đề H2 */
+    display: inline-block; /* Chỉ gạch dưới vừa đủ chữ */
+    padding-bottom: 5px; /* Khoảng cách giữa chữ và đường gạch */
+}
+
+/* Cải tiến hiển thị từng mục thông tin */
 .profile-info p {
-    font-size: 1.1em;
-    margin: 15px 0;
-    color: #e0e0e0;
+    font-size: 1.1em; /* Kích thước font */
+    margin: 10px 0; /* Điều chỉnh khoảng cách dòng */
+    color: #555; /* Màu chữ P nhạt hơn một chút cho dễ đọc */
+    display: flex; /* Sử dụng flexbox để căn chỉnh */
+    align-items: center; /* Căn giữa theo chiều dọc */
 }
 
 .profile-info strong {
-    color: #4a90e2;
-    margin-right: 10px;
+    color: #2d3436; /* Màu chữ mạnh */
+    margin-right: 15px; /* Tăng khoảng cách với nội dung */
+    min-width: 120px; /* Đảm bảo độ rộng tối thiểu cho nhãn */
+    display: inline-block; /* Cho phép min-width hoạt động */
 }
 
-h2 {
-    color: #4a90e2;
-    margin-bottom: 25px;
-    font-size: 1.8em;
+/* Nếu sử dụng cấu trúc detail-item (như gợi ý trước) */
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
 }
+
+.detail-item i { /* Style cho icon nếu có */
+    color: #3498db;
+    margin-right: 10px;
+    font-size: 1.2em;
+    width: 20px; /* Đảm bảo độ rộng cố định cho icon */
+    text-align: center;
+}
+
+.detail-item p {
+    margin: 0; /* Reset margin mặc định của p */
+    color: #555;
+}
+
+.detail-item strong {
+    color: #2d3436;
+    margin-right: 10px; /* Điều chỉnh lại khoảng cách cho phù hợp với icon */
+    min-width: auto; /* Bỏ min-width khi có icon */
+    display: inline;
+}
+
+
+.profile-edit-form {
+    padding-top: 20px; /* Padding trên phần form */
+}
+
+.profile-edit-form h2 {
+    color: #2c3e50; /* Màu tiêu đề H2 */
+    margin-bottom: 20px; /* Khoảng cách dưới H2 */
+    font-size: 1.6em; /* Kích thước font H2 */
+    border-bottom: 2px solid #3498db; /* Đường gạch chân màu xanh */
+    display: inline-block; /* Chỉ gạch dưới vừa đủ chữ */
+    padding-bottom: 5px; /* Khoảng cách giữa chữ và đường gạch */
+}
+
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Khoảng cách giữa các nhóm form */
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #e0e0e0;
-    font-size: 1.1em;
+    display: block; /* Hiển thị block */
+    margin-bottom: 8px; /* Khoảng cách dưới nhãn */
+    color: #2d3436; /* Màu nhãn */
+    font-size: 1em; /* Kích thước font nhãn */
+    font-weight: bold; /* In đậm nhãn */
 }
 
 .form-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #444;
-    border-radius: 5px;
-    background-color: #333;
-    color: #fff;
-    font-size: 1em;
-    transition: all 0.3s ease;
+    width: 100%; /* Chiều rộng */
+    padding: 12px; /* Tăng padding input */
+    border: 1px solid #bdc3c7; /* Màu viền input nhạt hơn */
+    border-radius: 5px; /* Bo góc input */
+    background-color: #ecf0f1; /* Màu nền input */
+    color: #333; /* Màu chữ input */
+    font-size: 1em; /* Kích thước font input */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
 }
 
 .form-group input:focus {
-    outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+    outline: none; /* Bỏ outline mặc định */
+    border-color: #3498db; /* Màu viền khi focus */
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); /* Đổ bóng khi focus */
 }
 
 button.nut {
-    background-color: #4a90e2;
-    color: white;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
-    width: 100%;
-    margin-top: 15px;
+    background-color: #2980b9; /* Màu nền nút */
+    color: white; /* Màu chữ nút */
+    padding: 12px 30px; /* Padding nút */
+    border: none; /* Bỏ viền */
+    border-radius: 5px; /* Bo góc */
+    cursor: pointer; /* Con trỏ */
+    font-size: 1.1em; /* Kích thước font nút */
+    font-weight: bold; /* In đậm chữ nút */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Thêm hiệu ứng box-shadow */
+    width: 100%; /* Chiều rộng 100% */
+    margin-top: 20px; /* Khoảng cách trên nút */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Đổ bóng nhẹ cho nút */
 }
 
 button.nut:hover {
-    background-color: #357abd;
+    background-color: #2471a3; /* Màu nền nút khi hover */
+    transform: translateY(-2px); /* Nâng nút lên một chút khi hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Đổ bóng mạnh hơn khi hover */
+}
+
+button.nut:active {
+    background-color: #1f618d; /* Màu nền nút khi click */
+    transform: translateY(0); /* Trở về vị trí cũ khi click */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Đổ bóng ít hơn khi click */
+}
+
+/* Thêm style cho đường phân cách nếu dùng <hr class="separator"> */
+hr.separator {
+    border: none;
+    height: 1px;
+    background-color: #eee; /* Màu xám nhạt */
+    margin: 30px 0; /* Khoảng cách trên dưới */
+}
+
+
+/* Responsive cơ bản */
+@media (max-width: 600px) {
+    .profile-container {
+        padding: 20px; /* Giảm padding trên màn hình nhỏ */
+    }
+
+    h1.info1 {
+        font-size: 1.8em; /* Giảm kích thước font H1 */
+    }
+
+    .profile-details h2, .profile-edit-form h2 {
+        font-size: 1.4em; /* Giảm kích thước font H2 */
+    }
+
+    .profile-info p, .form-group label, .form-group input, button.nut {
+        font-size: 1em; /* Đảm bảo font size phù hợp */
+    }
+
+    .profile-info strong {
+        min-width: 90px; /* Giảm min-width cho nhãn trên màn hình nhỏ */
+    }
+
+    .detail-item i {
+        font-size: 1em;
+        width: 18px;
+    }
 }

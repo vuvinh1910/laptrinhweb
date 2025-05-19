@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,6 +32,9 @@ public class BookingRoomEntity {
     @Column(name = "check_out", nullable = false)
     private LocalDate checkOut;
 
+    @Column(name = "phone", nullable = false)
+    private String phone;
+
     @Column(name = "total_people", nullable = false)
     private int numOfPeople;
 
@@ -39,6 +43,13 @@ public class BookingRoomEntity {
 
     @Column(name = "is_paid", nullable = false)
     private boolean paid;
+
+    @Column
+    private Long userPaid;
+
+    @OneToOne(mappedBy = "booking", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private RefundEntity refund; // Booking có thể có một bản ghi Refund
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)

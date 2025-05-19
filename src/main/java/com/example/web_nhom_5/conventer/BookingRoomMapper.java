@@ -2,10 +2,8 @@ package com.example.web_nhom_5.conventer;
 
 import com.example.web_nhom_5.dto.request.BookingRoomCreateRequest;
 import com.example.web_nhom_5.dto.request.BookingRoomUpdateRequest;
-import com.example.web_nhom_5.dto.request.ServiceUpdateRequest;
 import com.example.web_nhom_5.dto.response.BookingRoomResponse;
 import com.example.web_nhom_5.entity.BookingRoomEntity;
-import com.example.web_nhom_5.entity.ServiceEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -21,6 +19,7 @@ public interface BookingRoomMapper {
     @Mapping(source = "room.roomName", target = "roomName")
     @Mapping(source = "room.id", target = "roomId")
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "room.hotel.id", target = "hotelId")
     BookingRoomResponse bookingRoomEntityToBookingRoomResponse(BookingRoomEntity bookingRoomEntity);
 
     @Mapping(target = "id", ignore = true)

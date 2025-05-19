@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ưu Đãi & Mã Giảm Giá</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/public/header-navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/public/voucher.css}">
+    <link rel="stylesheet" th:href="@{/css/public/popup-login.css}">
+    <script th:src="@{/js/popup.js}" defer></script>
+    <script th:src="@{/js/voucher-login.js}" defer></script>
+</head>
+<body class="voucher-body">
+<div th:replace="~{/public/header-navbar :: navbar}"></div>
+
+<div class="gift-card-introduction">
+    <div class="gift_card_main-banner-container"
+         style="background-image: url(&quot;https://res.klook.com/image/upload/v1646622187/banner/pxwg6thqlo7batxtqysk.jpg&quot;);">
+        <h1 class="banner-title">
+            Phiếu Quà Tặng Klook
+        </h1>
+        <div class="gift_card_main-banner-button"><button type="button"
+                                                          class="buy-now-btn klk-button klk-button-white-outlined klk-button-mini"
+                                                          data-spm-module="BuyNow?trg=manual" data-spm-virtual-item="__virtual?typ=entry"><!----> <!---->
+            <span>
+                        Lấy ngay
+                    </span> <!----></button> <span class="gift_card_main_banner-redeem-tips">điều khoản</span></div>
+    </div>
+    <div class="gift-card-value-propositions">
+        <div class="proposition-item">
+            <div class="icon"
+                 style="background-image: url(&quot;https://res.klook.com/image/upload/v1645088422/20220217%20egc%20assets%20update/An_easy_way_to_pay_144x144.png&quot;);">
+            </div>
+            <div class="content">
+                <div class="title">Dễ thanh toán</div>
+                <div class="description">Chỉ cần chọn phiếu quà tặng Klook tại trang thanh toán</div>
+            </div>
+        </div>
+        <div class="proposition-item">
+            <div class="icon"
+                 style="background-image: url(&quot;https://res.klook.com/image/upload/v1645088421/20220217%20egc%20assets%20update/Our_gift_card_never_expires_144x144.png&quot;);">
+            </div>
+            <div class="content">
+                <div class="title">Thời hạn hiệu lực 1 năm</div>
+                <div class="description">Bạn chưa có kế hoạch du lịch? Đừng lo, bạn có thể sử dụng Phiếu quà tặng
+                    điện tử bất cứ lúc nào trong thời gian hiệu lực</div>
+            </div>
+        </div>
+        <div class="proposition-item">
+            <div class="icon"
+                 style="background-image: url(&quot;https://res.klook.com/image/upload/v1645088421/20220217%20egc%20assets%20update/A_world_of_possibilities_144x144.png&quot;);">
+            </div>
+            <div class="content">
+                <div class="title">Rất quyền năng</div>
+                <div class="description">Đặt vé tham quan, khách sạn, di chuyển và hơn thế nữa tại hơn 1700 điểm đến
+                    trên toàn thế giới cùng Klook!</div>
+            </div>
+        </div>
+        <div class="proposition-item">
+            <div class="icon"
+                 style="background-image: url(&quot;https://res.klook.com/image/upload/v1645088423/20220217%20egc%20assets%20update/Use_with_other_offers_144x144.png&quot;);">
+            </div>
+            <div class="content">
+                <div class="title">Dùng kèm với ưu đãi khác &amp; tiết kiệm thêm</div>
+                <div class="description">Dùng chung với Klook xu hay mã ưu đãi? Không thành vấn đề</div>
+            </div>
+        </div>
+    </div>
+    <div class="container voucher">
+        <h1 class="page-title">🎁 Mã Giảm Giá & Ưu Đãi Đặc Biệt 🎁</h1>
+        <div th:if="${voucher == null or #lists.isEmpty(voucher)}">
+            <p style="text-align:center; font-size:1.2em; color:#777;">Hiện tại không có mã giảm giá nào.</p>
+        </div>
+        <th:block th:unless="${voucher == null or #lists.isEmpty(voucher)}">
+            <div class="voucher-grid">
+                <div class="voucher-card" th:each="vouch : ${voucher}">
+                    <div class="voucher-image-container">
+                        <img th:src="@{/img/voucher-item.JPG}" alt="Voucher Giảm Giá">
+                    </div>
+                    <div class="voucher-details">
+                        <h3 class="voucher-title">Voucher giảm giá</h3>
+                        <p class="voucher-offer">
+                            Giảm giá <span class="highlight" th:text="${vouch.value}">0</span>% toàn bộ
+                        </p>
+
+                        <div class="voucher-code-section">
+                            <p>Mã của bạn: <strong class="voucher-code-display" th:text="${vouch.code}">CODE</strong></p>
+                        </div>
+
+                        <p class="voucher-entity-description"> Thông tin:
+                            <th:block th:text="${vouch.description}">Mô tả chi tiết của voucher.</th:block>
+                        </p>
+
+                        <p class="voucher-remain"> Số lượng còn lại: <strong th:text="${vouch.remain}"
+                                                                             style="color: #c0392b; font-weight: bold;">0</strong>
+                        </p>
+
+                        <p class="voucher-expiry">Ngày hết hạn: Liên tục</p>
+                        <p class="voucher-claim-note" style="font-style: italic; color: #555; margin-top: auto;"> Lưu ý: vui
+                            lòng claim để áp dụng
+                        </p>
+
+                    </div>
+                    <form th:action="@{/users/voucher/{id}(id=${vouch.id})}" method="post">
+                        <button type="submit" class="btn-claim-voucher">Lấy Ngay</button>
+                    </form>
+                </div>
+            </div>
+        </th:block>
+        <p class="footer-note">Lưu ý: Mỗi mã giảm giá có thể có các điều kiện và điều khoản áp dụng riêng. Vui lòng đọc kỹ
+            trước khi sử dụng.</p>
+    </div>
+    <div class="gift-card-explore">
+        <p class="title">Chọn ngay cho hành trình tiếp theo</p>
+        <div class="image-container">
+            <div class="image-item">
+                <div class="image"
+                     style="background-image: url(&quot;https://res.klook.com/image/upload/v1618985288/gift-card/jtriuggd9f1wr4d1izyq.png&quot;);">
+                </div>
+                <div class="description">Tham quan &amp; giải trí</div>
+            </div>
+            <div class="image-item">
+                <div class="image"
+                     style="background-image: url(&quot;https://res.klook.com/image/upload/v1618985508/gift-card/ktabdceuupub1xnnuecr.png&quot;);">
+                </div>
+                <div class="description">Di chuyển</div>
+            </div>
+            <div class="image-item">
+                <div class="image"
+                     style="background-image: url(&quot;https://res.klook.com/image/upload/v1618985536/gift-card/uhq2rt0pzmzdzgi7ftol.png&quot;);">
+                </div>
+                <div class="description">Lưu trú &amp; nghỉ dưỡng</div>
+            </div>
+            <div class="image-item">
+                <div class="image"
+                     style="background-image: url(&quot;https://res.klook.com/image/upload/v1618985577/gift-card/alxgmhjjcq295yszpsex.png&quot;);">
+                </div>
+                <div class="description">Ẩm thực &amp; Nhà hàng</div>
+            </div>
+            <div class="image-item">
+                <div class="image"
+                     style="background-image: url(&quot;https://res.klook.com/image/upload/v1618985621/gift-card/fqpypxq32ta9d3najm71.png&quot;);">
+                </div>
+                <div class="description">Tiện ích du lịch</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup khi chưa đăng nhập -->
+<div id="confirmationPopup-login" style="display:none;">
+    <p>Bạn cần đăng nhập để lấy voucher. Bạn có muốn đăng nhập không?</p>
+    <button id="confirm">Xác nhận</button>
+    <button id="cancel">Hủy</button>
+</div>
+
+
+<!-- Modal thông báo -->
+<div id="myModal" class="modal" th:if="${result}">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p class="result-popup" th:text="${result}">Thông báo</p>
+    </div>
+</div>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Hotel Booking</h5>
+                <p>Đặt phòng dễ dàng, nhanh chóng và an toàn.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Liên kết nhanh</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white">Trang chủ</a></li>
+                    <li><a href="#" class="text-white">Phòng</a></li>
+                    <li><a href="#" class="text-white">Dịch vụ</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Liên hệ</h5>
+                <p><i class="fas fa-phone"></i> 0123-456-789</p>
+                <p><i class="fas fa-envelope"></i> info@hotelbooking.com</p>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <p>© 2025 Hotel Booking. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

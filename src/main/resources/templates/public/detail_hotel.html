@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Khách Sạn</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/public/header-navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/public/detail-hotel.css}">
+    <script th:src="@{/js/scroll.js}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+    <style>
+        .pagination {
+            margin-top: 20px;
+            justify-content: center;
+            display: flex;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination .active a {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+        .pagination a {
+            color: #0d6efd;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .pagination a:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body class="view-hotel">
+<div th:replace="public/header-navbar :: navbar"></div>
+<!-- Thông tin phòng và form đặt phòng -->
+<div class="hotel-details-container">
+    <div class="container mt-4">
+        <a th:href="@{/public/hotels}" class="text-primary mb-3 d-block">← Tìm thêm khách sạn</a>
+
+        <!-- Phần ảnh -->
+        <div class="gallery-images">
+            <!-- Ảnh lớn bên trái -->
+            <div class="main-image">
+                <img th:src="@{/img/room.webp}" th:alt="${hotel.nameHotel}">
+            </div>
+            <!-- 4 ảnh nhỏ bên phải -->
+            <div class="sub-images">
+                <div class="sub-image"><img th:src="@{/img/room1.jpg}" alt=""></div>
+                <div class="sub-image"><img th:src="@{/img/room2.jpg}" alt=""></div>
+                <div class="sub-image"><img th:src="@{/img/room3.jpg}" alt=""></div>
+                <div class="sub-image position-relative">
+                    <img th:src="@{/img/room4.webp}" alt="">
+                    <div class="overlay position-absolute top-0 end-0 p-2 text-white">
+                        <i class="fa fa-heart-o"></i>
+                    </div>
+                    <div class="overlay position-absolute bottom-0 end-0 bg-dark text-white px-2 small rounded">+2</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thông tin khách sạn -->
+        <div class="mt-4">
+            <h3>
+                <span th:text="${hotel.nameHotel}">Tên Khách Sạn</span>
+                <span class="text-warning">
+                <span th:utext="${#strings.repeat('★', hotel.star)} + ${#strings.repeat('☆', 5 - hotel.star)}">★★★★★</span>
+            </span>
+            </h3>
+
+            <p>
+                <i class="fa fa-map-marker text-warning"></i>
+                <span th:text="${hotel.description}">Mô tả khách sạn</span>
+                <a href="#">Xem Thêm</a>
+            </p>
+
+            <!-- Đánh giá -->
+            <div class="d-flex align-items-start mb-3">
+                <div>
+                    <div class="d-flex align-items-baseline">
+                        <div class="fs-5 fw-bold text-primary me-1" th:text="${hotel.rate}">5.0</div>
+                        <div class="text-muted small">/5</div>
+                    </div>
+                    <div class="text-muted small">
+                        <span th:text="${hotel.countTotalBook}">123</span> khách hàng đã đặt
+                    </div>
+                    <a href="#" class="small">Bình luận</a>
+                </div>
+            </div>
+
+            <!-- Tiện ích -->
+            <div class="mb-3">
+                <span class="me-3"><i class="fa fa-umbrella-beach text-info"></i> Điều Hòa</span>
+                <span class="me-3"><i class="fa fa-glass-martini text-info"></i> Quầy bar</span>
+                <span class="me-3"><i class="fa fa-coffee text-info"></i> Quán Cà Phê</span>
+                <span class="me-3"><i class="fa fa-wifi text-info"></i> Wifi</span>
+                <span class="me-3"><i class="fa fa-utensils text-info"></i> Restaurant</span>
+            </div>
+
+            <!-- Địa chỉ -->
+            <div class="mb-3">
+                <p>
+                    <i class="fa fa-map-marker-alt text-danger"></i>
+                    <span th:text="${hotel.address}">Địa chỉ đầy đủ</span><br>
+                </p>
+                <a href="#">Xem bản đồ</a>
+            </div>
+
+            <!-- Giá + Voucher -->
+            <div class="d-flex align-items-center justify-content-between border-top pt-3">
+                <div>
+                    <div class="d-flex align-items-baseline">
+                        <div class="fs-4 text-danger fw-bold me-2"
+                             th:text="'₫ ' + ${#numbers.formatInteger(hotel.price ?: 0, 0, 'COMMA')}">₫ 1,313,346
+                        </div>
+                        <div class="small text-muted">Mỗi đêm</div>
+                    </div>
+                    <div class="small">
+                        <i class="fa fa-tag"></i> Giảm giá [[${hotel.voucher}]]% hôm nay!
+                    </div>
+                </div>
+                <a href="#" class="btn btn-warning btn-lg" onclick="scrollToChonPhong(event)">Chọn phòng</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+    </div>
+
+    <div class="reviews-section">
+        <h2>Đánh giá</h2>
+        <div class="overall-rating">
+            <span class="score">4.5 / 5.0</span>
+            <span class="rating-label">Tuyệt vời ở 1432 Bình luận</span>
+            <a href="#" class="read-all">Đọc tất cả đánh giá</a>
+        </div>
+        <div class="rating-breakdown">
+            <div class="rating-item">
+                <span>Vị trí</span>
+                <div class="rating-bar" style="width: 98%;"></div>
+                <span>4.9</span>
+            </div>
+            <div class="rating-item">
+                <span>Dịch vụ</span>
+                <div class="rating-bar" style="width: 90%;"></div>
+                <span>4.5</span>
+            </div>
+            <div class="rating-item">
+                <span>Sạch sẽ</span>
+                <div class="rating-bar" style="width: 90%;"></div>
+                <span>4.5</span>
+            </div>
+            <div class="rating-item">
+                <span>Khoảng cách & Tiện nghi</span>
+                <div class="rating-bar" style="width: 88%;"></div>
+                <span>4.4</span>
+            </div>
+        </div>
+
+        <div id="reviewCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="comment">
+                                <div class="user-info">
+                                    <img src="https://art.pixilart.com/ef9ac2360ea67b0.png" alt="User Avatar" class="user-avatar">
+                                    <div>
+                                        <span class="user-name">Hiu Fai</span>
+                                        <span class="comment-date">Đánh giá ngày 4/1/2025</span>
+                                    </div>
+                                </div>
+                                <div class="comment-rating">
+                                    <span>4.5 / 5.0</span>
+                                    <span>Rất tốt</span>
+                                </div>
+                                <p>Đi lại - Gia đình</p>
+                                <p>The property is great, new and modern. The room is very comfortable and cozy. Staff
+                                    members are very friendly and helpful. It's just that there's not much around...</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="comment">
+                                <div class="user-info">
+                                    <img src="https://art.pixilart.com/ef9ac2360ea67b0.png" alt="User Avatar" class="user-avatar">
+                                    <div>
+                                        <span class="user-name">Anthony</span>
+                                        <span class="comment-date">Đánh giá ngày 2/1/2025</span>
+                                    </div>
+                                </div>
+                                <div class="comment-rating">
+                                    <span>5.0 / 5.0</span>
+                                    <span>Tuyệt vời</span>
+                                </div>
+                                <p>Gia đình - Vui chơi</p>
+                                <p>Excellent location, very clean, and very capable staff. If you stay for any more than
+                                    four days, choose an apartment, where the 2BR apartments come with a cooktop...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="comment">
+                                <div class="user-info">
+                                    <img src="https://art.pixilart.com/ef9ac2360ea67b0.png" alt="User Avatar" class="user-avatar">
+                                    <div>
+                                        <span class="user-name">Lan Nguyen</span>
+                                        <span class="comment-date">Đánh giá ngày 1/1/2025</span>
+                                    </div>
+                                </div>
+                                <div class="comment-rating">
+                                    <span>4.0 / 5.0</span>
+                                    <span>Tốt</span>
+                                </div>
+                                <p>Cá nhân - Nghỉ dưỡng</p>
+                                <p>Nice place with good amenities, but the Wi-Fi could be improved.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="comment">
+                                <div class="user-info">
+                                    <img src="https://art.pixilart.com/ef9ac2360ea67b0.png" alt="User Avatar" class="user-avatar">
+                                    <div>
+                                        <span class="user-name">Minh Tran</span>
+                                        <span class="comment-date">Đánh giá ngày 31/12/2024</span>
+                                    </div>
+                                </div>
+                                <div class="comment-rating">
+                                    <span>4.7 / 5.0</span>
+                                    <span>Rất tốt</span>
+                                </div>
+                                <p>Đi cùng bạn bè</p>
+                                <p>Great view and friendly staff, highly recommend!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="comment">
+                                <div class="user-info">
+                                    <img src="https://art.pixilart.com/ef9ac2360ea67b0.png" alt="User Avatar" class="user-avatar">
+                                    <div>
+                                        <span class="user-name">Sophie Lee</span>
+                                        <span class="comment-date">Đánh giá ngày 30/12/2024</span>
+                                    </div>
+                                </div>
+                                <div class="comment-rating">
+                                    <span>4.6 / 5.0</span>
+                                    <span>Rất tốt</span>
+                                </div>
+                                <p>Cặp đôi</p>
+                                <p>Comfortable stay, clean rooms, but a bit far from the city center.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="comment">
+                                <div class="user-info">
+                                    <img src="https://art.pixilart.com/ef9ac2360ea67b0.png" alt="User Avatar" class="user-avatar">
+                                    <div>
+                                        <span class="user-name">John Doe</span>
+                                        <span class="comment-date">Đánh giá ngày 29/12/2024</span>
+                                    </div>
+                                </div>
+                                <div class="comment-rating">
+                                    <span>4.8 / 5.0</span>
+                                    <span>Rất tốt</span>
+                                </div>
+                                <p>Gia đình</p>
+                                <p>Amazing experience, the pool area was a highlight!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#reviewCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#reviewCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container mt-4" id="danhsachphong">
+        <h4 class="mt-5 mb-3">Chọn phòng có sẵn</h4>
+    </div>
+
+    <div class="container mt-4">
+        <!-- Check if hotel.rooms is empty -->
+        <div th:if="${hotel.rooms.isEmpty()}" class="alert alert-info text-center">
+            Không có phòng nào khả dụng.
+        </div>
+
+        <!-- Display rooms if not empty -->
+        <div th:unless="${hotel.rooms.isEmpty()}">
+            <div id="roomList">
+                <div class="list">
+                    <div th:each="room : ${hotel.rooms}" class="card mb-3 item">
+                        <div class="row g-0 align-items-center">
+                            <!-- Ảnh -->
+                            <div class="col-md-4">
+                                <img th:src="@{/img/room.jpg}" class="img-fluid rounded-start" alt="Ảnh phòng">
+                            </div>
+
+                            <!-- Thông tin -->
+                            <div class="col-md-5 px-3">
+                                <div class="card-body">
+                                    <div class="text-muted small mb-1">Đề xuất cho bạn</div>
+                                    <h5 class="card-title fw-bold roomName" th:text="${room.roomName}">1 giường đôi</h5>
+                                    <p class="card-title fw-bold roomType" th:text="'Loại phòng: ' + ${room.roomType}">Loại phòng: detail</p>
+                                    <p class="mb-1"><i class="fa fa-cutlery me-1"></i> Có phục vụ bữa sáng</p>
+                                    <p class="text-success mb-2"><i class="fa fa-check-circle me-1"></i> Hoàn tiền một phần</p>
+                                </div>
+                            </div>
+
+                            <!-- Giá -->
+                            <div class="col-md-3 text-end pe-4">
+                                <div class="fw-bold fs-5 text-danger roomPrice"
+                                     th:text="'₫ ' + ${#numbers.formatInteger(room.roomPrice, 0, 'COMMA')}">₫ 3,273,114
+                                </div>
+                                <div class="small text-muted">Giá 1 đêm đã bao gồm thuế</div>
+                                <a th:href="@{'/public/room/' + ${room.id}}" class="btn btn-warning mt-2 px-4">Đặt</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Phân trang -->
+                <ul class="pagination"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <h4 class="mt-5 mb-3">Tổng Quan</h4>
+    </div>
+
+    <div class="container mt-4">
+        <div class="hotel-overview">
+            <div class="hotel-image">
+                <img src="https://ak-d.tripcdn.com/images//1mc2p12000f06f7qxE5FF.jpg" alt="Hotel Image"
+                     class="img-fluid rounded">
+            </div>
+            <div class="hotel-details">
+                <h3 class="hotel-name" th:text=" '🏨' + ${hotel.nameHotel}">Novotel Premier Han River</h3>
+                <div class="hotel-info">
+                    <span>Nâng cấp: 2022-10-01</span> |
+                    <span>Phòng: 326</span> |
+                    <span>Tầng: 37</span> |
+                    <span>Đánh giá: ★★★★☆</span>
+                </div>
+                <p class="hotel-intro" th:text="${hotel.intro}">
+                    Tọa lạc tại trung tâm Đà Nẵng, Novotel Danang Premier Han River cách Trung tâm Hội nghị Thành phố Đà
+                    Nẵng 1 phút đi bộ và cách Chợ Hàn 11 minutes phút đi bộ. Khách sạn nằm gần các bãi biển nổi tiếng Đà
+                    Nẵng và cách Cầu Rồng 2,2mi (3,5 km).
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <h4 class="mt-5 mb-3">Chính Sách</h4>
+    </div>
+
+    <div class="container mt-4">
+        <div class="hotel-policies">
+            <h4>Chính sách chỗ lưu trú</h4>
+            <div class="policy-section">
+                <h3>Giờ nhận / trả phòng</h3>
+                <p><strong>Giờ nhận phòng:</strong> 3:00 PM - 5:00 PM</p>
+                <p><strong>Giờ trả phòng:</strong> 12:00 AM</p>
+                <p>Có thể nhận phòng sớm hoặc trả phòng muộn với phụ phí (tùy tình hình thực tế).</p>
+            </div>
+            <div class="policy-section">
+                <h3>Chính sách nhận phòng</h3>
+                <ul>
+                    <li>Khách nhận phòng phải từ 18 tuổi trở lên.</li>
+                    <li>Có thể cần giấy tờ tùy thân có ảnh và đặt cọc (thẻ tín dụng, thẻ ghi nợ, hoặc tiền mặt) cho chi
+                        phí phát sinh.
+                    </li>
+                    <li>Tên trên thẻ tín dụng phải trùng với khách lưu trú chính.</li>
+                    <li>Nơi lưu trú nhận thanh toán bằng thẻ tín dụng, không nhận tiền mặt. Chấp nhận giao dịch không
+                        dùng tiền mặt.
+                    </li>
+                </ul>
+            </div>
+            <div class="policy-section">
+                <h3>Chính sách trẻ em</h3>
+                <p>Không giới hạn độ tuổi trẻ em. Trẻ em trên 15 tuổi tính giá người lớn.</p>
+            </div>
+            <div class="policy-section">
+                <h3>Các phí khác</h3>
+                <ul>
+                    <li>Phụ phí bữa sáng buffet: người lớn - 380,000 VND; trẻ em - 190,000 VND.</li>
+                    <li>Phí xe đưa đón sân bay: 300,000 VND mỗi xe (một chiều, tối đa 4 khách).</li>
+                    <li>Phí giường gấp: 1,360,800 VND mỗi đêm.</li>
+                </ul>
+                <p><em>Lưu ý: Phí và đặt cọc có thể không bao gồm thuế và có thể thay đổi.</em></p>
+            </div>
+            <div class="policy-section">
+                <h3>Đồ ăn & thức uống</h3>
+                <p>Khách có thể thưởng thức món ăn phong cách fusion tại The Square (1 trong 2 nhà hàng), dịch vụ phòng
+                    24 giờ, hoặc thức ăn nhẹ tại 3 tiệm cà phê. Quầy bar bên hồ bơi và 2 quầy bar/khu lounge phục vụ đồ
+                    uống. Bữa sáng buffet từ 6:00 đến 10:00 hàng ngày (có phụ phí).</p>
+            </div>
+            <div class="policy-section">
+                <h3>Hướng dẫn đặc biệt</h3>
+                <p>Dịch vụ đón sân bay có sẵn (có thể tính phí). Khách cần liên hệ trước 48 giờ qua thông tin trong xác
+                    nhận đặt phòng. Nhân viên tiếp tân sẽ đón khách khi đến.</p>
+                <p>Không đảm bảo phòng cách âm. Trang thiết bị an toàn: máy phát hiện khói, hệ thống an ninh, hộp sơ
+                    cứu. Nơi lưu trú áp dụng biện pháp vệ sinh theo ALLSAFE (Accor Hotels).</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Popup khi đã đăng nhập -->
+<div id="confirmationPopup" style="display:none;">
+    <p>Bạn muốn đặt phòng này?</p>
+    <button id="confirmDelete">Xác nhận</button>
+    <button id="cancelDelete">Hủy</button>
+</div>
+
+<!-- Popup khi chưa đăng nhập -->
+<div id="confirmationPopup-login" style="display:none;">
+    <p>Bạn cần đăng nhập để đặt phòng. Bạn có muốn đăng nhập không?</p>
+    <button id="confirm">Xác nhận</button>
+    <button id="cancel">Hủy</button>
+</div>
+
+
+<!-- Modal thông báo -->
+<div id="myModal" class="modal" th:if="${result}">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p class="result-popup" th:text="${result}">Thông báo</p>
+        <div class="modal-buttons" th:if="${bookingId != 'no'}">
+            <!-- Nút OK chuyển đến trang thanh toán -->
+            <a th:href="@{/users/booking-rooms/{bookingId}/payment(bookingId=${bookingId})}" class="pay-button">Ok</a>
+            <!-- Nút Hủy đóng modal hoặc quay lại -->
+            <button class="btn btn-cancel" onclick="closeModal()">Hủy</button>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Hotel Booking</h5>
+                <p>Đặt phòng dễ dàng, nhanh chóng và an toàn.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Liên kết nhanh</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white">Trang chủ</a></li>
+                    <li><a href="#" class="text-white">Phòng</a></li>
+                    <li><a href="#" class="text-white">Dịch vụ</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Liên hệ</h5>
+                <p><i class="fas fa-phone"></i> 0123-456-789</p>
+                <p><i class="fas fa-envelope"></i> info@hotelbooking.com</p>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <p>© 2025 Hotel Booking. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var options = {
+            valueNames: ['roomName', 'roomType', 'roomPrice'],
+            page: 2,
+            pagination: {
+                innerWindow: 2,
+                outerWindow: 1,
+                paginationClass: 'pagination'
+            }
+        };
+
+        var roomList = new List('roomList', options);
+
+        // Giữ lại và cuộn mượt tới vị trí cũ khi chuyển trang
+        document.querySelector('.pagination').addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' || e.target.closest('a')) {
+                const scrollY = window.scrollY;
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: scrollY,
+                        behavior: 'smooth' // cuộn mượt
+                    });
+                }, 10);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

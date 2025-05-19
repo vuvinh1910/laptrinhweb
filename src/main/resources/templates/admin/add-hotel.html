@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm Khách Sạn</title>
+    <link rel="stylesheet" th:href="@{/css/admin/add-hotel.css}">
+</head>
+<body>
+<h1>Thêm Khách Sạn</h1>
+
+<!-- Hiển thị thông báo lỗi nếu có -->
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<form th:action="@{/admin/hotel/add}" th:object="${hotel}" method="post">
+    <div>
+        <label for="nameHotel">Tên Khách Sạn:</label>
+        <input type="text" id="nameHotel" th:field="*{nameHotel}" required>
+    </div>
+
+    <div>
+        <label for="address">Địa chỉ:</label>
+        <input type="text" id="address" th:field="*{address}" required>
+    </div>
+
+    <div>
+        <label for="description">Mô tả:</label>
+        <textarea id="description" th:field="*{description}" required></textarea>
+    </div>
+
+    <div>
+        <label for="intro">Giới thiệu:</label>
+        <textarea id="intro" th:field="*{intro}" required></textarea>
+    </div>
+
+    <div>
+        <label for="phone">Số điện thoại:</label>
+        <input type="text" id="phone" th:field="*{phone}" required>
+    </div>
+
+    <div>
+        <label for="price">Giá trung bình:</label>
+        <input type="number" id="price" th:field="*{price}" required>
+    </div>
+
+    <div>
+        <label for="star">Sao (1-5):</label>
+        <input type="number" id="star" th:field="*{star}" min="1" max="5" required>
+    </div>
+
+    <div>
+        <label for="rate">Đánh giá trung bình (0-5):</label>
+        <input type="number" step="0.1" id="rate" th:field="*{rate}" min="0" max="5" required>
+    </div>
+
+    <div>
+        <label for="voucher">Khuyến mãi (%):</label>
+        <input type="number" id="voucher" th:field="*{voucher}" min="0" max="100">
+    </div>
+
+    <div>
+        <label for="locationCode">Mã địa điểm:</label>
+        <select id="locationCode" th:field="*{locationCode}" required>
+            <option value="">-- Chọn địa điểm --</option>
+            <option value="HCM">Hồ Chí Minh</option>
+            <option value="DA-NANG">Đà Nẵng</option>
+            <option value="HA-NOI">Hà Nội</option>
+            <option value="HOI-AN">Hội An</option>
+            <option value="PHU-QUOC">Phú Quốc</option>
+        </select>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit">Thêm</button>
+        <a th:href="@{/admin/hotel}" class="back-button">Quay lại</a>
+    </div>
+</form>
+</body>
+</html>

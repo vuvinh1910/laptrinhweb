@@ -6,70 +6,200 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/admin/room-content.css}">
     <link rel="stylesheet" th:href="@{/css/admin/layout.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/service-content.css}">
     <link rel="stylesheet" th:href="@{/css/admin/customer-content.css}">
     <link rel="stylesheet" th:href="@{/css/admin/booking-room.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/booking-service.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/hotel-content.css}">
     <link rel="stylesheet" th:href="@{/css/admin/dashboard-content.css}">
     <link rel="stylesheet" th:href="@{/css/public/popup-login.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/voucher.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/refund.css}">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+    <!-- CSS tùy chỉnh cho DataTables -->
+    <style>
+        #customerTable_wrapper {
+            margin-top: 20px;
+        }
+        .dataTables_paginate .paginate_button {
+            border-radius: 5px;
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+        .dataTables_paginate .paginate_button.current {
+            background: #007bff;
+            color: white !important;
+            border-color: #007bff;
+        }
+        .dataTables_paginate .paginate_button:hover {
+            background: #204355;
+        }
+    </style>
+    <style>
+        .pagination {
+            margin-top: 20px;
+            justify-content: center;
+            display: flex;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination .active a {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .pagination a {
+            color: #007bff;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .pagination a:hover {
+            background-color: #1e525a;
+        }
+    </style>
     <script th:src="@{/js/admin-filter-room.js}" defer></script>
+    <script th:src="@{/js/admin-confirm-refund.js}" defer></script>
     <script th:src="@{/js/admin-delete-confirm.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script>
         var success = "[[${success}]]";
         var error = "[[${error}]]";
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             if (success && success !== "null") {
-                alert(success);
+                console.log("Success: " + success);
             }
             if (error && error !== "null") {
-                alert(error);
+                console.error("Error: " + error);
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#customerTable').DataTable({
+                "pageLength": 10, // Số khách hàng mỗi trang
+                "lengthChange": true, // Cho phép chọn số bản ghi mỗi trang
+                "searching": true, // Bật tìm kiếm
+                "ordering": true, // Bật sắp xếp cột
+                "paging": true, // Bật phân trang
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_ dữ liệu mỗi trang",
+                    "zeroRecords": "Không tìm thấy dữ liệu nào",
+                    "info": "Đang hiển thị trang _PAGE_ của _PAGES_",
+                    "infoEmpty": "Không có bản ghi nào",
+                    "infoFiltered": "(lọc từ _MAX_ bản ghi)",
+                    "search": "Tìm kiếm:",
+                    "paginate": {
+                        "first": "Đầu",
+                        "last": "Cuối",
+                        "next": "Tiếp",
+                        "previous": "Trước"
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var options = {
+                valueNames: ['bankHolderName', 'bankType', 'bankCode', 'reason'],
+                page: 14, // Số yêu cầu hoàn tiền mỗi trang
+                pagination: {
+                    innerWindow: 2,
+                    outerWindow: 1,
+                    paginationClass: 'pagination'
+                }
+            };
+            var refundList = new List('refundList', options);
         });
     </script>
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h2>Admin Panel</h2>
-            <ul>
-                <li><a th:href="@{/admin/dashboard}" th:classappend="${activePage == 'dashboard' ? 'active' : ''}"><i>🏠</i> Dashboard</a></li>
-                <li><a th:href="@{/admin/customer}" th:classappend="${activePage == 'customer' ? 'active' : ''}"><i>👥</i> Customer</a></li>
-                <li><a th:href="@{/admin/room}" th:classappend="${activePage == 'room' ? 'active' : ''}"><i>🏡</i> Room</a></li>
-                <li><a th:href="@{/admin/service}" th:classappend="${activePage == 'service' ? 'active' : ''}"><i>🛠️</i> Service</a></li>
-                <li><a th:href="@{/admin/booking/room}" th:classappend="${activePage == 'bookingRoom' ? 'active' : ''}"><i>📅</i> Booking Room </a></li>
-                <li><a th:href="@{/admin/booking/service}" th:classappend="${activePage == 'bookingService' ? 'active' : ''}"><i>📅</i> Booking Service </a></li>
-                <!-- Form đăng xuất -->
-                <li>
-                    <form th:action="@{/users/logout}" method="post">
-                        <button type="submit" th:classappend="${activePage == 'signout' ? 'active' : ''}" style="border: none; color: inherit; cursor: pointer; font: inherit;">
-                            <i>🚪</i> Sign out
-                        </button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <h1 th:text="${pageTitle}">Dashboard</h1>
-                <div class="user-profile">
-                    <span>Xin chào, Admin</span>
-                    <img th:src="@{/img/admin_logo.jpg}" alt="User">
-                </div>
+<div class="container">
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a th:href="@{/admin/dashboard}" th:classappend="${activePage == 'dashboard' ? 'active' : ''}"><i>🏠</i> Dashboard</a></li>
+            <li><a th:href="@{/admin/thong_bao}" th:classappend="${activePage == 'refund' ? 'active' : ''}"><i>🔔</i> Thông báo</a></li>
+            <li><a th:href="@{/admin/customer}" th:classappend="${activePage == 'customer' ? 'active' : ''}"><i>👥</i> Customer</a></li>
+            <li><a th:href="@{/admin/room}" th:classappend="${activePage == 'room' ? 'active' : ''}"><i>🏡</i> Room</a></li>
+            <li><a th:href="@{/admin/hotel}" th:classappend="${activePage == 'hotel' ? 'active' : ''}"><i>🏨</i> Hotel</a></li>
+            <li><a th:href="@{/admin/booking/room}" th:classappend="${activePage == 'bookingRoom' ? 'active' : ''}"><i>📅</i> Booking Room </a></li>
+            <li><a th:href="@{/admin/voucher}" th:classappend="${activePage == 'voucher' ? 'active' : ''}"><i>🎟️</i> Voucher </a></li>
+            <li>
+                <form th:action="@{/users/logout}" method="post">
+                    <button type="submit" th:classappend="${activePage == 'signout' ? 'active' : ''}"
+                            style="border: none; color: inherit; cursor: pointer; font: inherit;">
+                        <i>🚪</i> Sign out
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <h1 th:text="${pageTitle}">Dashboard</h1>
+            <div class="user-profile">
+                <span>Xin chào, Admin</span>
+                <img th:src="@{/img/admin_logo.jpg}" alt="User">
             </div>
-            <!-- Nội dung động sẽ được nhúng vào đây -->
-            <div th:replace="${content} :: content"></div>
         </div>
+        <div th:replace="${content} :: content"></div>
     </div>
-    <!-- Popup Xác Nhận -->
-    <div id="confirmationPopup" style="display:none;">
-        <p>Bạn có chắc chắn muốn xóa không? Hành động này không thể hoàn tác.</p>
-        <button id="confirmDelete">Xóa</button>
-        <button id="cancelDelete">Hủy</button>
-    </div>
+</div>
+
+<div id="confirmationPopup" style="display:none;">
+    <p>Bạn có chắc chắn muốn xóa không? Hành động này không thể hoàn tác.</p>
+    <button id="confirmDelete">Xóa</button>
+    <button id="cancelDelete">Hủy</button>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const revenuePerMonth = [[${revenuePerMonth}]];
+    const statusCount = [[${statusCount}]];
+    /*]]>*/
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const barCtx = document.getElementById('barChart')?.getContext('2d');
+        if (barCtx && revenuePerMonth) {
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(revenuePerMonth),
+                    datasets: [{
+                        label: 'Doanh thu theo tháng',
+                        data: Object.values(revenuePerMonth),
+                        backgroundColor: '#4e73df'
+                    }]
+                }
+            });
+        }
+
+        const pieCtx = document.getElementById('pieChart')?.getContext('2d');
+        if (pieCtx && statusCount) {
+            new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(statusCount),
+                    datasets: [{
+                        label: 'Tỷ lệ đơn',
+                        data: Object.values(statusCount),
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545','#dc7345']
+                    }]
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

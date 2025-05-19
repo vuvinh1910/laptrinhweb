@@ -4,6 +4,7 @@ import com.example.web_nhom_5.entity.BookingRoomEntity;
 import com.example.web_nhom_5.enums.BookingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -23,12 +24,24 @@ public interface BookingRoomRepository extends JpaRepository<BookingRoomEntity, 
     List<BookingRoomEntity> findAllByRoom_Id(Long roomId);
     List<BookingRoomEntity> findAllByPaid(boolean paid);
     List<BookingRoomEntity> findAllByStatusAndPaid(BookingStatus status, boolean paid);
-    List<BookingRoomEntity> findAllByStatusAndCreatedAtBeforeAndPaid(BookingStatus status, LocalDateTime createdAt, boolean paid);
+
+    @Query("select r from BookingRoomEntity r where " +
+            "(:userId is null or r.user.id = :userId) and " +
+            "(r.status = :status) and " +
+            "(:paid is null or r.paid = :paid)")
+    List<BookingRoomEntity> findAllByUser_IdAndStatusAndPaid(Long userId, BookingStatus status, Boolean paid);
 
     @Query("SELECT COUNT(b) FROM BookingRoomEntity b " +
             "WHERE b.room.id = :roomId " +
-            "AND (:checkOut IS NULL OR b.checkOut > :checkIn) " +
-            "AND (:checkIn IS NULL OR b.checkIn < :checkOut) " +
-            "AND b.status = :status")
-    long countRoomAvailable(Long roomId, LocalDate checkIn, LocalDate checkOut, BookingStatus status);
+            "AND (:checkOut IS NULL OR b.checkIn < :checkOut) " +
+            "AND (:checkIn IS NULL OR b.checkOut > :checkIn) " +
+            "AND b.status = :status " +
+            "AND (:paid IS NULL OR b.paid = :paid)")
+    long countRoomAvailable(@Param("roomId") Long roomId,
+                            @Param("checkIn") LocalDate checkIn,
+                            @Param("checkOut") LocalDate checkOut,
+                            @Param("status") BookingStatus status,
+                            @Param("paid") Boolean paid);
+
+    long countAllByStatus(BookingStatus status);
 }

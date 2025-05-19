@@ -3,17 +3,17 @@
     max-width: 1200px;
     margin: 80px 20px 20px 320px;
     padding: 30px;
-    background-color: #2d2d2d;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    background-color: #ffffff; /* Match voucher card */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Match voucher card shadow */
     border-radius: 10px;
     transition: margin 0.3s ease;
-    color: #e0e0e0;
+    color: #333; /* Match voucher text */
     overflow: auto;
 }
 
 body.user-booking-room-list {
-    background-color: #1a1a1a;
-    font-family: Arial, sans-serif;
+    background-color: #f5f7fa; /* Match voucher page background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Match voucher font */
     margin: 0;
 }
 
@@ -28,14 +28,14 @@ body.user-booking-room-list {
     .user-booking-room-list .booking-container {
         margin: 80px 15px 15px 15px;
         padding: 20px;
-        background-color: #333;
+        background-color: #ffffff; /* Keep white for consistency */
     }
 }
 
 /* Tiêu đề chính */
 .user-booking-room-list h1 {
     text-align: center;
-    color: #4a90e2;
+    color: #2c3e50; /* Match voucher heading */
     margin-bottom: 30px;
     font-size: 24px;
 }
@@ -46,10 +46,10 @@ body.user-booking-room-list {
     grid-template-columns: 50px 1fr 120px 150px 150px 120px 150px;
     gap: 15px;
     padding: 15px;
-    background-color: #333;
+    background-color: #ecf0f1; /* Match voucher code background */
     font-weight: bold;
-    border-bottom: 2px solid #444;
-    color: #ffffff;
+    border-bottom: 2px solid #3498db; /* Match voucher status border */
+    color: #2d3436; /* Match voucher strong text */
 }
 
 /* Các hàng booking */
@@ -59,17 +59,17 @@ body.user-booking-room-list {
     gap: 15px;
     padding: 15px;
     align-items: center;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #3498db; /* Match voucher status border */
     transition: background-color 0.2s;
 }
 
 .user-booking-room-list .booking-row:hover {
-    background-color: #333333;
+    background-color: #dff9fb; /* Match voucher status background */
 }
 
 /* Nút xóa */
 .user-booking-room-list .del-button {
-    background-color: #e74c3c;
+    background-color: #e67e22; /* Match voucher discount */
     color: white;
     border: none;
     width: 30px;
@@ -83,7 +83,7 @@ body.user-booking-room-list {
 }
 
 .user-booking-room-list .del-button:hover {
-    background-color: #c0392b;
+    background-color: #d35400; /* Darker shade of orange */
     transform: scale(1.05);
 }
 
@@ -118,13 +118,13 @@ body.user-booking-room-list {
 }
 
 .user-booking-room-list .pay-button {
-    background-color: #4a90e2;
+    background-color: #2980b9; /* Match voucher code */
     color: white;
     order: 1;
 }
 
 .user-booking-room-list .cancel-button {
-    background-color: #ff6b6b;
+    background-color: #e67e22; /* Match voucher discount */
     color: white;
     order: 2;
 }
@@ -133,20 +133,20 @@ body.user-booking-room-list {
 .user-booking-room-list .pay-button:hover,
 .user-booking-room-list .cancel-button:hover {
     transform: scale(1.05);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Match voucher card shadow style */
 }
 
 .user-booking-room-list .pay-button:hover {
-    background-color: #357abd;
+    background-color: #2471a3; /* Darker shade of voucher code */
 }
 
 .user-booking-room-list .cancel-button:hover {
-    background-color: #ff5252;
+    background-color: #d35400; /* Darker shade of voucher discount */
 }
 
 /* Trạng thái đã thanh toán */
 .user-booking-room-list .paid {
-    color: #27ae60;
+    color: #27ae60; /* Already matches voucher feedback */
     font-weight: 500;
     display: flex;
     flex-direction: column;
@@ -181,7 +181,7 @@ body.user-booking-room-list {
         content: attr(data-label);
         font-weight: bold;
         margin-right: 15px;
-        color: #4a90e2;
+        color: #2c3e50; /* Match voucher heading */
     }
 
     .user-booking-room-list .action-buttons,
@@ -193,5 +193,238 @@ body.user-booking-room-list {
     .user-booking-room-list .cancel-button {
         width: 100%;
         padding: 8px 15px;
+    }
+}
+
+/* Style cho Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+/* Style cho nội dung Modal */
+.modal-content {
+    background-color: #ffffff; /* Match voucher card */
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #3498db; /* Match voucher status border */
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Match voucher card shadow */
+    position: relative;
+    animation: modalopen 0.4s;
+}
+
+/* Hiệu ứng mở modal */
+@keyframes modalopen {
+    from {top: -50px; opacity: 0;}
+    to {top: 0; opacity: 1;}
+}
+
+/* Style cho nút đóng */
+.close {
+    color: #2c3e50; /* Match voucher heading */
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #333; /* Match voucher text */
+    text-decoration: none;
+}
+
+/* Style cho đoạn văn bản kết quả */
+.result-popup {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 1.1em;
+    color: #333; /* Match voucher text */
+    word-break: break-word;
+}
+
+/* CSS cho Modal nền mờ */
+.refundModal {
+    display: none; /* Mặc định ẩn modal */
+    position: fixed; /* Giữ vị trí cố định trên màn hình */
+    z-index: 1000; /* Đảm bảo modal nằm trên cùng */
+    left: 0;
+    top: 0;
+    width: 100%; /* Chiều rộng toàn màn hình */
+    height: 100%; /* Chiều cao toàn màn hình */
+    overflow: auto; /* Cho phép cuộn nếu nội dung dài hơn màn hình */
+    background-color: rgba(0, 0, 0, 0.6); /* Nền đen mờ */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    padding: 20px; /* Thêm padding để nội dung không dính sát mép màn hình trên mobile */
+    box-sizing: border-box; /* Tính padding vào kích thước */
+}
+
+/* CSS cho nội dung Modal */
+.refund-modal-content {
+    background-color: #fefefe; /* Nền trắng */
+    margin: auto; /* Căn giữa (kết hợp với flexbox của .refundModal) */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Đổ bóng */
+    max-width: 500px; /* Chiều rộng tối đa */
+    width: 100%; /* Đảm bảo chiếm hết chiều rộng có thể trong max-width */
+    position: relative; /* Quan trọng cho nút đóng tuyệt đối */
+    box-sizing: border-box; /* Tính padding vào kích thước */
+    animation: fadeInScale 0.3s ease-out; /* Thêm hiệu ứng mở modal */
+}
+
+/* Keyframes cho hiệu ứng mở modal */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* CSS cho nút đóng */
+.refund-close-button {
+    color: #aaa;
+    float: right; /* Đặt nút đóng ở góc trên bên phải */
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute; /* Vị trí tuyệt đối */
+    top: 10px; /* Cách mép trên 10px */
+    right: 15px; /* Cách mép phải 15px */
+    cursor: pointer; /* Con trỏ dạng bàn tay */
+    transition: color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+}
+
+.refund-close-button:hover,
+.refund-close-button:focus {
+    color: #777; /* Đổi màu khi rê chuột hoặc focus */
+    text-decoration: none; /* Bỏ gạch chân */
+    cursor: pointer;
+}
+
+/* CSS cho tiêu đề trong modal */
+.refund-modal-content h2 {
+    text-align: center;
+    color: #2c3e50; /* Màu tiêu đề */
+    margin-top: 0; /* Bỏ margin trên cùng */
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+/* CSS cho đoạn mô tả trong modal */
+.refund-modal-content p {
+    text-align: center;
+    color: #555;
+    margin-bottom: 25px;
+    font-size: 1em;
+}
+
+
+/* CSS cho nhóm form (label + input/textarea) */
+.refund-form-group {
+    margin-bottom: 20px; /* Khoảng cách giữa các nhóm form */
+}
+
+.refund-form-group label {
+    display: block; /* Hiển thị nhãn trên một dòng riêng */
+    margin-bottom: 8px; /* Khoảng cách dưới nhãn */
+    color: #2d3436; /* Màu nhãn */
+    font-weight: bold; /* In đậm nhãn */
+    font-size: 1em;
+}
+
+.refund-form-group input[type="text"],
+.refund-form-group input[type="email"],
+.refund-form-group textarea {
+    width: 100%; /* Chiều rộng 100% của container */
+    padding: 12px;
+    border: 1px solid #bdc3c7; /* Màu viền nhạt */
+    border-radius: 5px;
+    background-color: #ecf0f1; /* Màu nền input */
+    color: #333; /* Màu chữ input */
+    font-size: 1em;
+    box-sizing: border-box; /* Tính padding và border vào chiều rộng */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển đổi */
+}
+
+.refund-form-group input[type="text"]:focus,
+.refund-form-group input[type="email"]:focus,
+.refund-form-group textarea:focus {
+    outline: none; /* Bỏ outline mặc định */
+    border-color: #3498db; /* Màu viền khi focus */
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); /* Đổ bóng khi focus */
+}
+
+.refund-form-group textarea {
+    resize: vertical; /* Chỉ cho phép resize theo chiều dọc */
+}
+
+
+/* CSS cho nút Gửi Yêu cầu */
+.refund-submit-button {
+    background-color: #2980b9; /* Màu nền nút */
+    color: white; /* Màu chữ trắng */
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    width: 100%; /* Chiều rộng 100% */
+    margin-top: 10px; /* Khoảng cách trên */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Hiệu ứng chuyển đổi */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Đổ bóng nhẹ */
+}
+
+.refund-submit-button:hover {
+    background-color: #2471a3; /* Màu nền khi hover */
+    transform: translateY(-2px); /* Nâng nút lên một chút */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Đổ bóng mạnh hơn */
+}
+
+.refund-submit-button:active {
+    background-color: #1f618d; /* Màu nền khi click */
+    transform: translateY(0); /* Trở về vị trí cũ */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Đổ bóng ít hơn */
+}
+
+/* Responsive cơ bản cho modal */
+@media (max-width: 600px) {
+    .refund-modal-content {
+        padding: 20px; /* Giảm padding trên màn hình nhỏ */
+        max-width: 95%; /* Chiều rộng tối đa trên màn hình nhỏ */
+    }
+
+    .refund-modal-content h2 {
+        font-size: 1.5em; /* Giảm kích thước tiêu đề */
+    }
+
+    .refund-form-group label,
+    .refund-form-group input[type="text"],
+    .refund-form-group input[type="email"],
+    .refund-form-group textarea,
+    .refund-submit-button {
+        font-size: 0.9em; /* Giảm kích thước font */
     }
 }

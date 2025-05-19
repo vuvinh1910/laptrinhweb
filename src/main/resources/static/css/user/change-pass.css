@@ -1,23 +1,24 @@
+/* Điều chỉnh container chính */
 .change-password .password-container {
     max-width: 600px;
     margin: 85px auto; /* Cách trên 85px, căn giữa theo chiều ngang */
     padding: 30px;
-    background-color: #2d2d2d;
+    background-color: #ffffff; /* Match voucher card */
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    color: #e0e0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Match voucher card shadow */
+    color: #333; /* Match voucher text */
 }
 
 body.change-password {
-    background-color: #1a1a1a;
-    font-family: Arial, sans-serif;
+    background-color: #f5f7fa; /* Match voucher page background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Match voucher font */
     margin: 0;
 }
 
 /* Tiêu đề */
 .change-password .password-container h1 {
     text-align: center;
-    color: #4a90e2;
+    color: #2c3e50; /* Match voucher heading */
     margin-bottom: 30px;
 }
 
@@ -29,15 +30,16 @@ body.change-password {
 .change-password .change-pass label {
     display: block;
     margin-bottom: 5px;
+    color: #2d3436; /* Match voucher strong text */
 }
 
 .change-password .change-pass input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #444;
+    border: 1px solid #3498db; /* Match Ninôc theo chiều dọc */
     border-radius: 5px;
-    background-color: #3d3d3d;
-    color: #e0e0e0;
+    background-color: #ecf0f1; /* Match voucher code background */
+    color: #333; /* Match voucher text */
 }
 
 .change-password .change-pass button {
@@ -45,13 +47,14 @@ body.change-password {
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #4a90e2;
+    background-color: #2980b9; /* Match voucher code */
     color: #fff;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .change-password .change-pass button:hover {
-    background-color: #357abd;
+    background-color: #2471a3; /* Darker shade of voucher code */
+    transform: scale(1.05); /* Match voucher hover effect */
 }

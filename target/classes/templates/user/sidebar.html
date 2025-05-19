@@ -9,9 +9,15 @@
 <div class="sidebar" th:fragment="sidebar">
     <ul>
         <li><a th:href="@{/users/myInfo}">Thông tin cá nhân</a></li>
-        <li><a th:href="@{/users/myInfo/booking-rooms}">Lịch sử đặt phòng</a></li>
-        <li><a th:href="@{/users/myInfo/booking-services}">Lịch sử đặt dịch vụ</a></li>
+        <li><a th:href="@{/users/cart}">Giỏ hàng</a></li>
+        <li><a th:href="@{/users/myInfo/booking-rooms}">Phòng đã đặt</a></li>
+        <li><a th:href="@{/users/myVoucher}">My Voucher</a></li>
         <li><a th:href="@{/users/myInfo/change-pass}">Đổi mật khẩu</a></li>
+        <li>
+            <form th:action="@{/users/logout}" method="post" style="display: inline;">
+                <a href="#" onclick="this.parentNode.submit();" class="logout-link">Đăng xuất</a>
+            </form>
+        </li>
     </ul>
 </div>
 </body>

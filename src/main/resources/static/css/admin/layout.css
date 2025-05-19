@@ -1,29 +1,32 @@
+/* Thiết lập cơ bản - Có thể giữ lại hoặc di chuyển đến base CSS nếu có */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif; /* Font chung */
 }
 
 body {
-    background: #f0f2f5;
-    color: #333;
-    line-height: 1.6;
+    background: #f0f2f5; /* Màu nền chung cho toàn bộ trang */
+    color: #333; /* Màu chữ chung */
+    line-height: 1.6; /* Khoảng cách dòng */
 }
 
+/* Container chính của layout */
 .container {
-    display: flex;
-    min-height: 100vh;
+    display: flex; /* Sử dụng flexbox để chia sidebar và main content */
+    min-height: 100vh; /* Chiều cao tối thiểu bằng chiều cao viewport */
 }
 
 /* Sidebar */
 .sidebar {
-    width: 250px;
-    background: #2c3e50;
-    color: white;
+    width: 250px; /* Chiều rộng cố định của sidebar */
+    background: #2c3e50; /* Màu nền sidebar */
+    color: white; /* Màu chữ trong sidebar */
     padding: 20px;
-    position: fixed;
-    height: 100vh;
+    position: fixed; /* Sidebar cố định khi scroll */
+    height: 100vh; /* Chiều cao bằng chiều cao viewport */
+    overflow-y: auto; /* Thêm scroll nếu nội dung sidebar dài */
 }
 
 .sidebar h2 {
@@ -33,85 +36,191 @@ body {
 }
 
 .sidebar ul {
-    list-style: none;
+    list-style: none; /* Bỏ dấu đầu dòng */
 }
 
 .sidebar ul li {
-    margin: 20px 0;
+    margin: 20px 0; /* Khoảng cách giữa các mục menu */
 }
 
+/* Style cho các liên kết và button trong sidebar */
 .sidebar ul li a,
 .sidebar ul li button {
     color: white;
     text-decoration: none;
-    display: flex;
-    align-items: center;
+    display: flex; /* Sử dụng flexbox để căn chỉnh icon và text */
+    align-items: center; /* Căn dọc */
     padding: 10px;
     border-radius: 5px;
-    transition: background 0.3s;
+    transition: background 0.3s; /* Hiệu ứng chuyển màu nền khi hover */
     width: 100%; /* Đảm bảo button rộng bằng <a> */
     text-align: left; /* Căn trái giống <a> */
+    /* Thêm các style cho button để trông giống link */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font: inherit; /* Kế thừa font từ cha */
 }
 
 .sidebar ul li a:hover,
 .sidebar ul li button:hover {
-    background: #34495e; /* Hiệu ứng hover giống nhau */
+    background: #34495e; /* Màu nền khi hover */
 }
 
-.sidebar ul li button {
-    background: transparent;
-}
-
+/* Style cho mục menu đang active */
 .sidebar ul li a.active,
 .sidebar ul li button.active {
     background: #3498db; /* Màu nổi bật khi được chọn */
 }
 
+/* Style cho icon trong menu */
 .sidebar ul li a i,
 .sidebar ul li button i {
-    margin-right: 10px;
+    margin-right: 10px; /* Khoảng cách giữa icon và text */
 }
 
 
-
-/* Main Content */
+/* Main Content Area */
 .main-content {
-    margin-left: 250px;
-    flex: 1;
-    padding: 20px;
+    margin-left: 250px; /* Tạo khoảng trống bên trái bằng chiều rộng sidebar */
+    flex: 1; /* Cho phép main content chiếm hết không gian còn lại */
+    padding: 20px; /* Padding xung quanh nội dung chính */
+    /* Lưu ý: background, border-radius, box-shadow cho khối nội dung chính
+       nên được định nghĩa trong CSS của từng nội dung (dashboard, room, v.v.)
+       ví dụ: áp dụng cho .dashboard-fragment-wrapper */
 }
 
-.header {
+/* Header bên trong Main Content */
+.main-content .header {
     background: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Căn giữa tiêu đề và user profile */
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Khoảng cách dưới header */
 }
 
-.header h1 {
+.main-content .header h1 {
     font-size: 24px;
+    margin: 0; /* Reset margin mặc định của h1 */
 }
 
-.user-profile {
+/* User Profile trong Header */
+.main-content .user-profile {
     display: flex;
     align-items: center;
 }
 
-.user-profile img {
+.main-content .user-profile span {
+    margin-right: 10px; /* Khoảng cách giữa text và ảnh */
+}
+
+.main-content .user-profile img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-    margin-left: 10px;
+    border-radius: 50%; /* Bo tròn ảnh */
 }
 
-/* Style chung cho nội dung động (nếu cần) */
-.main-content div {
+
+/* Popup Xác Nhận - Style cơ bản, có thể cần file CSS riêng */
+#confirmationPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1000; /* Đảm bảo popup nằm trên cùng */
+    text-align: center;
+}
+
+#confirmationPopup p {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+#confirmationPopup button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#confirmDelete {
+    background-color: #e74c3c; /* Màu đỏ cho nút xóa */
+    color: white;
+}
+
+#confirmDelete:hover {
+    background-color: #c0392b;
+}
+
+#cancelDelete {
+    background-color: #bdc3c7; /* Màu xám cho nút hủy */
+    color: #333;
+}
+
+#cancelDelete:hover {
+    background-color: #95a5a6;
+}
+
+
+/* Responsive - Điều chỉnh sidebar trên màn hình nhỏ */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Xếp sidebar và main content theo cột */
+    }
+
+    .sidebar {
+        position: static; /* Sidebar không cố định nữa */
+        width: 100%; /* Chiếm toàn bộ chiều rộng */
+        height: auto; /* Chiều cao tự động */
+        padding: 10px;
+        display: flex; /* Sử dụng flexbox để căn chỉnh nội dung sidebar */
+        justify-content: center; /* Căn giữa nội dung */
+    }
+
+    .sidebar h2 {
+        display: none; /* Ẩn tiêu đề sidebar trên mobile */
+    }
+
+    .sidebar ul {
+        display: flex; /* Xếp các mục menu theo hàng ngang */
+        flex-wrap: wrap; /* Cho phép xuống dòng nếu quá dài */
+        justify-content: center; /* Căn giữa các mục menu */
+    }
+
+    .sidebar ul li {
+        margin: 5px 10px; /* Giảm khoảng cách giữa các mục menu */
+    }
+
+    .sidebar ul li a,
+    .sidebar ul li button {
+        padding: 5px 10px; /* Giảm padding */
+        font-size: 0.9em; /* Giảm kích thước font */
+    }
+
+    .main-content {
+        margin-left: 0; /* Bỏ margin trái */
+        padding: 10px; /* Giảm padding */
+    }
+
+    .main-content .header {
+        flex-direction: column; /* Xếp header và user profile theo cột */
+        align-items: flex-start; /* Căn trái */
+    }
+
+    .main-content .header h1 {
+        margin-bottom: 10px; /* Khoảng cách dưới tiêu đề header */
+    }
+
+    .main-content .user-profile {
+        margin-top: 10px; /* Khoảng cách trên user profile */
+    }
 }

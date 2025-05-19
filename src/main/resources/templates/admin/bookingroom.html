@@ -7,6 +7,8 @@
 <body>
 <div th:fragment="content" id="bookingRoom-content">
     <h3>Quản lý đặt phòng</h3>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
     <!-- Filter Form -->
     <form th:action="@{/admin/booking/room}" method="get" class="filter-form">
         <div class="filter-container">
@@ -21,7 +23,6 @@
                     </option>
                 </select>
             </div>
-
             <div class="filter-group">
                 <label for="isPaid">Trạng thái thanh toán:</label>
                 <select name="isPaid" id="isPaid">
@@ -30,14 +31,13 @@
                     <option value="false" th:selected="${isPaid != null and !isPaid}">Chưa thanh toán</option>
                 </select>
             </div>
-
             <div class="filter-group">
                 <button type="submit" class="filter-btn">Lọc</button>
                 <a th:href="@{/admin/booking/room}" class="reset-btn">Hủy</a>
             </div>
         </div>
     </form>
-    <table>
+    <table id="customerTable" class="display">
         <thead>
         <tr>
             <th>Tên Người Đặt</th>
@@ -55,21 +55,23 @@
             <td th:text="${booking.user.fullName}"></td>
             <td>
                 <p th:text="${'-' + booking.room.roomName}"></p>
-                <p th:text="${'-' + booking.room.hotelName}"></p>
-                <p th:text="${'-' + booking.room.location.locationName}"></p>
             </td>
             <td th:text="${booking.checkIn}"></td>
             <td th:text="${booking.checkOut}"></td>
             <td th:text="${booking.totalPrice} + ' VND'"></td>
             <td th:text="${booking.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}"></td>
             <td th:text="${booking.status}"></td>
-            <td>
-                <a th:href="@{/admin/booking/room/update/{id}(id=${booking.id})}" class="update-btn">Cập nhật</a>
-                <a th:href="@{/admin/booking/room/delete/{id}(id=${booking.id})}" class="delete-btn">Xóa</a>
+            <td class="action-cell">
+                <div class="action-buttons">
+                    <a th:href="@{/admin/booking/room/update/{id}(id=${booking.id})}" class="update-btn">Cập nhật</a>
+                    <a th:href="@{/admin/booking-rooms/{bookingId}/detail(bookingId=${booking.id}, userId=${booking.user.id})}" class="update-btn">Chi Tiết</a>
+                    <a th:href="@{/admin/booking/room/delete/{id}(id=${booking.id})}" class="delete-btn">Xóa</a>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+<!-- DataTables Initialization -->
 </body>
 </html>

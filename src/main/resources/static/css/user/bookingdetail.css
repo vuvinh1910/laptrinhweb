@@ -1,0 +1,111 @@
+/* bookingdetail.css */
+/* ===== Cấu hình chung ===== */
+.booking-details-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.section-title {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+}
+
+.section-title i {
+    margin-right: 8px;
+    color: #3498db;
+}
+
+/* ===== Thông tin chung ===== */
+.summary-section dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 1rem;
+}
+
+.status-badge {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 8px;
+}
+
+.status-confirmed { background: #28a745; }
+.status-pending { background: #ffc107; }
+.status-cancelled { background: #dc3545; }
+.status-completed { background: #17a2b8; }
+
+/* ===== Thông tin khách sạn ===== */
+.hotel-info-display {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.hotel-image-small img {
+    width: 200px;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.hotel-text-info h4 {
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+/* ===== Chi tiết lưu trú ===== */
+.stay-details-section dl {
+    display: grid;
+    grid-template-columns: repeat(2, max-content 1fr);
+    gap: 1rem;
+}
+
+/* ===== Thanh toán ===== */
+.price-section dd {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.text-success { color: #28a745 !important; }
+
+/* ===== Thông tin khách hàng ===== */
+.guest-section dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 1rem;
+}
+
+/* ===== Nút ===== */
+.btn-primary {
+    background: #3498db;
+    border: none;
+    padding: 0.5rem 1.5rem;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .hotel-info-display {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .summary-section dl,
+    .guest-section dl {
+        grid-template-columns: 1fr;
+    }
+
+    .hotel-image-small img {
+        width: 100%;
+        height: auto;
+    }
+}

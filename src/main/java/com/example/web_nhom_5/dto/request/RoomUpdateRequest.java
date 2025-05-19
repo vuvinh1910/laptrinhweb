@@ -9,13 +9,11 @@ public class RoomUpdateRequest {
 
     private String roomName;
 
-    private String hotelName;
-
     private long roomPrice;
 
     private String roomDetail;
 
     private String roomType;
 
-    private String locationCode;
+    private long hotelId;
 }

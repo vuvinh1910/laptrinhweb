@@ -2,15 +2,11 @@ package com.example.web_nhom_5.controller.api;
 
 
 import com.example.web_nhom_5.conventer.RoomMapper;
-import com.example.web_nhom_5.conventer.ServiceMapper;
 import com.example.web_nhom_5.dto.api.ApiResponse;
 import com.example.web_nhom_5.dto.request.*;
 import com.example.web_nhom_5.dto.response.*;
-import com.example.web_nhom_5.enums.SearchOperation;
-import com.example.web_nhom_5.search.SearchCriteria;
 import com.example.web_nhom_5.service.BookingRoomService;
 import com.example.web_nhom_5.service.RoomService;
-import com.example.web_nhom_5.service.ServiceService;
 import com.example.web_nhom_5.service.implement.AuthenticationService;
 import com.example.web_nhom_5.service.implement.UserService;
 import com.nimbusds.jose.JOSEException;
@@ -38,8 +34,6 @@ public class PublicController {
     AuthenticationService authenticationService;
     RoomService roomService;
     RoomMapper roomMapper;
-    ServiceService serviceService;
-    ServiceMapper serviceMapper;
     BookingRoomService bookingRoomService;
 
     @PostMapping({"/login", "/login/"})
@@ -66,12 +60,12 @@ public class PublicController {
                 .build();
     }
 
-    @GetMapping("/list-rooms/{locationCode}")
-    public ApiResponse<List<RoomResponse>> getAllRoomByLocationCode(@PathVariable String locationCode) {
-        return ApiResponse.<List<RoomResponse>>builder()
-                .result(roomService.getAllRoomsByLocationCode(locationCode))
-                .build();
-    }
+//    @GetMapping("/list-rooms/{locationCode}")
+//    public ApiResponse<List<RoomResponse>> getAllRoomByLocationCode(@PathVariable String locationCode) {
+//        return ApiResponse.<List<RoomResponse>>builder()
+//                .result(roomService.getAllRoomsByLocationCode(locationCode))
+//                .build();
+//    }
 
     @GetMapping("/list-rooms/{locationCode}/{roomId}")
     public ApiResponse<RoomResponse> getRoomInfoByLocationAndId(@PathVariable("roomId") Long roomId,@PathVariable("locationCode") String locationCode) {
@@ -96,46 +90,6 @@ public class PublicController {
                     .result("Not Available")
                     .build();
         }
-    }
-
-    // Service APIs
-    @GetMapping({"/list-services", "/list-services/"})
-    public ApiResponse<List<ServiceResponse>> getAllServices() {
-        return ApiResponse.<List<ServiceResponse>>builder()
-                .result(serviceService.getAllServices())
-                .build();
-    }
-
-    @GetMapping("/list-services/{serviceId}")
-    public ApiResponse<ServiceResponse> getServiceById(@PathVariable("serviceId") String serviceId) {
-        return ApiResponse.<ServiceResponse>builder()
-                .result(serviceMapper.serviceEntityToServiceResponse(serviceService.getServiceById(serviceId)))
-                .build();
-    }
-    @GetMapping("/search/room")
-    public ApiResponse<List<RoomResponse>> listRoomByKeyword(@RequestParam("keyword") String keyword)
-    {
-        return ApiResponse.<List<RoomResponse>>builder().result(roomService.listAll(keyword)).build();
-    }
-    @GetMapping("/search/service")
-    public ApiResponse<List<ServiceResponse>> listServiceByKeyWord(@RequestParam("keyword") String keyword)
-    {
-        return ApiResponse.<List<ServiceResponse>>builder().result(serviceService.listAllServiceByKeyword(keyword)).build();
-    }
-    @GetMapping("filter/room")
-    public ApiResponse<List<RoomResponse>> filterRoomBySpecification(@RequestParam("filter") String filter)
-    {
-        return ApiResponse.<List<RoomResponse>>builder().result(roomService.findAllBySpecification(filter)).build();
-    }
-    @GetMapping("filter/service")
-    public ApiResponse<List<ServiceResponse>> filterBySpecification(@RequestParam("filter") String filter)
-    {
-        return ApiResponse.<List<ServiceResponse>>builder().result(serviceService.filterBySpecification(filter)).build();
-    }
-    @GetMapping("filter/advanced")
-    public ApiResponse<List<RoomResponse>> filterBySpecificationAndLocation(@RequestParam("room") String room,@RequestParam("location")String location)
-    {
-        return ApiResponse.<List<RoomResponse>>builder().result(roomService.filterBySpecificationAndAddress(room,location)).build();
     }
 
 }

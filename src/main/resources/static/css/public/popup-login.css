@@ -1,53 +1,116 @@
-#confirmationPopup, #confirmationPopup-login {
+/* Popup chung */
+#confirmationPopup,
+#confirmationPopup-login {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
+    background: rgba(255, 255, 255, 0.95);
     padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     text-align: center;
     z-index: 1000;
-    width: 350px; /* Tăng width */
+    width: 380px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    animation: modalAppear 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
 }
 
-#confirmationPopup p, #confirmationPopup-login p {
-    margin: 0 0 20px 0;
-    color: #333;
-    font-size: 18px; /* Tăng cỡ chữ */
-    line-height: 1.5;
-}
-
-#confirmDelete, #confirm {
-    background-color: rgba(32, 43, 159, 0.73);
-    color: white;
-    border: none;
-    padding: 12px 24px; /* Tăng padding */
-    margin: 0 10px; /* Tăng khoảng cách giữa các nút */
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px; /* Tăng cỡ chữ */
+/* Nội dung text */
+#confirmationPopup p,
+#confirmationPopup-login p {
+    margin: 0 0 25px 0;
+    color: #2d3436;
+    font-size: 18px;
+    line-height: 1.6;
     font-weight: 500;
 }
 
-#cancelDelete, #cancel {
-    background-color: #666;
-    color: white;
+/* Nhóm nút */
+#confirmationPopup div,
+#confirmationPopup-login div {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Nút chung */
+#confirmDelete,
+#confirm,
+#cancelDelete,
+#cancel {
     border: none;
-    padding: 12px 24px; /* Tăng padding */
-    margin: 0 10px; /* Tăng khoảng cách giữa các nút */
-    border-radius: 4px;
+    padding: 14px 28px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px; /* Tăng cỡ chữ */
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    letter-spacing: 0.5px;
+}
+
+/* Nút xác nhận */
+#confirmDelete,
+#confirm {
+    background: #4A90E2;
+    color: white;
+    box-shadow: 0 4px 6px rgba(74, 144, 226, 0.2);
+}
+
+/* Nút hủy */
+#cancelDelete,
+#cancel {
+    background: #95a5a6;
+    color: white;
+    box-shadow: 0 4px 6px rgba(149, 165, 166, 0.2);
 }
 
 /* Hiệu ứng hover */
-#confirmDelete:hover, #confirm:hover {
-    background-color: #333;
+#confirmDelete:hover,
+#confirm:hover {
+    background: #357ABD;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
 }
 
-#cancelDelete:hover, #cancel:hover {
-    background-color: #888;
+#cancelDelete:hover,
+#cancel:hover {
+    background: #7f8c8d;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(149, 165, 166, 0.3);
+}
+
+/* Animation */
+@keyframes modalAppear {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -45%) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    #confirmationPopup,
+    #confirmationPopup-login {
+        width: 90%;
+        padding: 20px;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    #confirmDelete,
+    #confirm,
+    #cancelDelete,
+    #cancel {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
 }

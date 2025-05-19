@@ -2,52 +2,66 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/admin/room-content.css}">
+    <title>room</title>
 </head>
 <body>
 <div th:fragment="content" id="room-content">
     <h3>Quản lý phòng</h3>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
     <div class="filter-add-container">
-        <!-- Filter theo địa điểm -->
-        <div class="filter-location">
-            <label for="location-filter">Lọc theo địa điểm: </label>
-            <select id="location-filter" onchange="filterByLocation(this.value)">
-                <option value="">Tất cả</option>
-                <option th:each="location : ${locations}"
-                        th:value="${location.locationCode}"
-                        th:text="${location.locationName}"
-                        th:selected="${location.locationCode == selectedLocationCode}">
-                </option>
-            </select>
-        </div>
+        <!-- Form lọc -->
+        <form th:action="@{/admin/room}" method="get">
+            <!-- Filter theo địa điểm -->
+            <div class="filter-location">
+                <label for="location-filter">Lọc theo địa điểm: </label>
+                <select id="location-filter" name="locationCode">
+                    <option value="">Tất cả</option>
+                    <option th:each="location : ${locations}"
+                            th:value="${location.locationCode}"
+                            th:text="${location.locationName}"
+                            th:selected="${location.locationCode == selectedLocationCode}">
+                    </option>
+                </select>
+            </div>
+            <!-- Filter theo ID khách sạn -->
+            <div class="filter-hotel">
+                <label for="hotel-id-filter">Lọc theo ID khách sạn: </label>
+                <input type="number" id="hotel-id-filter" name="hotelId" min="1" placeholder="Id Hotel" th:value="${selectedHotelId}">
+            </div>
+            <!-- Nút Lọc -->
+            <div class="filter-button">
+                <button type="submit">Lọc</button>
+            </div>
+        </form>
         <!-- Nút Thêm phòng -->
         <div class="add-room">
             <a th:href="@{/admin/room/add}" class="add-btn">Thêm phòng</a>
         </div>
     </div>
-    <table>
+    <table id="customerTable" class="display">
         <thead>
-            <tr>
-                <th>Tên phòng</th>
-                <th>Tên khách sạn</th>
-                <th>Giá tiền</th>
-                <th>Loại phòng</th>
-                <th>Địa điểm</th>
-                <th>Hành động</th>
-            </tr>
+        <tr>
+            <th>Tên phòng</th>
+            <th>Tên khách sạn</th>
+            <th>Giá tiền</th>
+            <th>Loại phòng</th>
+            <th>Địa điểm</th>
+            <th>Hành động</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="room : ${rooms}">
-                <td th:text="${room.roomName}"></td>
-                <td th:text="${room.hotelName}"></td>
-                <td th:text="${room.roomPrice} + ' VND'"></td>
-                <td th:text="${room.roomType}"></td>
-                <td th:text="${room.locationName}"></td>
-                <td>
-                    <a th:href="@{/admin/room/update/{id}(id=${room.id})}" class="update-btn">Thông tin&Cập nhật</a>
-                    <a th:href="@{/admin/room/delete/{id}(id=${room.id})}" class="delete-btn">Xóa</a>
-                </td>
-            </tr>
+        <tr th:each="room : ${rooms}">
+            <td th:text="${room.roomName}"></td>
+            <td th:text="${room.hotelName}"></td>
+            <td th:text="${room.roomPrice} + ' VND'"></td>
+            <td th:text="${room.roomType}"></td>
+            <td th:text="${room.locationName}"></td>
+            <td>
+                <a th:href="@{/admin/room/update/{id}(id=${room.id})}" class="update-btn">Thông tin&Cập nhật</a>
+                <a th:href="@{/admin/room/delete/{id}(id=${room.id})}" class="delete-btn">Xóa</a>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>

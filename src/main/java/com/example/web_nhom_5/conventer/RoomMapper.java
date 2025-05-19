@@ -22,7 +22,9 @@ public interface RoomMapper {
 
     RoomEntity roomCreateDtoToEntity(RoomCreateRequest roomCreateRequest);
 
-    @Mapping(source = "location.locationName", target = "locationName")
+    @Mapping(target = "locationName", source = "hotel.location.locationName")
+    @Mapping(target = "hotelName",source = "hotel.nameHotel")
+    @Mapping(target = "hotelId", source = "hotel.id")
     RoomResponse roomEntityToRoomResponse(RoomEntity roomEntity);
 
     @Mapping(target = "id", ignore = true)

@@ -1,0 +1,106 @@
+#update-voucher-content {
+    background: #fff; /* Nền trắng */
+    padding: 20px; /* Khoảng cách lề trong */
+    border-radius: 8px; /* Bo tròn góc */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    max-width: 500px; /* Giới hạn chiều rộng form để không quá dài */
+    margin: 20px auto; /* Căn giữa khối form trên trang */
+    font-family: sans-serif; /* Font chữ dễ đọc */
+}
+
+/* Styles cho tiêu đề form */
+#update-voucher-content h3 {
+    text-align: center; /* Căn giữa tiêu đề */
+    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+    color: #333; /* Màu chữ đậm */
+}
+
+/* Styles cho mỗi nhóm form (label + input/textarea) */
+.form-group {
+    margin-bottom: 15px; /* Khoảng cách giữa các nhóm form */
+}
+
+/* Styles cho label */
+.form-group label {
+    display: block; /* Hiển thị mỗi label trên một dòng riêng */
+    margin-bottom: 5px; /* Khoảng cách dưới label */
+    font-weight: bold; /* Chữ in đậm */
+    color: #555; /* Màu chữ hơi xám */
+}
+
+/* Styles cho input và textarea */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea {
+    width: 100%; /* Chiều rộng chiếm 100% của container */
+    padding: 10px; /* Khoảng cách lề trong input/textarea */
+    border: 1px solid #ccc; /* Viền xám nhạt */
+    border-radius: 4px; /* Bo tròn góc input/textarea */
+    box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước tổng */
+    font-size: 1em; /* Kích thước chữ */
+}
+
+/* Styles riêng cho textarea */
+.form-group textarea {
+    resize: vertical; /* Chỉ cho phép thay đổi kích thước theo chiều dọc */
+}
+
+/* Styles cho container các nút hành động (Cập nhật, Hủy) */
+.form-actions {
+    margin-top: 20px; /* Khoảng cách trên */
+    text-align: right; /* Căn phải các nút */
+}
+
+/* Styles chung cho nút submit và cancel */
+.submit-btn,
+.cancel-btn {
+    display: inline-block; /* Hiển thị trên cùng một hàng */
+    padding: 10px 20px; /* Khoảng cách lề trong nút */
+    border-radius: 5px; /* Bo tròn góc nút */
+    text-decoration: none; /* Bỏ gạch chân cho link */
+    cursor: pointer; /* Biến con trỏ thành hình bàn tay */
+    font-size: 1em; /* Kích thước chữ */
+    border: none; /* Bỏ viền mặc định */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền khi hover */
+}
+
+/* Styles riêng cho nút submit (Cập nhật) */
+.submit-btn {
+    background-color: #007bff; /* Màu nền xanh dương */
+    color: white; /* Màu chữ trắng */
+    margin-right: 10px; /* Khoảng cách với nút bên phải (Hủy) */
+}
+
+/* Hiệu ứng hover cho nút submit */
+.submit-btn:hover {
+    background-color: #0056b3; /* Màu xanh dương đậm hơn khi hover */
+}
+
+/* Styles riêng cho nút cancel */
+.cancel-btn {
+    background-color: #6c757d; /* Màu nền xám */
+    color: white; /* Màu chữ trắng */
+}
+
+/* Hiệu ứng hover cho nút cancel */
+.cancel-btn:hover {
+    background-color: #5a6268; /* Màu xám đậm hơn khi hover */
+}
+
+/* Styles cho thông báo lỗi validation dưới mỗi trường */
+.text-danger {
+    color: #dc3545; /* Màu đỏ */
+    font-size: 0.9em; /* Kích thước chữ nhỏ hơn */
+    margin-top: 5px; /* Khoảng cách trên */
+    display: block; /* Hiển thị lỗi trên dòng riêng */
+}
+
+/* Styles cho thông báo lỗi chung từ controller (nếu có) */
+.alert-danger {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    background: #f2dede; /* Nền đỏ nhạt */
+    color: #a94442; /* Màu chữ đỏ đậm */
+    border: 1px solid #ebccd1; /* Viền đỏ */
+}

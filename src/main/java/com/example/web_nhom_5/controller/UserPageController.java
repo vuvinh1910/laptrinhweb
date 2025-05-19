@@ -2,16 +2,16 @@ package com.example.web_nhom_5.controller;
 
 import com.example.web_nhom_5.dto.request.*;
 import com.example.web_nhom_5.dto.response.*;
-import com.example.web_nhom_5.entity.BookingRoomEntity;
+import com.example.web_nhom_5.entity.*;
 import com.example.web_nhom_5.enums.BookingStatus;
 import com.example.web_nhom_5.exception.WebException;
 import com.example.web_nhom_5.service.BookingRoomService;
-import com.example.web_nhom_5.service.BookingServiceService;
 import com.example.web_nhom_5.service.LocationService;
-import com.example.web_nhom_5.service.implement.AuthenticationService;
-import com.example.web_nhom_5.service.implement.UserService;
+import com.example.web_nhom_5.service.RoomService;
+import com.example.web_nhom_5.service.implement.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,11 +33,17 @@ public class UserPageController {
     @Autowired
     private BookingRoomService bookingRoomService;
     @Autowired
-    private BookingServiceService bookingServiceService;
-    @Autowired
     private LocationService locationService;
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private RoomService roomService;
+    @Autowired
+    private UserVoucherService userVoucherService;
+    @Autowired
+    private RefundService refundService;
+    @Autowired
+    private VoucherService voucherService;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,6 +69,26 @@ public class UserPageController {
         return "redirect:/users/myInfo"; // Chuyển hướng về /myInfo
     }
 
+    @GetMapping("/cart")
+    public String getCart(Model model) {
+        UserResponse user = userService.getMyInfo();
+        List<BookingRoomResponse> bookingRooms = bookingRoomService.getAllBookingRoomsByUserAndStatusAndPaid(BookingStatus.PENDING, false);
+        model.addAttribute("bookedRooms", bookingRooms);
+        model.addAttribute("user", user);
+        return "user/cart";
+    }
+
+    @DeleteMapping(value = "/cart/{id}")
+    public String deleteCart(@PathVariable long id, RedirectAttributes model) {
+        try {
+            bookingRoomService.deleteBookingRoomById(id);
+            model.addFlashAttribute("result", "đã xóa");
+        } catch (WebException e) {
+            model.addFlashAttribute("result", e.getMessage());
+        }
+        return "redirect:/users/cart";
+    }
+
     // doi mat khau
     @GetMapping(value = {"/myInfo/change-pass", "/myInfo/change-pass/"})
     public String changePass(Model model) {
@@ -85,7 +112,7 @@ public class UserPageController {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // dat phong
+    // api dat phong
     @PostMapping(value = {"/booking-rooms/{roomId}", "/booking-rooms/{roomId}"})
     public String createBookingRoom(@ModelAttribute("booking") BookingRoomCreateRequest request, RedirectAttributes model, @PathVariable long roomId) {
         try {
@@ -99,17 +126,31 @@ public class UserPageController {
         return "redirect:/public/room/{roomId}";
     }
 
+    @PostMapping("/voucher/{id}")
+    public String claimVoucher(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            userVoucherService.addUserVoucher(id);
+            redirectAttributes.addFlashAttribute("result", "Voucher claimed");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("result", e.getMessage());
+        }
+        return "redirect:/public/voucher";
+    }
+
     // list dat phong
     @GetMapping("/myInfo/booking-rooms")
     public String getAllBookingRooms(Model model) {
         List<LocationResponse> locations = locationService.getAllLocation();
         model.addAttribute("locations", locations);
-        List<BookingRoomResponse> bookedRooms = bookingRoomService.getAllBookingRoomsByUser();
+        List<BookingRoomResponse> bookedRooms = new ArrayList<>(
+                bookingRoomService.getAllBookingRoomsByUserAndStatusAndPaid(BookingStatus.CONFIRMED, null)
+        );
+        bookedRooms.addAll(bookingRoomService.getAllBookingRoomsByUserAndStatusAndPaid(BookingStatus.COMPLETED, true));
         model.addAttribute("bookedRooms", bookedRooms);
         return "user/listbookingrooms";
     }
 
-    // xoa dat phong
+    // xoa lich su dat phong
     @DeleteMapping(value = "/myInfo/booking-rooms/{roomId}")
     public String deleteBookingRoom(@PathVariable long roomId, RedirectAttributes model) {
         try {
@@ -121,112 +162,93 @@ public class UserPageController {
         return "redirect:/users/myInfo/booking-rooms";
     }
 
+    @GetMapping(value = "/booking-rooms/{bookingId}/detail")
+    public String getBookingRoomDetail(@PathVariable long bookingId, Model model) {
+        UserResponse user = userService.getMyInfo();
+        BookingRoomEntity booking = bookingRoomService.getBookingRoomById(bookingId);
+        RoomEntity room = roomService.getRoomById(booking.getRoom().getId());
+        HotelEntity hotel = room.getHotel();
+        model.addAttribute("booking", booking);
+        model.addAttribute("room", room);
+        model.addAttribute("hotel", hotel);
+        model.addAttribute("user", user);
+        return "user/bookingdetail";
+    }
+
     // trang thanh toan phong
     @GetMapping(value = "/booking-rooms/{bookingId}/payment")
-    public String getPaymentForm(Model model, @PathVariable long bookingId) {
-        Long price = bookingRoomService.getBookingRoomById(bookingId).getTotalPrice();
+    public String getPaymentForm(Model model,
+                                 @PathVariable long bookingId,
+                                 @RequestParam(value = "voucherCode", required = false) String voucherCode,
+                                 @RequestParam(value = "price", required = false) Long price) {
+        BookingRoomEntity booking = bookingRoomService.getBookingRoomById(bookingId);
+        if (price == null) {
+            price = booking.getTotalPrice(); // nếu chưa giảm
+        }
         model.addAttribute("bookingId", bookingId);
         model.addAttribute("price", price);
-        return "user/paymentroom";
+        model.addAttribute("voucherCode", voucherCode);
+
+        return "/user/pay-room";
     }
+
+
+    // api apply voucher button
+    @PostMapping("/booking-rooms/{bookingId}/applyVoucher")
+    public String applyVoucher(@PathVariable long bookingId,
+                               @RequestParam(value = "voucherCode", required = false) String voucherCode,
+                               RedirectAttributes redirectAttributes) {
+        BookingRoomEntity booking = bookingRoomService.getBookingRoomById(bookingId);
+        long price = booking.getTotalPrice();
+        int sale = userVoucherService.checkAndGetValueValidVoucherUser(voucherCode);
+
+        if (sale == 0) {
+            redirectAttributes.addFlashAttribute("error", "Voucher không hợp lệ");
+            return "redirect:/users/booking-rooms/" + bookingId + "/payment";
+        }
+
+        price = price - price * sale / 100;
+        // Redirect có kèm mã và giá
+        redirectAttributes.addFlashAttribute("success","voucher applied");
+        return "redirect:/users/booking-rooms/" + bookingId + "/payment?voucherCode=" + voucherCode + "&price=" + price;
+    }
+
 
     // api thanh toan phong
     @PostMapping(value = "/booking-rooms/{bookingId}/payment")
-    public String doRoomProcessPayment(@PathVariable long bookingId, @RequestParam("amount") Long amount, RedirectAttributes model) {
+    public String doRoomProcessPayment(@PathVariable long bookingId,
+                                       @RequestParam(value = "voucherCode", required = false) String voucherCode,
+                                       RedirectAttributes model) {
         try {
-            bookingRoomService.processPayment(bookingId, amount);
-            String result = "Thanh toán thành công.\n Tổng tiền: ";
-            result += Long.toString(bookingRoomService.getBookingRoomById(bookingId).getTotalPrice());
+            bookingRoomService.processPayment(bookingId, voucherCode);
+            String result = "Thanh toán thành công.";
             model.addFlashAttribute("result", result);
         } catch (WebException e) {
             model.addFlashAttribute("result", e.getMessage());
         }
-        return "redirect:/users/myInfo/booking-rooms"; // Đảm bảo rằng đường dẫn này đúng
+        return "redirect:/users/booking-rooms/" + bookingId +"/detail"; // Đảm bảo rằng đường dẫn này đúng
     }
 
     // api cancel phong
-    @GetMapping(value = "/booking-rooms/{bookingId}/cancel")
-    public String cancelBookingRoom(@PathVariable long bookingId, RedirectAttributes model) {
+    @PostMapping("/booking-rooms/{id}/cancel")
+    public String createRefund(@ModelAttribute("refund") @Valid RefundEntity refundEntity,
+                               @PathVariable long id,
+                               RedirectAttributes redirectAttributes) {
         try {
-            bookingRoomService.updateBookingStatusByBookingRoomId(bookingId, BookingStatus.CANCELLED);
-            model.addFlashAttribute("result", "Hủy Thành Công");
-        } catch (WebException e) {
-            model.addFlashAttribute("result", e.getMessage());
+            refundService.createRefund(refundEntity, id);
+            redirectAttributes.addFlashAttribute("result", "Đã Gửi Yêu Cầu Đến Quản Trị Viên, Vui lòng chờ thông báo từ Email");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("result", e.getMessage());
         }
-        return "redirect:/users/myInfo/booking-rooms"; // Đảm bảo rằng đường dẫn này đúng
+        return "redirect:/users/myInfo/booking-rooms";
     }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @PostMapping(value = "/booking-services/{serviceId}")
-    public String createBookingService(@ModelAttribute("booking") BookingServiceCreateRequest request, RedirectAttributes model, @PathVariable String serviceId) {
-        try {
-            long id = bookingServiceService.addBookingService(request).getId();
-            model.addFlashAttribute("bookingId", id);
-            model.addFlashAttribute("result", "Đặt dịch vụ thành công.\n Chuyển đến trang thanh toán ?");
-        } catch (WebException e) {
-            model.addFlashAttribute("bookingId", "no");
-            model.addFlashAttribute("result", e.getMessage());
-        }
-        return "redirect:/public/services";
+    @GetMapping("/myVoucher")
+    public String getMyVoucher(Model model) {
+        List<UserVoucherEntity> voucherEntities = userVoucherService.getAllUserVoucherValid();
+        model.addAttribute("vouchers", voucherEntities);
+        return "user/my-voucher";
     }
-
-    // list dat dich vu
-    @GetMapping(value = {"/myInfo/booking-services", "/myInfo/booking-services/"})
-    public String getAllBookingServicesByUser(Model model) {
-        List<LocationResponse> locations = locationService.getAllLocation();
-        model.addAttribute("locations", locations);
-        List<BookingServiceResponse> list = bookingServiceService.getAllBookingServicesByUser();
-        model.addAttribute("bookedServices", list);
-        return "user/listbookingservice";
-    }
-
-    // xoa dich vu
-    @DeleteMapping(value = {"/myInfo/booking-services/{id}", "/myInfo/booking-services/{id}"})
-    public String deleteBookingService(@PathVariable long id, RedirectAttributes model) {
-        try {
-            bookingServiceService.deleteBookingServiceById(id);
-            model.addFlashAttribute("result", "đã xóa");
-        } catch (WebException e) {
-            model.addFlashAttribute("result", e.getMessage());
-        }
-        return "redirect:/users/myInfo/booking-services";
-    }
-
-    // trang thanh toan dich vu
-    @GetMapping(value = "/booking-services/{bookingId}/payment")
-    public String getPaymentService(@PathVariable long bookingId, Model model) {
-        Long price = bookingServiceService.getBookingServiceById(bookingId).getTotalPrice();
-        model.addAttribute("bookingId", bookingId);
-        model.addAttribute("price", price);
-        return "user/paymentservice";
-    }
-
-    // api thanh toan dich vu
-    @PostMapping(value = "/booking-services/{bookingId}/payment")
-    public String doPaymentService(@PathVariable long bookingId, @RequestParam("amount") Long amount, RedirectAttributes model) {
-        try {
-            bookingServiceService.processPayment(bookingId, amount);
-            String result = "Thanh toán thành công.\n Tổng tiền: ";
-            result += Long.toString(bookingServiceService.getBookingServiceById(bookingId).getTotalPrice());
-            model.addFlashAttribute("result", result);
-        } catch (WebException e) {
-            model.addFlashAttribute("result", e.getMessage());
-        }
-        return "redirect:/users/myInfo/booking-services";
-    }
-
-    @GetMapping(value = "/booking-services/{bookingId}/cancel")
-    public String cancelBookingService(@PathVariable long bookingId, RedirectAttributes model) {
-        try {
-            bookingServiceService.updateBookingStatusById(bookingId, BookingStatus.CANCELLED);
-            model.addFlashAttribute("result", "Hủy Thành Công");
-        } catch (WebException e) {
-            model.addFlashAttribute("result", e.getMessage());
-        }
-        return "redirect:/users/myInfo/booking-services";
-    }
-
 
     @PostMapping("/logout")
     public String logout(

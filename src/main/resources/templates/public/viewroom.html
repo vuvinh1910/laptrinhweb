@@ -33,15 +33,24 @@
                 <img th:src="@{/img/room1.jpg}" alt="Room Detail 2" class="img-detail">
             </div>
             <p><strong>Tên phòng:</strong> <span th:text="${room.roomName}"></span></p>
-            <p><strong>Tên khách sạn:</strong> <span th:text="${room.hotelName}"></span></p>
-            <p><strong>Giá phòng:</strong> <span th:text="${room.roomPrice} + ' VND'"></span></p>
+            <p><strong>Giá phòng:</strong> <span th:text="${room.roomPrice} + ' VND/Night'"></span> (Đã bao gồm thuế)</p>
             <p><strong>Chi tiết phòng:</strong> <span th:text="${room.roomDetail}"></span></p>
             <p><strong>Loại phòng:</strong> <span th:text="${room.roomType}"></span></p>
+            <p><strong>Diện tích:</strong> 30 m²</p>
+            <p><strong>Tiện ích:</strong>
+                <span>Wifi miễn phí</span>,
+                <span>Máy lạnh</span>,
+                <span>TV màn hình phẳng</span>,
+                <span>Bồn tắm</span>
+            </p>
+            <p><strong>Đánh giá khách hàng:</strong> ★★★★☆ (4.5/5 dựa trên 124 đánh giá)</p>
+            <p><strong>Trạng thái:</strong> Còn trống</p>
+            <p><strong>Ghi chú:</strong> Vui lòng liên hệ theo số điện thoại 0123456789 nếu có yêu cầu thêm</p>
         </div>
         <!-- Form đặt phòng (bên phải, chiếm phần nhỏ) -->
         <div class="col-md-4 booking-form-container" th:fragment="room-form">
             <h1>Đặt Phòng</h1>
-            <form th:action="@{/users/booking-rooms/{roomId}(roomId=${room.Id})}" method="post">
+            <form th:action="@{/users/booking-rooms/{roomId}(roomId=${room.id})}" method="post">
                 <input type="hidden" name="roomId" th:value="${room.id}" />
                 <div class="form-group">
                     <label for="checkIn">Ngày Nhận Phòng:</label>
@@ -53,19 +62,17 @@
                 </div>
                 <div class="form-group">
                     <label for="numOfPeople">Số Người:</label>
-                    <input type="number" id="numOfPeople" name="numOfPeople" min="1" placeholder="Nhập số người" required oninput="checkForm()">
+                    <input type="number" id="numOfPeople" name="numOfPeople" min="1" max="5" placeholder="Nhập số người <= 5" required oninput="checkForm()">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số Điện Thoại:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
                 </div>
                 <button type="submit" class="del-button" id="submitButton" disabled>Đặt Phòng</button>
+                <p class="text-muted small">* Giá có thể thay đổi tùy theo ngày và số lượng khách.</p>
             </form>
         </div>
     </div>
-</div>
-
-<!-- Popup khi đã đăng nhập -->
-<div id="confirmationPopup" style="display:none;">
-    <p>Bạn muốn đặt phòng này?</p>
-    <button id="confirmDelete">Xác nhận</button>
-    <button id="cancelDelete">Hủy</button>
 </div>
 
 <!-- Popup khi chưa đăng nhập -->

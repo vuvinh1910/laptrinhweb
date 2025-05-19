@@ -84,6 +84,42 @@
     border-right: none;
 }
 
+/* Filter theo ID khách sạn */
+.filter-hotel {
+    display: flex;
+    align-items: center;
+    margin-right: 15px; /* Đồng bộ khoảng cách với các thành phần khác */
+}
+
+.filter-hotel label {
+    margin-right: 10px; /* Đồng bộ với .filter-location label */
+    font-size: 14px; /* Kích thước chữ phù hợp */
+    color: #333; /* Màu chữ đồng bộ với h3 */
+}
+
+.filter-hotel input {
+    padding: 5px; /* Đồng bộ với .filter-location select */
+    border: 1px solid #ddd; /* Viền đồng bộ */
+    border-radius: 5px; /* Góc bo tròn đồng bộ */
+    font-size: 14px; /* Kích thước chữ phù hợp */
+    width: 120px; /* Chiều rộng cố định để gọn gàng */
+}
+
+/* Nút Lọc */
+.filter-button button {
+    padding: 8px 15px; /* Đồng bộ với .add-room .add-btn */
+    background: #3498db; /* Màu nền đồng bộ với .add-room .add-btn và .update-btn */
+    color: white; /* Màu chữ trắng */
+    border: none; /* Không viền */
+    border-radius: 5px; /* Góc bo tròn đồng bộ */
+    font-size: 14px; /* Kích thước chữ đồng bộ */
+    cursor: pointer; /* Con trỏ chuột */
+}
+
+.filter-button button:hover {
+    background: #2980b9; /* Màu hover đồng bộ với .update-btn:hover */
+}
+
 /* Loại bỏ viền ngang ở hàng cuối */
 #room-content tbody tr:last-child td {
     border-bottom: none;
@@ -117,4 +153,23 @@
 
 #room-content .delete-btn:hover {
     background: #c0392b;
+}
+
+.alert-success,
+.alert-danger {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.alert-success {
+    background: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+}
+
+.alert-danger {
+    background: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
 }

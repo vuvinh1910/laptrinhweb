@@ -50,7 +50,7 @@ public class ApplicationInitConfig {
                 UserEntity user = UserEntity.builder()
                         .userName("admin")
                         .password(passwordEncoder.encode("admin"))
-                        .email("admin@example.com")
+                        .email("levuthanhvinhk39a@gmail.com")
                         .fullName("admin")
                         .roles(roles)
                         .build();

@@ -22,6 +22,9 @@ public class BookingRoomCreateRequest {
     @Min(value = 1)
     private int numOfPeople;
 
+    @NotNull
+    private String phone;
+
     private long roomId;
 
 }

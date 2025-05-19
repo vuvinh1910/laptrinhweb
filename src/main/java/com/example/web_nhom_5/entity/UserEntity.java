@@ -1,5 +1,6 @@
 package com.example.web_nhom_5.entity;
 
+import com.example.web_nhom_5.service.implement.UserVoucherService;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,9 +41,9 @@ public class UserEntity {
     @JsonManagedReference
     private List<BookingRoomEntity> bookingRooms;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true) // neu xoa 1 bookingService thi trong list nay cung xe dc cap nhat.
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<BookingServiceEntity> bookingServices;
+    private List<UserVoucherEntity> userVouchers;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;

@@ -3,6 +3,7 @@ package com.example.web_nhom_5.conventer;
 import com.example.web_nhom_5.dto.request.RoomCreateRequest;
 import com.example.web_nhom_5.dto.request.RoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.RoomResponse;
+import com.example.web_nhom_5.entity.HotelEntity;
 import com.example.web_nhom_5.entity.LocationEntity;
 import com.example.web_nhom_5.entity.RoomEntity;
 import javax.annotation.processing.Generated;
@@ -24,7 +25,6 @@ public class RoomMapperImpl implements RoomMapper {
         RoomEntity roomEntity = new RoomEntity();
 
         roomEntity.setRoomName( roomCreateRequest.getRoomName() );
-        roomEntity.setHotelName( roomCreateRequest.getHotelName() );
         roomEntity.setRoomPrice( roomCreateRequest.getRoomPrice() );
         roomEntity.setRoomDetail( roomCreateRequest.getRoomDetail() );
         roomEntity.setRoomType( roomCreateRequest.getRoomType() );
@@ -40,10 +40,11 @@ public class RoomMapperImpl implements RoomMapper {
 
         RoomResponse roomResponse = new RoomResponse();
 
-        roomResponse.setLocationName( roomEntityLocationLocationName( roomEntity ) );
+        roomResponse.setLocationName( roomEntityHotelLocationLocationName( roomEntity ) );
+        roomResponse.setHotelName( roomEntityHotelNameHotel( roomEntity ) );
+        roomResponse.setHotelId( roomEntityHotelId( roomEntity ) );
         roomResponse.setId( roomEntity.getId() );
         roomResponse.setRoomName( roomEntity.getRoomName() );
-        roomResponse.setHotelName( roomEntity.getHotelName() );
         roomResponse.setRoomPrice( roomEntity.getRoomPrice() );
         roomResponse.setRoomDetail( roomEntity.getRoomDetail() );
         roomResponse.setRoomType( roomEntity.getRoomType() );
@@ -60,9 +61,6 @@ public class RoomMapperImpl implements RoomMapper {
         if ( roomUpdateRequest.getRoomName() != null ) {
             roomEntity.setRoomName( roomUpdateRequest.getRoomName() );
         }
-        if ( roomUpdateRequest.getHotelName() != null ) {
-            roomEntity.setHotelName( roomUpdateRequest.getHotelName() );
-        }
         roomEntity.setRoomPrice( roomUpdateRequest.getRoomPrice() );
         if ( roomUpdateRequest.getRoomDetail() != null ) {
             roomEntity.setRoomDetail( roomUpdateRequest.getRoomDetail() );
@@ -72,11 +70,15 @@ public class RoomMapperImpl implements RoomMapper {
         }
     }
 
-    private String roomEntityLocationLocationName(RoomEntity roomEntity) {
+    private String roomEntityHotelLocationLocationName(RoomEntity roomEntity) {
         if ( roomEntity == null ) {
             return null;
         }
-        LocationEntity location = roomEntity.getLocation();
+        HotelEntity hotel = roomEntity.getHotel();
+        if ( hotel == null ) {
+            return null;
+        }
+        LocationEntity location = hotel.getLocation();
         if ( location == null ) {
             return null;
         }
@@ -85,5 +87,32 @@ public class RoomMapperImpl implements RoomMapper {
             return null;
         }
         return locationName;
+    }
+
+    private String roomEntityHotelNameHotel(RoomEntity roomEntity) {
+        if ( roomEntity == null ) {
+            return null;
+        }
+        HotelEntity hotel = roomEntity.getHotel();
+        if ( hotel == null ) {
+            return null;
+        }
+        String nameHotel = hotel.getNameHotel();
+        if ( nameHotel == null ) {
+            return null;
+        }
+        return nameHotel;
+    }
+
+    private long roomEntityHotelId(RoomEntity roomEntity) {
+        if ( roomEntity == null ) {
+            return 0L;
+        }
+        HotelEntity hotel = roomEntity.getHotel();
+        if ( hotel == null ) {
+            return 0L;
+        }
+        long id = hotel.getId();
+        return id;
     }
 }

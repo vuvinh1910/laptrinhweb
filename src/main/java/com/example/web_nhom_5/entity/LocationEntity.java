@@ -21,6 +21,6 @@ public class LocationEntity {
 
     @OneToMany(mappedBy = "location", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference  // tranh loi vong lap vo han json, giup lien ket giua cac thuc the.
-    private List<RoomEntity> rooms;
+    private List<HotelEntity> hotels;
 
 }

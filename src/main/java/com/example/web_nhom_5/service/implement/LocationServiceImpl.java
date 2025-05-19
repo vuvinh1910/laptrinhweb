@@ -45,8 +45,7 @@ public class LocationServiceImpl implements LocationService {
             LocationEntity location = new LocationEntity();
             location.setLocationCode(code);
             location.setLocationName(name);
-            List<RoomEntity> room = new ArrayList<>();
-            location.setRooms(room);
+            location.setHotels(new ArrayList<>());
             locationRepository.save(location);
         }
     }

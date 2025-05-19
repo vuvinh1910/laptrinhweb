@@ -4,6 +4,7 @@ import com.example.web_nhom_5.dto.request.BookingRoomCreateRequest;
 import com.example.web_nhom_5.dto.request.BookingRoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.BookingRoomResponse;
 import com.example.web_nhom_5.entity.BookingRoomEntity;
+import com.example.web_nhom_5.entity.HotelEntity;
 import com.example.web_nhom_5.entity.RoomEntity;
 import com.example.web_nhom_5.entity.UserEntity;
 import javax.annotation.processing.Generated;
@@ -26,6 +27,7 @@ public class BookingRoomMapperImpl implements BookingRoomMapper {
 
         bookingRoomEntity.setCheckIn( bookingRoomCreateRequest.getCheckIn() );
         bookingRoomEntity.setCheckOut( bookingRoomCreateRequest.getCheckOut() );
+        bookingRoomEntity.setPhone( bookingRoomCreateRequest.getPhone() );
         bookingRoomEntity.setNumOfPeople( bookingRoomCreateRequest.getNumOfPeople() );
 
         return bookingRoomEntity;
@@ -43,6 +45,7 @@ public class BookingRoomMapperImpl implements BookingRoomMapper {
         bookingRoomResponse.setRoomName( bookingRoomEntityRoomRoomName( bookingRoomEntity ) );
         bookingRoomResponse.setRoomId( bookingRoomEntityRoomId( bookingRoomEntity ) );
         bookingRoomResponse.setUserId( bookingRoomEntityUserId( bookingRoomEntity ) );
+        bookingRoomResponse.setHotelId( bookingRoomEntityRoomHotelId( bookingRoomEntity ) );
         bookingRoomResponse.setId( bookingRoomEntity.getId() );
         bookingRoomResponse.setStatus( bookingRoomEntity.getStatus() );
         bookingRoomResponse.setPaid( bookingRoomEntity.isPaid() );
@@ -125,6 +128,22 @@ public class BookingRoomMapperImpl implements BookingRoomMapper {
             return 0L;
         }
         long id = user.getId();
+        return id;
+    }
+
+    private long bookingRoomEntityRoomHotelId(BookingRoomEntity bookingRoomEntity) {
+        if ( bookingRoomEntity == null ) {
+            return 0L;
+        }
+        RoomEntity room = bookingRoomEntity.getRoom();
+        if ( room == null ) {
+            return 0L;
+        }
+        HotelEntity hotel = room.getHotel();
+        if ( hotel == null ) {
+            return 0L;
+        }
+        long id = hotel.getId();
         return id;
     }
 }

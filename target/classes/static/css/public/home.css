@@ -1,19 +1,45 @@
 .home-page {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #e6eaec;
+    margin-top: 56px;
 }
 .home-page .py-5 {
-    background-color: #dee2e6; /* Màu xám nhạt cho Welcome Section */
+    background-color: white; /* Màu xám nhạt cho Welcome Section */
+    margin-top: 30px;
 }
 .home-page .hero-section {
-    background-image: url('static/img/hotel-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    padding: 360px 0 300px;
-    color: white;
-    text-align: center;
     position: relative;
+    width: 100%;
+    height: 60vh; /* hoặc 600px nếu không muốn full màn hình */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0;
+    color: white;
 }
+
+.home-page .offer-card img {
+    transition: transform 0.3s ease-in-out;
+}
+
+.home-page .offer-card img:hover {
+    transform: translateY(-5px);
+}
+
+/* Video nền */
+.home-page .hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* video phủ kín không méo */
+    z-index: -2;
+}
+
+/* Lớp phủ */
 .home-page .hero-section::before {
     content: '';
     position: absolute;
@@ -22,16 +48,65 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
 }
+
+/* Container chứa form */
 .home-page .search-form {
-    background: rgba(45, 45, 45, 0.5); /* Trong suốt 50% */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-    margin-top: 70px;
+    background: rgba(255, 255, 255, 0.9); /* có thể thêm để dễ đọc hơn */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
+
+.home-page .search-block {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1000px; /* Cho rộng hơn */
+    margin: 170px auto 0;
+}
+
+.home-page .tk {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px; /* Giảm padding cho gọn */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.home-page .search-input {
+    flex: 1;
+}
+
+.home-page .search-input input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 1.5rem; /* Nhỏ hơn chút */
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.home-page .btn-search-click {
+    padding: 8px 20px;
+    font-size: 1.4rem;
+    background-color: #f39c12; /* Cam tươi */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.home-page .btn-search-click:hover {
+    background-color: #e67e22; /* Cam đậm hơn */
+}
+
+
 .home-page .room-card,
 .home-page .destination-card,
 .home-page .service-card {

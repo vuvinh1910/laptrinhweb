@@ -1,0 +1,419 @@
+.voucher-body footer {
+    background: #2c3e50;
+    color: white;
+    padding: 40px 0;
+}
+
+/* General Reset */
+.voucher-body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container.voucher {
+    padding-top: 124px;
+}
+
+.voucher-body .page-title {
+    text-align: center;
+    font-size: 2em; /* Giảm từ 2.4em xuống 2em */
+    color: #2c3e50;
+    margin-bottom: 40px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.voucher-body .voucher-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.voucher-body .voucher-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.voucher-body .voucher-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.voucher-body .voucher-image-container {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.voucher-body .voucher-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.voucher-body .voucher-card:hover .voucher-image-container img {
+    transform: scale(1.05);
+}
+
+.voucher-body .voucher-details {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.voucher-body .voucher-title {
+    font-size: 1.4em; /* Giảm từ 1.6em xuống 1.4em */
+    font-weight: 700;
+    color: #e74c3c;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.voucher-body .voucher-offer {
+    font-size: 1em; /* Giảm từ 1.1em xuống 1em */
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.voucher-body .voucher-offer .highlight {
+    font-weight: bold;
+    color: #27ae60;
+    font-size: 1.1em; /* Giảm từ 1.2em xuống 1.1em */
+}
+
+.voucher-body .voucher-code-section {
+    background-color: #eafaf1;
+    border: 1px dashed #2ecc71;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.voucher-body .voucher-code-section p {
+    margin: 0;
+    font-size: 0.9em; /* Giảm từ 1em xuống 0.9em */
+    color: #2c3e50;
+}
+
+.voucher-body .voucher-code-display {
+    font-weight: bold;
+    font-size: 1.2em; /* Giảm từ 1.3em xuống 1.2em */
+    letter-spacing: 1px;
+    color: #2980b9;
+}
+
+.voucher-body .voucher-expiry {
+    font-size: 0.8em; /* Giảm từ 0.9em xuống 0.8em */
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.voucher-body .voucher-terms-link {
+    font-size: 0.8em; /* Giảm từ 0.9em xuống 0.8em */
+    color: #3498db;
+    text-decoration: none;
+    margin-top: auto;
+}
+
+.voucher-body .voucher-terms-link:hover {
+    text-decoration: underline;
+}
+
+.voucher-body .btn-claim-voucher {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 0 20px 20px 20px;
+    padding: 12px 20px;
+    background: linear-gradient(45deg, #f39c12, #e74c3c);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em; /* Giảm từ 1.1em xuống 1em */
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.voucher-body .btn-claim-voucher:hover {
+    background: linear-gradient(45deg, #e67e22, #c0392b);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.voucher-body .btn-claim-voucher:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.voucher-body .footer-note {
+    text-align: center;
+    margin-top: 40px;
+    color: #7f8c8d;
+    font-size: 0.8em; /* Giảm từ 0.9em xuống 0.8em */
+}
+
+/* Style cho Modal (ẩn mặc định) */
+.modal {
+    display: none; /* Ẩn modal mặc định */
+    position: fixed; /* Giữ nguyên vị trí khi cuộn trang */
+    z-index: 1000; /* Nằm trên cùng các phần tử khác */
+    left: 0;
+    top: 0;
+    width: 100%; /* Chiều rộng toàn bộ màn hình */
+    height: 100%; /* Chiều cao toàn bộ màn hình */
+    overflow: auto; /* Kích hoạt cuộn nếu nội dung tràn */
+    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ đen */
+    backdrop-filter: blur(5px); /* Hiệu ứng làm mờ nền (tùy chọn) */
+    -webkit-backdrop-filter: blur(5px); /* Prefix cho Safari */
+}
+
+/* Style cho nội dung Modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Canh giữa theo chiều dọc và ngang */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Chiều rộng modal */
+    max-width: 500px; /* Chiều rộng tối đa */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative; /* Quan trọng để định vị nút đóng */
+    animation: modalopen 0.4s; /* Hiệu ứng mở modal */
+}
+
+/* Hiệu ứng mở modal */
+@keyframes modalopen {
+    from {top: -50px; opacity: 0;}
+    to {top: 0; opacity: 1;}
+}
+
+/* Style cho nút đóng */
+.close {
+    color: #aaa;
+    float: right; /* Đẩy nút sang phải */
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute; /* Định vị tuyệt đối */
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Style cho đoạn văn bản kết quả */
+.result-popup {
+    margin-top: 15px; /* Khoảng cách từ nút đóng */
+    text-align: center;
+    font-size: 1.1em;
+    color: #333;
+    word-break: break-word; /* Ngắt chữ nếu quá dài */
+}
+
+@media (max-width: 768px) {
+    .voucher-body .page-title {font-size: 2.2em;}
+    .voucher-body .voucher-grid {grid-template-columns: 1fr;}
+    .voucher-body .voucher-title {font-size: 1.4em;}
+    .voucher-body .voucher-offer {font-size: 1em;}
+}
+
+.gift-card-introduction {
+    padding-top: 58px;
+}
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Banner Section */
+.gift_card_main-banner-container {
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    /* Gradient overlay for better text visibility */
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("https://res.klook.com/image/upload/v1646622187/banner/pxwg6thqlo7batxtqysk.jpg");
+}
+
+.banner-title {
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.gift_card_main-banner-button {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.buy-now-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.buy-now-btn:hover {
+    background: white;
+    color: #ff6200; /* Klook's brand orange */
+}
+
+.gift_card_main_banner-redeem-tips {
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: white;
+}
+
+/* Value Propositions Section */
+.gift-card-value-propositions {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px 20px;
+    background: #fff;
+    flex-wrap: wrap;
+}
+
+.proposition-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 250px;
+    text-align: left;
+}
+
+.proposition-item .icon {
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.proposition-item .content .title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.proposition-item .content .description {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Audience Section */
+.gift-card-audience {
+    padding: 40px 20px;
+    text-align: center;
+    background: #f9f9f9;
+}
+
+.gift-card-audience .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.gift-card-audience .image-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.gift-card-audience .image-item {
+    text-align: center;
+}
+
+.gift-card-audience .image {
+    width: 300px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+}
+
+.gift-card-audience .description {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #333;
+}
+
+/* Explore Section */
+.gift-card-explore {
+    padding: 40px 20px;
+    text-align: center;
+    background: #fff;
+}
+
+.gift-card-explore .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.gift-card-explore .image-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.gift-card-explore .image-item {
+    text-align: center;
+}
+
+.gift-card-explore .image {
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%; /* Circular images */
+}
+
+.gift-card-explore .description {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #333;
+}

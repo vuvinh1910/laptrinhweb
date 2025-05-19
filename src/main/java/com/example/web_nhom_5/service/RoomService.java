@@ -14,13 +14,6 @@ public interface RoomService {
     List<RoomResponse> getAllRooms();
     RoomResponse updateRoom(RoomUpdateRequest room, Long roomId);
     void deleteRoom(Long roomId);
-    List<RoomResponse> getAllRoomsByLocationCode(String locationCode);
-    List<RoomResponse> filterRooms(String locationName, LocalDate checkIn, LocalDate checkOut, int numOfPeople, Long price, String roomType);
-
-    List<RoomResponse> getLimitedRooms();
-    // can them cac ham chuc nang tim kiem,loc theo yeu cau.
-    List<RoomResponse> listAll(String keyword);
-    List<RoomResponse> findAllBySpecification(String search);
-    // loc them đieu kien dia chỉ
-    List<RoomResponse> filterBySpecificationAndAddress(String room,String address);
+    List<RoomResponse> getAllRoomsByHotel(Long hotel_id);
+    List<RoomResponse> getAllRoomsByLocationCodeAndHotelId(String locationCode, Long hotelId);
 }

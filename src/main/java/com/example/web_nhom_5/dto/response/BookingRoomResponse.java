@@ -31,4 +31,6 @@ public class BookingRoomResponse {
     private long userId;
 
     private String fullName;
+
+    private long hotelId;
 }

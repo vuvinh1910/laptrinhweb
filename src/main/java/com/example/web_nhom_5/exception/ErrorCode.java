@@ -28,7 +28,8 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1006,"user not already existed",HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1007,"user not authenticated",HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1008,"you do not have permission",HttpStatus.FORBIDDEN),
-    PASSWORD_NOT_EXISTED(1005,"Wrong password", HttpStatus.BAD_REQUEST);
+    PASSWORD_NOT_EXISTED(1005,"Wrong password", HttpStatus.BAD_REQUEST),
+    HOTEL_NOT_FOUND(1009,"hotel not found", HttpStatus.NOT_FOUND);
 
     private int code;
     private String message;

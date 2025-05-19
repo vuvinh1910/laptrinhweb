@@ -3,11 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" th:href="@{/css/admin/customer-content.css}">
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <!-- CSS tùy chỉnh -->
+  <style>
+    #customerTable_wrapper {
+      margin-top: 20px;
+    }
+    .dataTables_paginate .paginate_button {
+      border-radius: 5px;
+      margin: 0 5px;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+    .dataTables_paginate .paginate_button.current {
+      background: #007bff;
+      color: white !important;
+      border-color: #007bff;
+    }
+    .dataTables_paginate .paginate_button:hover {
+      background: #f1f1f1;
+    }
+  </style>
 </head>
 <body>
 <div th:fragment="content" id="customer-content">
   <h3>Quản lý khách hàng</h3>
-  <table>
+  <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+  <table id="customerTable" class="display">
     <thead>
     <tr>
       <th>IMG</th>
@@ -31,10 +60,37 @@
       </td>
       <td>
         <a th:href="@{/admin/customer/delete/{id}(id=${customer.id})}" class="delete-btn">Xóa</a>
+        <a th:href="@{/admin/customer/update/{id}(id=${customer.id})}" class="update-btn">Cập nhật</a>
       </td>
     </tr>
     </tbody>
   </table>
 </div>
+<!-- DataTables Initialization -->
+<script>
+  $(document).ready(function() {
+    $('#customerTable').DataTable({
+      "pageLength": 10, // Số khách hàng mỗi trang
+      "lengthChange": true, // Cho phép chọn số bản ghi mỗi trang
+      "searching": true, // Bật tìm kiếm
+      "ordering": true, // Bật sắp xếp cột
+      "paging": true, // Bật phân trang
+      "language": {
+        "lengthMenu": "Hiển thị _MENU_ khách hàng mỗi trang",
+        "zeroRecords": "Không tìm thấy khách hàng nào",
+        "info": "Đang hiển thị trang _PAGE_ của _PAGES_",
+        "infoEmpty": "Không có khách hàng nào",
+        "infoFiltered": "(lọc từ _MAX_ khách hàng)",
+        "search": "Tìm kiếm:",
+        "paginate": {
+          "first": "Đầu",
+          "last": "Cuối",
+          "next": "Tiếp",
+          "previous": "Trước"
+        }
+      }
+    });
+  });
+</script>
 </body>
 </html>

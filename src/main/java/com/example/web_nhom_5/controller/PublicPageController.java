@@ -3,18 +3,20 @@ package com.example.web_nhom_5.controller;
 import com.example.web_nhom_5.dto.request.AuthenticationRequest;
 import com.example.web_nhom_5.dto.request.UserCreationRequest;
 import com.example.web_nhom_5.dto.response.LocationResponse;
-import com.example.web_nhom_5.dto.response.RoomResponse;
-import com.example.web_nhom_5.dto.response.ServiceResponse;
 import com.example.web_nhom_5.dto.response.UserResponse;
+import com.example.web_nhom_5.entity.HotelEntity;
 import com.example.web_nhom_5.entity.RoomEntity;
-import com.example.web_nhom_5.entity.ServiceEntity;
+import com.example.web_nhom_5.entity.VoucherEntity;
 import com.example.web_nhom_5.exception.WebException;
+import com.example.web_nhom_5.repository.HotelRepository;
 import com.example.web_nhom_5.service.BookingRoomService;
+import com.example.web_nhom_5.service.HotelService;
 import com.example.web_nhom_5.service.LocationService;
 import com.example.web_nhom_5.service.RoomService;
-import com.example.web_nhom_5.service.ServiceService;
 import com.example.web_nhom_5.service.implement.AuthenticationService;
 import com.example.web_nhom_5.service.implement.UserService;
+import com.example.web_nhom_5.service.implement.UserVoucherService;
+import com.example.web_nhom_5.service.implement.VoucherService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -29,8 +31,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriUtils;
 
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -46,9 +50,6 @@ public class PublicPageController {
     private LocationService locationService;
 
     @Autowired
-    private ServiceService serviceService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -60,41 +61,58 @@ public class PublicPageController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Autowired
+    private HotelService hotelService;
+
+    @Autowired
+    private VoucherService voucherService;
+
+    @Autowired
+    private UserVoucherService userVoucherService;
+    @Autowired
+    private HotelRepository hotelRepository;
+
     @GetMapping({"/home", "/home/"})
     public String getHome(Model model) {
         return "/public/home";
     }
 
-    @GetMapping({"/rooms/", "/rooms"})
-    public String roomFilter(
+    @GetMapping("/voucher")
+    public String getVoucher(Model model) {
+        List<VoucherEntity> voucher = voucherService.getAllVoucher();
+        model.addAttribute("voucher", voucher);
+        return "/public/voucher";
+    }
+
+    @GetMapping("/hotels")
+    public String hotelFilter(
             @RequestParam(required = false, defaultValue = "") String location,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate checkIn,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate checkOut,
-            @RequestParam(required = false, defaultValue = "1") Integer numOfPeople,
-            @RequestParam(required = false) Long maxPrice,
-            @RequestParam(required = false, defaultValue = "") String roomType,
+            @RequestParam(required = false, defaultValue = "0") Integer star,
+            @RequestParam(required = false, defaultValue = "0.0") Double rate,
+            @RequestParam(required = false) Long price,
             Model model) {
-
-        List<RoomResponse> rooms = roomService.filterRooms(location, checkIn, checkOut, numOfPeople, maxPrice, roomType);
-        model.addAttribute("rooms", rooms);
-        return "/public/rooms";
+        List<HotelEntity> hotels = hotelService.hotelFilter(location, star, rate, price);
+        hotelService.updateMinPrice();
+        model.addAttribute("hotels", hotels);
+        return "/public/hotels";
     }
 
-    @GetMapping({"/services","/services/"})
-    public String serviceFilter(@RequestParam(required = false) Long minPrice,
-                                @RequestParam(required = false) Long maxPrice,
-                                @RequestParam(required = false, defaultValue = "") String serviceType,
-                                Model model) {
-        List<ServiceResponse> services = serviceService.filterService(minPrice, maxPrice,serviceType);
-        model.addAttribute("services", services);
-        return "/public/services";
+    @GetMapping("/hotel/{id}")
+    public String hotelDetail(@PathVariable Long id, Model model) {
+        HotelEntity hotel = hotelService.getHotelById(id);
+        model.addAttribute("hotel", hotel);
+        return "/public/detail_hotel";
     }
+
 
     @GetMapping({"/login", "/login/"})
-    public String getLogIn(Model model) {
+    public String getLogIn(@RequestParam(value = "next", required = false) String next, Model model) {
         model.addAttribute("authen", new AuthenticationRequest());
+        // Thêm tham số 'next' vào model để truyền sang view
+        model.addAttribute("next", next);
         return "public/login";
     }
+
 
     @GetMapping({"/signup", "/signup/"})
     public String getSignUp(Model model) {
@@ -129,6 +147,7 @@ public class PublicPageController {
     @PostMapping("/login")
     public String authenticationResponseApiResponse(
             @ModelAttribute("authen") AuthenticationRequest authenticationRequest,
+            @RequestParam(value = "next", required = false) String next, // <<< Thêm tham số next vào đây
             HttpServletResponse response,
             RedirectAttributes redirectAttributes) {
 
@@ -140,23 +159,49 @@ public class PublicPageController {
                 Cookie authCookie = new Cookie("Authorization", authResponse.getToken().trim());
                 authCookie.setPath("/");
                 authCookie.setHttpOnly(true);
-                authCookie.setSecure(false);
+                authCookie.setSecure(false); // Cân nhắc đặt true nếu dùng HTTPS
                 authCookie.setMaxAge(3600);
                 response.addCookie(authCookie);
 
-                // Kiểm tra quyền admin
+                // --- Xử lý chuyển hướng dựa trên 'next' ---
+                if (next != null && !next.isEmpty()) {
+                    // Chuyển hướng đến URL được chỉ định trong tham số 'next'
+                    return "redirect:" + next;
+                }
+                // --- Kết thúc xử lý 'next' ---
+
+                // Nếu không có 'next', thực hiện chuyển hướng mặc định dựa trên quyền
                 if (authenticationService.isAdminToken(authResponse.getToken())) {
                     return "redirect:/admin/dashboard";
                 } else {
                     return "redirect:/public/home";
                 }
             } else {
+                // Xác thực thất bại
                 redirectAttributes.addFlashAttribute("error", "Authentication failed. Please try again.");
-                return "redirect:/public/login";  // Chuyển hướng để tránh lỗi lặp lại
+                // Khi chuyển hướng về trang login do lỗi, truyền lại tham số 'next' nếu có
+                if (next != null && !next.isEmpty()) {
+                    // Mã hóa tham số 'next' khi thêm vào URL chuyển hướng
+                    String encodedNext = UriUtils.encodePathSegment(next, StandardCharsets.UTF_8.name());
+                    return "redirect:/public/login?next=" + encodedNext;
+                }
+                return "redirect:/public/login"; // Không có next, chuyển hướng mặc định về login
             }
-        } catch (WebException e) {
+        } catch (WebException e) { // Bắt ngoại lệ xác thực tùy chỉnh
             redirectAttributes.addFlashAttribute("error", "Invalid username or password");
-            return "redirect:/public/login";  // Chuyển hướng để lỗi không bị lặp lại
+            // Khi chuyển hướng về trang login do lỗi, truyền lại tham số 'next' nếu có
+            if (next != null && !next.isEmpty()) {
+                String encodedNext = UriUtils.encodePathSegment(next, StandardCharsets.UTF_8.name());
+                return "redirect:/public/login?next=" + encodedNext;
+            }
+            return "redirect:/public/login"; // Không có next, chuyển hướng mặc định về login
+        } catch (Exception e) { // Bắt các ngoại lệ chung
+            redirectAttributes.addFlashAttribute("error", "An unexpected error occurred: " + e.getMessage());
+            if (next != null && !next.isEmpty()) {
+                String encodedNext = UriUtils.encodePathSegment(next, StandardCharsets.UTF_8.name());
+                return "redirect:/public/login?next=" + encodedNext;
+            }
+            return "redirect:/public/login";
         }
     }
 
@@ -170,14 +215,6 @@ public class PublicPageController {
         return "public/viewroom";
     }
 
-    @GetMapping(value = "/service/{id}")
-    public String getServiceById(@PathVariable("id") String id, Model model) {
-        List<LocationResponse> locations = locationService.getAllLocation();
-        model.addAttribute("locations", locations);
-        ServiceEntity service = serviceService.getServiceById(id);
-        model.addAttribute("service", service);
-        return "public/viewservice";
-    }
 
     //hien thi trang thai nut dat phong la het phong hay dat phong khi chon ngay.
     @GetMapping("/room/{roomId}/availability")

@@ -9,21 +9,21 @@ import com.example.web_nhom_5.enums.BookingStatus;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface BookingRoomService extends BookingCancellationService,ProcessPaymentService{
+public interface BookingRoomService extends ProcessPaymentService{
     BookingRoomResponse addBookingRoom(BookingRoomCreateRequest bookingRoomCreateRequest);
     BookingRoomEntity getBookingRoomById(Long bookingRoomId);
-    BookingStatus getBookingStatusByBookingRoomId(Long bookingRoomId);
+    void updateRefundBookingById(Long bookingRoomId);
     BookingStatus updateBookingStatusByBookingRoomId(Long bookingRoomId, BookingStatus bookingStatus);
     void updateBookingRoom(Long bookingRoomId, BookingRoomUpdateRequest bookingRoomUpdateRequest);
 
     void deleteBookingRoomById(Long bookingRoomId);
     List<BookingRoomResponse> getAllBookingRooms();
     List<BookingRoomResponse> getAllBookingRoomsByStatus(BookingStatus bookingStatus);
-    List<BookingRoomResponse> getAllBookingRoomsByUser();
+    List<BookingRoomResponse> getAllBookingRoomsByUserAndStatusAndPaid(BookingStatus status, Boolean paid);
     List<BookingRoomEntity> getAllBookingRoomsByRoomId(Long roomId);
     boolean bookingRoomIsAvailable(Long roomId,LocalDate checkIn,LocalDate checkOut);
     List<BookingRoomResponse> getAllBookingRoomsByPaid(boolean paid);
-    long countPending();
+    long countByStatus(BookingStatus status);
     long countPendingComplete();
     long sumTotalPrice();
     List<BookingRoomEntity> filterBookingRooms(BookingStatus status, Boolean isPaid);

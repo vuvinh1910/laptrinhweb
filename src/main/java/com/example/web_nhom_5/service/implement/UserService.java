@@ -5,8 +5,8 @@ import com.example.web_nhom_5.conventer.UserMapper;
 import com.example.web_nhom_5.dto.request.*;
 import com.example.web_nhom_5.dto.response.UserResponse;
 import com.example.web_nhom_5.entity.ForgotPassword;
+import com.example.web_nhom_5.entity.Role;
 import com.example.web_nhom_5.entity.UserEntity;
-import com.example.web_nhom_5.enums.Role;
 import com.example.web_nhom_5.exception.ErrorCode;
 import com.example.web_nhom_5.exception.WebException;
 import com.example.web_nhom_5.repository.ForgotPasswordRepository;
@@ -54,11 +54,6 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-//        HashSet<String> roles = new HashSet<>();
-//        roles.add(Role.USER.name());
-
-        //user.setRoles(roles);
-
         // tự động set role cho tài khoản mới tạo là USER
         var userRole = roleRepository.findById("USER")
                 .orElseThrow(() -> new WebException(ErrorCode.SERVICE_EXISTED));
@@ -104,9 +99,12 @@ public class UserService {
         UserEntity user = userRepository.findById(userid).orElseThrow(() -> new RuntimeException("User not found"));
 
         userMapper.updateUser(user ,request);
-        var roles = roleRepository.findAllById(request.getRoles());
-        user.setRoles(new HashSet<>(roles));
-
+        Set<Role> sett = new HashSet<>();
+        for(String i : request.getRoles()) {
+            sett.add(roleRepository.findById(i).orElseThrow(()->new RuntimeException("KO Tim Dc ROLE")));
+        }
+        user.setRoles(sett);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userMapper.toUserResponse(userRepository.save(user));
     }
 

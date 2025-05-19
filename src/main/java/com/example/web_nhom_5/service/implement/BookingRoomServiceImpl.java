@@ -2,19 +2,16 @@ package com.example.web_nhom_5.service.implement;
 
 import com.example.web_nhom_5.conventer.BookingRoomMapper;
 import com.example.web_nhom_5.conventer.PaymentMapper;
+import com.example.web_nhom_5.dto.EmailBody;
 import com.example.web_nhom_5.dto.request.BookingRoomCreateRequest;
 import com.example.web_nhom_5.dto.request.BookingRoomUpdateRequest;
 import com.example.web_nhom_5.dto.response.BookingRoomResponse;
 import com.example.web_nhom_5.dto.response.ProcessPaymentResponse;
-import com.example.web_nhom_5.entity.BookingRoomEntity;
-import com.example.web_nhom_5.entity.RoomEntity;
-import com.example.web_nhom_5.entity.UserEntity;
+import com.example.web_nhom_5.entity.*;
 import com.example.web_nhom_5.enums.BookingStatus;
 import com.example.web_nhom_5.exception.ErrorCode;
 import com.example.web_nhom_5.exception.WebException;
-import com.example.web_nhom_5.repository.BookingRoomRepository;
-import com.example.web_nhom_5.repository.RoomRepository;
-import com.example.web_nhom_5.repository.UserRepository;
+import com.example.web_nhom_5.repository.*;
 import com.example.web_nhom_5.service.BookingRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -45,10 +42,23 @@ public class BookingRoomServiceImpl implements BookingRoomService {
     @Autowired
     private PaymentMapper paymentMapper;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private RefundRepository refundRepository;
+    @Autowired
+    private UserVoucherService userVoucherService;
+    @Autowired
+    private VoucherRepository voucherRepository;
+    @Autowired
+    private UserVoucherRepository userVoucherRepository;
+    @Autowired
+    private UserService userService;
+
     @Override
     public BookingRoomResponse addBookingRoom(BookingRoomCreateRequest bookingRoomCreateRequest) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-//        UserEntity userEntity = userRepository.findByUserName("admin").orElseThrow(() -> new WebException(ErrorCode.USER_NOT_EXISTED));
         UserEntity userEntity = userRepository.findByUserName(name).orElseThrow(()
                 -> new WebException(ErrorCode.USER_NOT_EXISTED) );
 
@@ -76,9 +86,22 @@ public class BookingRoomServiceImpl implements BookingRoomService {
     }
 
     @Override
-    public BookingStatus getBookingStatusByBookingRoomId(Long bookingRoomId) {
+    public void updateRefundBookingById(Long bookingRoomId) {
         BookingRoomEntity bookingRoomEntity = getBookingRoomById(bookingRoomId);
-        return bookingRoomEntity.getStatus();
+        bookingRoomEntity.setPaid(false);
+        bookingRoomEntity.setStatus(BookingStatus.COMPLETED);
+        RefundEntity refund = bookingRoomEntity.getRefund();
+        refund.setCompleted(true);
+        bookingRoomRepository.save(bookingRoomEntity);
+        refundRepository.save(refund);
+        EmailBody email = EmailBody.builder()
+                .to(bookingRoomEntity.getUser().getEmail())
+                .subject("Thông báo hoàn tiền")
+                .text("Yêu cầu hoàn tiền của bạn đã được chấp nhận." +
+                        "\nSố tiền :"+ bookingRoomEntity.getUserPaid() + " VND" +
+                        "\nVui long kiểm tra số dư tài khoản.")
+                .build();
+        emailService.sendEmail(email);
     }
 
     @Override
@@ -121,10 +144,10 @@ public class BookingRoomServiceImpl implements BookingRoomService {
     }
 
     @Override
-    public List<BookingRoomResponse> getAllBookingRoomsByUser() {
+    public List<BookingRoomResponse> getAllBookingRoomsByUserAndStatusAndPaid(BookingStatus status, Boolean paid) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity userEntity = userRepository.findByUserName(userName).orElseThrow(() -> new WebException(ErrorCode.USER_NOT_EXISTED));
-        return bookingRoomRepository.findAllByUser_Id(userEntity.getId())
+        return bookingRoomRepository.findAllByUser_IdAndStatusAndPaid(userEntity.getId(),status,paid)
                 .stream()
                 .map(bookingRoomMapper::bookingRoomEntityToBookingRoomResponse)
                 .toList();
@@ -141,7 +164,7 @@ public class BookingRoomServiceImpl implements BookingRoomService {
         if (checkIn!=null && checkOut!=null && checkIn.isAfter(checkOut)) {
             throw new WebException(ErrorCode.INVALID_BOOKING_CHECKIN_CHECKOUT);
         }
-        long count = bookingRoomRepository.countRoomAvailable(roomId,checkIn,checkOut,BookingStatus.CONFIRMED);
+        long count = bookingRoomRepository.countRoomAvailable(roomId,checkIn,checkOut,BookingStatus.CONFIRMED,true);
         return count == 0;
     }
 
@@ -155,8 +178,8 @@ public class BookingRoomServiceImpl implements BookingRoomService {
     }
 
     @Override
-    public long countPending() {
-        return bookingRoomRepository.countPendingConfirm(BookingStatus.CANCELLED,true);
+    public long countByStatus(BookingStatus status) {
+        return bookingRoomRepository.countAllByStatus(status);
     }
 
     @Override
@@ -170,37 +193,46 @@ public class BookingRoomServiceImpl implements BookingRoomService {
         return bookingRoomRepository.sumAllPriceByStatus(true);
     }
 
-    @Override
-    @Scheduled(fixedRate = 120000)
-    public void cancelExpiredBooking() {
-        LocalDateTime oneHourAgo = LocalDateTime.now().minusMinutes(10);
-        List<BookingRoomEntity> expiredBookings = bookingRoomRepository.findAllByStatusAndCreatedAtBeforeAndPaid(BookingStatus.PENDING, oneHourAgo, false);
-        expiredBookings.forEach(booking -> booking.setStatus(BookingStatus.CANCELLED));
-        bookingRoomRepository.saveAll(expiredBookings);
-        System.out.println("Canceled " + expiredBookings.size() + " expired bookings room");
-    }
+//    @Override
+//    @Scheduled(fixedRate = 120000)
+//    public void cancelExpiredBooking() {
+//        LocalDateTime oneHourAgo = LocalDateTime.now().minusMinutes(10);
+//        List<BookingRoomEntity> expiredBookings = bookingRoomRepository.findAllByStatusAndCreatedAtBeforeAndPaid(BookingStatus.PENDING, oneHourAgo, false);
+//        expiredBookings.forEach(booking -> booking.setStatus(BookingStatus.CANCELLED));
+//        bookingRoomRepository.saveAll(expiredBookings);
+//        System.out.println("Canceled " + expiredBookings.size() + " expired bookings room");
+//    }
 
     @Override
-    public ProcessPaymentResponse processPayment(long bookingId, long amount) {
+    public ProcessPaymentResponse processPayment(long bookingId, String voucherCode) {
         BookingRoomEntity bookingRoomEntity = getBookingRoomById(bookingId);
+        Long id = Long.parseLong(userService.getMyInfo().getId());
+        int sale = 0;
+        if(!voucherCode.isEmpty() && voucherCode!=null) {
+            UserVoucherEntity voucher = userVoucherRepository.findByVoucher_CodeAndUser_Id(voucherCode,id);
+            voucher.setUsed(true);
+            sale = voucher.getVoucher().getValue();
+            userVoucherRepository.save(voucher);
+        }
         if (bookingRoomEntity.isPaid() || bookingRoomEntity.getStatus().equals(BookingStatus.COMPLETED) || bookingRoomEntity.getStatus().equals(BookingStatus.CONFIRMED)) {
             throw new WebException(ErrorCode.BOOKING_IS_PAID);
         }
         if (bookingRoomEntity.getStatus().equals(BookingStatus.CANCELLED)) {
             throw new WebException(ErrorCode.BOOKING_HAS_BEEN_CANCELED);
         }
-        if (amount < bookingRoomEntity.getTotalPrice() || amount <= 0) {
-            throw new WebException(ErrorCode.INVALID_NUM);
-        }
+
         if(!bookingRoomIsAvailable(bookingRoomEntity.getRoom().getId(),bookingRoomEntity.getCheckIn(),bookingRoomEntity.getCheckOut())) {
             throw new WebException(ErrorCode.ROOM_IS_OUT);
         }
         bookingRoomEntity.setPaid(true);
         bookingRoomEntity.setStatus(BookingStatus.CONFIRMED);
+        long totalPrice = bookingRoomEntity.getTotalPrice();
+        long userPaid = totalPrice - totalPrice*sale/100;
+        bookingRoomEntity.setUserPaid(userPaid);
         bookingRoomRepository.save(bookingRoomEntity);
         ProcessPaymentResponse processPaymentResponse = paymentMapper.bookingRoomToPaymentResponse(bookingRoomEntity);
         processPaymentResponse.setAmount(bookingRoomEntity.getTotalPrice());
-        processPaymentResponse.setCashBack(amount - processPaymentResponse.getAmount());
+        processPaymentResponse.setCashBack(0);
         processPaymentResponse.setSuccess(true);
         return processPaymentResponse;
     }

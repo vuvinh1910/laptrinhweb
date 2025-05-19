@@ -28,12 +28,77 @@
     max-width: 0; /* Giới hạn chiều rộng để kích hoạt xuống dòng */
 }
 
-/* Cột Hành động tự điều chỉnh theo nội dung */
-#bookingRoom-content td:last-child {
-    white-space: nowrap; /* Giữ các nút trên cùng một dòng */
-    width: auto; /* Chiều rộng tự điều chỉnh theo nội dung */
-    padding: 15px 10px; /* Giảm padding ngang để gọn hơn */
+/* Cột Hành động - Điều chỉnh padding và bỏ các thuộc tính flexbox ở đây */
+#bookingRoom-content td:last-child,
+#bookingRoom-content td.action-cell { /* Sử dụng class action-cell nếu có */
+    padding: 10px 5px; /* Điều chỉnh padding */
+    border-right: none;
+    /* Bỏ các thuộc tính flexbox ở đây */
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    /* gap: 5px; */
+    /* justify-content: center; */
+    /* align-items: center; */
 }
+
+/* Container Flexbox cho các nút bên trong ô Hành động */
+#bookingRoom-content .action-buttons {
+    display: flex; /* Bật Flexbox */
+    flex-direction: row; /* Xếp các mục (nút) theo hàng ngang */
+    flex-wrap: wrap; /* Cho phép các nút xuống dòng nếu không đủ chỗ */
+    gap: 5px; /* Tạo khoảng cách 5px giữa các nút */
+    justify-content: center; /* Căn giữa các nút theo chiều ngang trong container */
+    align-items: center; /* Căn giữa các nút theo chiều dọc trong container */
+    /* Có thể thêm height: 100%; nếu muốn container flex lấp đầy chiều cao của ô td */
+    height: 100%;
+}
+
+
+/* Nút Cập nhật, Chi tiết, Xóa */
+#bookingRoom-content .update-btn,
+#bookingRoom-content .delete-btn {
+    display: inline-block; /* Hoặc block tùy ý, inline-block thường phù hợp trong flex */
+    padding: 5px 8px; /* Điều chỉnh padding cho nút gọn hơn */
+    border-radius: 4px; /* Đã sửa lỗi đánh máy */
+    text-decoration: none;
+    color: white;
+    font-size: 0.9em; /* Giảm kích thước chữ một chút */
+    text-align: center; /* Căn giữa chữ trong nút */
+    white-space: nowrap; /* Ngăn chữ trong nút bị xuống dòng */
+    /* Bỏ margin-right vì đã dùng gap trên container flex */
+    /* margin-right: 5px; */
+}
+
+/* Nút Cập nhật */
+#bookingRoom-content .update-btn {
+    background: #3498db; /* Màu xanh dương */
+}
+
+/* Style cho nút "Chi Tiết" */
+#bookingRoom-content .update-btn[href*="/detail"] {
+    background: #3498db;
+}
+
+/* Nút Xóa - Màu đỏ chuẩn hơn */
+#bookingRoom-content .delete-btn {
+    background: #403938;
+}
+
+/* Hover cho nút Cập nhật */
+#bookingRoom-content .update-btn:hover {
+    background: #1f6391;
+}
+
+/* Hover cho nút "Chi Tiết" */
+#bookingRoom-content .update-btn[href*="/detail"]:hover {
+    background: #1f6391;
+}
+
+/* Hover cho nút Xóa */
+#bookingRoom-content .delete-btn:hover {
+    background: #c82333; /* Đỏ sẫm hơn khi hover */
+}
+
 
 #bookingRoom-content th {
     background: #f8f9fa;
@@ -42,43 +107,13 @@
 }
 
 /* Loại bỏ viền dọc ở cột cuối */
-#bookingRoom-content th:last-child,
-#bookingRoom-content td:last-child {
+#bookingRoom-content th:last-child {
     border-right: none;
 }
 
 /* Loại bỏ viền ngang ở hàng cuối */
 #bookingRoom-content tbody tr:last-child td {
     border-bottom: none;
-}
-
-/* Nút Cập nhật */
-#bookingRoom-content .update-btn {
-    display: inline-block;
-    padding: 7px 10px;
-    background: #3498db; /* Màu xanh dương */
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-right: 5px; /* Khoảng cách giữa Cập nhật và Xóa */
-}
-
-#bookingRoom-content .update-btn:hover {
-    background: #2980b9;
-}
-
-/* Nút Xóa */
-#bookingRoom-content .delete-btn {
-    display: inline-block;
-    padding: 7px 10px;
-    background: #403938; /* Màu xám đậm */
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-#bookingRoom-content .delete-btn:hover {
-    background: #c0392b; /* Màu đỏ sậm */
 }
 
 #bookingRoom-content .filter-form {
@@ -115,11 +150,15 @@
 #bookingRoom-content .filter-btn,
 #bookingRoom-content .reset-btn {
     padding: 8px 15px;
-    border-radius: 4px;
+    border-radius: 4px; /* Đã sửa lỗi đánh máy */
     text-decoration: none;
     cursor: pointer;
-    width: 60px;
-    height: 40px;
+    /* Bỏ width cố định để nút tự điều chỉnh theo nội dung và padding */
+    /* width: 60px; */
+    height: 40px; /* Có thể bỏ height cố định nếu muốn nút tự điều chỉnh theo nội dung */
+    display: inline-block;
+    text-align: center;
+    line-height: 24px; /* Điều chỉnh nếu cần để căn giữa chữ dọc */
 }
 
 #bookingRoom-content .filter-btn {
@@ -138,4 +177,23 @@
     text-align: center;
     padding: 20px;
     color: #666;
+}
+
+.alert-success,
+.alert-danger {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.alert-success {
+    background: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+}
+
+.alert-danger {
+    background: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
 }

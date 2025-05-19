@@ -11,9 +11,6 @@ public class RoomCreateRequest {
     private String roomName;
 
     @NotNull
-    private String hotelName;
-
-    @NotNull
     private long roomPrice;
 
     @NotNull
@@ -23,5 +20,5 @@ public class RoomCreateRequest {
     private String roomType;
 
     @NotNull
-    private String locationCode;
+    private Long hotelId;
 }

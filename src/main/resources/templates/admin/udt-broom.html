@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Update Room</h1>
-
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 <form th:object="${bookings}" th:action="@{/admin/booking/room/update/{id}(id=${bookings.id})}" method="post">
     <div>
         <label for="checkIn">Check In:</label>

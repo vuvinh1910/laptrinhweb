@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div th:fragment="content" class="refund-admin">
+    <div class="refund-list">
+        <h1>Thông báo từ khách hàng</h1>
+
+        <!-- Thông báo kết quả -->
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <!-- Nếu danh sách rỗng -->
+        <div th:if="${#lists.isEmpty(refunds)}" class="alert alert-info">
+            Không có thông báo nào.
+        </div>
+
+        <!-- Nếu có danh sách -->
+        <div id="refundList" th:unless="${#lists.isEmpty(refunds)}">
+            <div class="list">
+                <div th:each="refund : ${refunds}" class="refund-item item">
+                    <p>
+                        Yêu cầu hoàn tiền từ <strong class="bankHolderName" th:text="${refund.bankHolderName}">Tên chủ TK</strong>
+                    </p>
+                    <p class="bankType" th:text="'Ngân hàng: ' + ${refund.bankType}"></p>
+                    <p class="bankCode" th:text="'Số tài khoản: ' + ${refund.bankCode}"></p>
+                    <p class="reason" th:text="'Lý do: ' + ${refund.reason}"></p>
+
+                    <div th:if="${refund.completed}">
+                        <span class="processed-text text-success">Đã xử lý</span>
+                    </div>
+
+                    <button class="process-button open-refund-modal"
+                            th:unless="${refund.completed}"
+                            th:data-bank="${refund.bankHolderName}"
+                            th:data-banktype="${refund.bankType}"
+                            th:data-bankcode="${refund.bankCode}"
+                            th:data-reason="${refund.reason}"
+                            th:data-bookingid="${refund.booking.id}">
+                        Xử lý
+                    </button>
+
+                    <form th:action="@{/admin/refund/{id}(id=${refund.id})}" method="post">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" class="delete-btn">Xóa</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Phân trang -->
+            <ul class="pagination"></ul>
+        </div>
+    </div>
+
+    <div id="refundModal" class="modalRefund" style="display:none;">
+        <div class="refund-modal-content">
+            <span class="close-refund-modal">×</span>
+            <h2>Chi tiết hoàn tiền</h2>
+            <p><strong>Chủ tài khoản:</strong> <span id="modalBankHolder"></span></p>
+            <p><strong>Ngân hàng:</strong> <span id="modalBankType"></span></p>
+            <p><strong>Số tài khoản:</strong> <span id="modalBankCode"></span></p>
+            <p><strong>Lý do:</strong> <span id="modalReason"></span></p>
+            <form id="confirmRefundForm" method="POST" action="/lap-trinh-web/admin/refund/confirm">
+                <input type="hidden" name="bookingId" id="modalBookingId">
+                <button type="submit" class="confirm-button">Xác nhận hoàn tiền</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- List.js Initialization -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var options = {
+            valueNames: ['bankHolderName', 'bankType', 'bankCode', 'reason'],
+            page: 14, // Số yêu cầu hoàn tiền mỗi trang
+            pagination: {
+                innerWindow: 2,
+                outerWindow: 1,
+                paginationClass: 'pagination'
+            }
+        };
+        var refundList = new List('refundList', options);
+    });
+</script>
+</body>
+</html>

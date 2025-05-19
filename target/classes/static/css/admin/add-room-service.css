@@ -4,6 +4,40 @@ body {
     padding: 30px; /* Tăng padding body */
 }
 
+/* Style cho thông báo lỗi */
+.alert {
+    padding: 15px; /* Khoảng đệm bên trong */
+    margin-bottom: 20px; /* Khoảng cách dưới thông báo */
+    border: 1px solid transparent; /* Viền trong suốt mặc định */
+    border-radius: 4px; /* Bo tròn góc */
+    text-align: center; /* Căn giữa nội dung text */
+
+    /* --- Để hiển thị ở giữa và giới hạn chiều rộng --- */
+    max-width: 600px; /* Giới hạn chiều rộng tối đa của thông báo */
+    margin-left: auto; /* Tự động căn lề trái */
+    margin-right: auto; /* Tự động căn lề phải */
+    /* Kết hợp margin: auto sẽ căn giữa khối có chiều rộng cố định/tối đa */
+    /* --------------------------------------------- */
+}
+
+/* Style cụ thể cho thông báo lỗi nguy hiểm (màu đỏ) */
+.alert-danger {
+    color: #721c24; /* Màu chữ đỏ đậm */
+    background-color: #f8d7da; /* Màu nền đỏ nhạt */
+    border-color: #f5c6cb; /* Màu viền đỏ */
+}
+
+/* Responsive cơ bản */
+@media (max-width: 768px) {
+    .alert {
+        max-width: 95%; /* Trên màn hình nhỏ, chiếm gần hết chiều rộng */
+        margin-left: auto; /* Vẫn căn giữa */
+        margin-right: auto; /* Vẫn căn giữa */
+        padding: 10px; /* Giảm padding */
+        font-size: 0.9em; /* Giảm kích thước font */
+    }
+}
+
 h1 {
     color: #333;
     margin-bottom: 30px; /* Tăng margin */

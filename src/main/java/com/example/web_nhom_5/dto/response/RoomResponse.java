@@ -9,7 +9,11 @@ public class RoomResponse {
 
     private String roomName;
 
+    private String locationName;
+
     private String hotelName;
+
+    private long hotelId;
 
     private long roomPrice;
 
@@ -17,5 +21,4 @@ public class RoomResponse {
 
     private String roomType;
 
-    private String locationName;
 }

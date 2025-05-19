@@ -16,40 +16,26 @@
 <!-- Nhúng Navbar -->
 <div th:replace="~{/public/header-navbar :: navbar}"></div>
 
-<!-- Hero Section với Form Tìm kiếm -->
-<section class="hero-section" th:style="|background-image: url('@{/img/hotel-bg.jpg}')|">
-    <div class="container">
-        <h1 class="mb-4">Tìm Phòng Khách Sạn Hoàn Hảo</h1>
-        <div class="search-form">
-            <form th:action="@{/public/rooms}" method="get" class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label">Địa điểm</label>
-                    <input type="text" name="location" class="form-control" placeholder="Nhập địa điểm" required>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">Check-in</label>
-                    <input type="date" name="checkIn" class="form-control" required>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">Check-out</label>
-                    <input type="date" name="checkOut" class="form-control" required>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">Giá Phòng</label>
-                    <input type="number" name="maxPrice" class="form-control" min="0" required>
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100">Tìm Phòng</button>
-                </div>
-            </form>
-        </div>
+<!-- Hero Section với Video Nền -->
+<section class="hero-section">
+    <video autoplay muted loop playsinline class="hero-video">
+        <source src="https://statics.vinwonders.com/Short15s_1920x1080_Final_1659170954.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="search-block">
+        <form action="/lap-trinh-web/public/hotels" method="get" class="tk">
+            <div class="search-input">
+                <input type="text" name="location" placeholder="Bạn muốn đi đâu?" />
+            </div>
+            <button type="submit" class="btn-search-click">Tìm kiếm</button>
+        </form>
     </div>
 </section>
 
-<!-- Welcome Section -->
+<!-- Welcome, Section -->
 <section class="py-5">
     <div class="container">
-        <h2 class="section-title">Chào Mừng Đến Với Hotel Booking</h2>
+        <h1 class="section-title">Chào Mừng Đến Với Hotel Booking</h1>
         <div class="row align-items-center">
             <div class="col-md-6">
                 <p class="lead" style="font-size: 1.5rem;">Đặt phòng khách sạn chưa bao giờ dễ dàng đến thế! Chúng tôi mang đến:</p>
@@ -67,13 +53,141 @@
     </div>
 </section>
 
+<!-- Offer Section -->
+<section class="py-5 offer-section">
+    <div class="container">
+        <h2 class="section-title text-center mb-4">Ưu Đãi Dành Cho Bạn</h2>
+        <div id="offerCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="offer-card">
+                                <a th:href="@{/public/voucher}">
+                                    <img th:src="@{/img/offer1.webp}" class="img-fluid" alt="Ưu đãi 1">
+                                </a>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Giảm 40% Phòng Deluxe</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="offer-card">
+                                <a th:href="@{/public/voucher}">
+                                    <img th:src="@{/img/offer2.webp}" class="img-fluid" alt="Ưu đãi 2">
+                                </a>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Trải nghiệm thú vui</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="offer-card">
+                                <a th:href="@{/public/voucher}">
+                                    <img th:src="@{/img/offer3.webp}" class="img-fluid" alt="Ưu đãi 3">
+                                </a>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Ưu đãi có hạn</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="offer-card">
+                                <a th:href="@{/public/voucher}">
+                                    <img th:src="@{/img/offer4.webp}" class="img-fluid" alt="Ưu đãi 4">
+                                </a>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Gói Nghỉ Dưỡng 2N1Đ</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="offer-card">
+                                <a th:href="@{/public/voucher}">
+                                    <img th:src="@{/img/offer5.webp}" class="img-fluid" alt="Ưu đãi 5">
+                                </a>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Ưu Đãi Gia Đình</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="offer-card">
+                                <a th:href="@{/public/voucher}">
+                                    <img th:src="@{/img/offer6.webp}" class="img-fluid" alt="Ưu đãi 6">
+                                </a>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Miễn Phí Spa</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#offerCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#offerCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 travel-section">
+    <div class="container">
+        <div class="section-title text-center mb-2">Du Lịch An Toàn</div>
+        <div class="section-subtitle text-center mb-4">Nâng cao sức khỏe, cân bằng cuộc sống</div>
+        <div class="row g-4 flex-row card-grid">
+            <div class="col-md-3">
+                <div class="card" style="background-image: url('https://demo.bosathemes.com/html/travele/assets/images/slider-banner-1.jpg'); background-size: cover; background-position: center; height: 200px;">
+                    <div class="card-text d-flex flex-column justify-content-end h-100 p-3 text-white" style="background: rgba(0, 0, 0, 0.5);">
+                        <div class="card-title">Cân bằng</div>
+                        <div class="card-subtitle">Thư giãn cơ thể, năng lượng dồi dào</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="background-image: url('https://cdn1.ivivu.com/iVivu/2022/10/25/02/tet5-1.jpg'); background-size: cover; background-position: center; height: 200px;">
+                    <div class="card-text d-flex flex-column justify-content-end h-100 p-3 text-white" style="background: rgba(0, 0, 0, 0.5);">
+                        <div class="card-title">Năm mới</div>
+                        <div class="card-subtitle">Nghỉ lễ xã hội, chào năm tươi mới</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="background-image: url('https://themes.themeenergy.com/bookyourtravel/resort/wp-content/uploads/sites/18/2018/07/resort-content.jpg'); background-size: cover; background-position: center; height: 200px;">
+                    <div class="card-text d-flex flex-column justify-content-end h-100 p-3 text-white" style="background: rgba(0, 0, 0, 0.5);">
+                        <div class="card-title">Hội họp</div>
+                        <div class="card-subtitle">Không gian họp đẳng cấp giữa thiên nhiên</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="background-image: url('https://cdn1.ivivu.com/images/2021/10/09/22/hop_qua_v1.png'); background-size: cover; background-position: center; height: 200px;">
+                    <div class="card-text d-flex flex-column justify-content-end h-100 p-3 text-white" style="background: rgba(0, 0, 0, 0.5);">
+                        <div class="card-title">Gift Voucher</div>
+                        <div class="card-subtitle">Lưu giữ khoảnh khắc, trải nghiệm hành trình</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Trending Destinations -->
 <section class="py-5 bg-light">
     <div class="container">
         <h2 class="section-title">Điểm Đến Đang Thịnh Hành</h2>
         <div class="row g-4">
             <div class="col-md-4 col-6">
-                <a th:href="@{/public/rooms(location='HN')}" class="text-decoration-none">
+                <a th:href="@{/public/hotels(location='HN')}" class="text-decoration-none">
                     <div class="card destination-card">
                         <img th:src="@{/img/hanoi.jpg}" class="card-img-top" alt="Hà Nội">
                         <div class="card-body text-center">
@@ -83,7 +197,7 @@
                 </a>
             </div>
             <div class="col-md-4 col-6">
-                <a th:href="@{/public/rooms(location='HCM')}" class="text-decoration-none">
+                <a th:href="@{/public/hotels(location='HCM')}" class="text-decoration-none">
                     <div class="card destination-card">
                         <img th:src="@{/img/hcm.jpg}" class="card-img-top" alt="Hồ Chí Minh">
                         <div class="card-body text-center">
@@ -93,7 +207,7 @@
                 </a>
             </div>
             <div class="col-md-4 col-6">
-                <a th:href="@{/public/rooms(location='HA')}" class="text-decoration-none">
+                <a th:href="@{/public/hotels(location='HA')}" class="text-decoration-none">
                     <div class="card destination-card">
                         <img th:src="@{/img/hoian.jpg}" class="card-img-top" alt="Hội An">
                         <div class="card-body text-center">
@@ -103,7 +217,7 @@
                 </a>
             </div>
             <div class="col-md-4 col-6">
-                <a th:href="@{/public/rooms(location='PQ')}" class="text-decoration-none">
+                <a th:href="@{/public/hotels(location='PQ')}" class="text-decoration-none">
                     <div class="card destination-card">
                         <img th:src="@{/img/phuquoc.jpg}" class="card-img-top" alt="Phú Quốc">
                         <div class="card-body text-center">
@@ -113,7 +227,7 @@
                 </a>
             </div>
             <div class="col-md-4 col-6">
-                <a th:href="@{/public/rooms(location='DN')}" class="text-decoration-none">
+                <a th:href="@{/public/hotels(location='DN')}" class="text-decoration-none">
                     <div class="card destination-card">
                         <img th:src="@{/img/danang.jpg}" class="card-img-top" alt="Đà Nẵng">
                         <div class="card-body text-center">
@@ -158,53 +272,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="text-center mt-4">
-            <a th:href="@{/public/rooms}" class="btn btn-outline-primary">Xem Tất Cả Phòng</a>
-        </div>
-    </div>
-</section>
-
-<!-- Popular Services -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <h2 class="section-title">Dịch Vụ Phổ Biến</h2>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card service-card">
-                    <img th:src="@{/img/dulich.jpg}" class="card-img-top" alt="Spa">
-                    <div class="card-body text-center">
-                        <h6 class="card-title">Tour Khám Phá - Du lịch</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card service-card">
-                    <img th:src="@{/img/nhahang.jpg}" class="card-img-top" alt="Restaurant">
-                    <div class="card-body text-center">
-                        <h6 class="card-title">Nhà Hàng - Tiệc</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card service-card">
-                    <img th:src="@{/img/lanbien.jpg}" class="card-img-top" alt="Pool">
-                    <div class="card-body text-center">
-                        <h6 class="card-title">Lặn Biển</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card service-card">
-                    <img th:src="@{/img/duthuyen.jpg}" class="card-img-top" alt="Gym">
-                    <div class="card-body text-center">
-                        <h6 class="card-title">Du Thuyền</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="text-center mt-4">
-            <a th:href="@{/public/services}" class="btn btn-outline-primary">Xem Tất Cả Dịch Vụ</a>
         </div>
     </div>
 </section>

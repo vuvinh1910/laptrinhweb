@@ -1,30 +1,65 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Bảng điều khiển Tổng quan Kinh doanh</title>
     <link rel="stylesheet" th:href="@{/css/admin/dashboard-content.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
 <body>
-<div th:fragment="content" id="dashboard-content">
-    <h3>Bảng Thống Kê</h3>
-    <div class="dashboard-container">
-        <div class="dashboard-card">
-            <h4>Tổng thu nhập</h4>
-            <p th:text="${tongThuNhap} + ' VND'" class="value">0 VND</p>
+<!-- File: templates/admin/dashboard.html -->
+<div th:fragment="content">
+    <header class="dashboard-header">
+        <div class="header-content">
+            <h1>Bảng điều khiển Tổng quan Kinh doanh</h1>
         </div>
-        <div class="dashboard-card">
-            <h4>Số người dùng</h4>
-            <p th:text="${numUser}" class="value">0</p>
-        </div>
-        <div class="dashboard-card">
-            <h4>Số đơn đang chờ hoàn tiền</h4>
-            <p th:text="${soDonDangCho}" class="value">0</p>
-        </div>
-        <div class="dashboard-card">
-            <h4>Đang chờ trả phòng</h4>
-            <p th:text="${soDangChoTraPhong}" class="value">0</p>
-        </div>
-    </div>
+    </header>
+
+    <main class="dashboard-main">
+        <section class="kpi-section">
+            <div class="kpi-card">
+                <div class="kpi-label">Tổng Doanh Thu</div>
+                <div class="kpi-value" th:text="${tongThuNhap} + ' VND'">0 VND</div>
+                <div class="kpi-icon">💰</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">Tổng Số Người Dùng</div>
+                <div class="kpi-value" th:text="${numUser}">0</div>
+                <div class="kpi-icon">👤</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">Tổng Số Đơn Đặt Hàng</div>
+                <div class="kpi-value" th:text="${soDon}">0</div>
+                <div class="kpi-icon">📦</div>
+            </div>
+        </section>
+
+        <section class="charts-section">
+            <div class="chart-container column-chart">
+                <h2>Doanh thu theo Tháng</h2>
+                <canvas id="barChart" height="250"></canvas>
+            </div>
+
+            <div class="chart-container pie-chart">
+                <h2>Thống kê trạng thái đơn</h2>
+                <canvas id="pieChart" height="250"></canvas>
+            </div>
+        </section>
+
+        <section class="static-details-section">
+            <h2>Thông tin Bổ Sung</h2>
+            <p>Dữ liệu được tổng hợp và phân tích từ <em>hệ thống quản trị doanh nghiệp</em>.</p>
+            <p>Ngày cập nhật dữ liệu gần nhất: <strong th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy, HH:mm')}"></strong></p>
+            <p>Vui lòng liên hệ phòng phân tích để được hỗ trợ thêm.</p>
+        </section>
+    </main>
+
+    <footer class="dashboard-footer">
+        <p>&copy; 2025 Tên Công ty của bạn. Bảo lưu mọi quyền.</p>
+    </footer>
 </div>
 </body>
 </html>

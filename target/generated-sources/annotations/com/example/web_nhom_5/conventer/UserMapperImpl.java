@@ -58,6 +58,9 @@ public class UserMapperImpl implements UserMapper {
             return;
         }
 
+        if ( request.getUserName() != null ) {
+            users.setUserName( request.getUserName() );
+        }
         if ( request.getEmail() != null ) {
             users.setEmail( request.getEmail() );
         }

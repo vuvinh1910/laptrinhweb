@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/admin/voucher.css}">
+    <title th:text="${pageTitle}"></title>
+</head>
+<body>
+<div th:fragment="content" id="voucher-content">
+    <h3>Quản lý Voucher</h3>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div class="action-bar">
+        <a th:href="@{/admin/voucher/add}" class="create-btn">Thêm Voucher Mới</a>
+    </div>
+
+    <table id="customerTable" class="display">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Mã Voucher</th>
+            <th>Giá trị (%)</th>
+            <th>Số lượng còn lại</th>
+            <th>Mô tả</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="voucher : ${vouchers}">
+            <td th:text="${voucher.id}"></td>
+            <td th:text="${voucher.code}"></td>
+            <td th:text="${voucher.value} + ' %'"></td>
+            <td th:text="${voucher.remain}"></td>
+            <td th:text="${voucher.description}"></td>
+            <td>
+                <div class="action-buttons">
+                    <a th:href="@{/admin/voucher/update/{id}(id=${voucher.id})}" class="update-btn">Cập nhật&Chi Tiết</a>
+                    <a th:href="@{/admin/voucher/delete/{id}(id=${voucher.id})}" class="delete-btn">Xóa</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${#lists.isEmpty(vouchers)}" class="no-results">
+        Chưa có voucher nào được tạo.
+    </div>
+</div>
+</body>
+</html>

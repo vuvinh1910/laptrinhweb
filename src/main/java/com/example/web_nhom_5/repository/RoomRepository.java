@@ -16,20 +16,24 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends JpaRepository<RoomEntity, Long>, JpaSpecificationExecutor<RoomEntity> {
     List<RoomEntity> findAllByRoomPriceLessThan(long roomPrice);
-    List<RoomEntity> findAllByLocation_LocationCode(String locationCode);
+    List<RoomEntity> findAllByHotel_Id(Long id);
+    @Query("SELECT r FROM RoomEntity r WHERE " +
+            "(:locationCode IS NULL OR r.hotel.location.locationCode = :locationCode) AND " +
+            "(:hotelId IS NULL OR r.hotel.id = :hotelId)")
+    List<RoomEntity> findAllByHotel_Location_LocationCodeAndHotel_Id(String locationCode, Long hotelId);
     @Query("SELECT r FROM BookingRoomEntity r WHERE "  +
             "(:status IS NULL OR r.status = :status) AND " +
             "(:paid IS NULL OR r.paid = :paid)")
     List<RoomEntity> findRoomsByFilter(
             @Param("status") String status,
             @Param("paid") String paid);
-    @Query("SELECT r FROM RoomEntity r WHERE Concat(r.hotelName,' ',r.roomName,' ',r.roomPrice,' ',r.roomDetail,' ',r.roomType,' ',r.location.locationCode,' ',r.location.locationName,' ') LIKE %?1%")
-    List<RoomEntity> listAll(String keyword);
-
-    @Query("select r from RoomEntity r where " +
-            "(:locationCode is null or r.location.locationCode = :locationCode) and " +
-            "(:price is null or r.roomPrice <= :price) and " +
-            "(:roomType is null or r.roomType like CONCAT(:roomType, '%'))"
-    )
-    List<RoomEntity> filterRooms(String locationCode, Long price, String roomType);
+//    @Query("SELECT r FROM RoomEntity r WHERE Concat(r.hotelName,' ',r.roomName,' ',r.roomPrice,' ',r.roomDetail,' ',r.roomType,' ',r.location.locationCode,' ',r.location.locationName,' ') LIKE %?1%")
+//    List<RoomEntity> listAll(String keyword);
+//
+//    @Query("select r from RoomEntity r where " +
+//            "(:locationCode is null or r.location.locationCode = :locationCode) and " +
+//            "(:price is null or r.roomPrice <= :price) and " +
+//            "(:roomType is null or r.roomType like CONCAT(:roomType, '%'))"
+//    )
+//    List<RoomEntity> filterRooms(String locationCode, Long price, String roomType);
 }
